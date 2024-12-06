@@ -34,8 +34,6 @@ const LoginPage = () => {
 
       const user = verifyToken(res.data.accessToken);
 
-      console.log(user);
-
       toast.success("Successfully Logged in", { id: toastId, duration: 2000 });
 
       dispatch(setUser({ user: user, token: res.data.accessToken }));
@@ -99,7 +97,7 @@ const LoginPage = () => {
                 placeholder="Enter your password"
               />
               <div className="form-control">
-                <label className="label cursor-pointer">
+                <label className="flex items-center gap-3 cursor-pointer">
                   <input
                     type="checkbox"
                     onClick={togglePasswordVisibility}

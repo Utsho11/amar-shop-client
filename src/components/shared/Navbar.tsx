@@ -1,42 +1,44 @@
-// Navbar.tsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, Logo, MoonIcon, SunIcon } from "../icons/icon";
 import { NavLink } from "react-router-dom";
 import DropdownSideBar from "./DropdownSideBar";
 import { useTheme } from "../../context/ThemeContext";
 import {
   logout,
-  TUser,
+  selectCurrentUser,
   useCurrentToken,
 } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { toast } from "sonner";
-import { verifyToken } from "../../utils/verifyToken";
+import { useGetMeQuery } from "../../redux/services/authApi";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  const token = useAppSelector(useCurrentToken);
+  const user = useAppSelector(selectCurrentUser);
+
+  // Get user details (optional, to show updated avatar)
+  const { data, isFetching, refetch } = useGetMeQuery(null, { skip: !token });
+
+  // Trigger a refetch when the token changes
+  useEffect(() => {
+    if (token) {
+      refetch();
+    }
+  }, [token, refetch]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
-  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
     toast.success("Logged out");
   };
 
-  const token = useAppSelector(useCurrentToken);
-
-  console.log(token);
-
-  let user;
-
-  if (token) {
-    user = verifyToken(token) as TUser;
-  }
+  if (isFetching) return <p>Loading...</p>;
 
   return (
     <div className="mb-3">
@@ -99,7 +101,7 @@ const Navbar = () => {
               )}
             </button>
           </div>
-          {user?.email ? (
+          {user ? (
             <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
@@ -109,7 +111,7 @@ const Navbar = () => {
                 <div className="w-10 rounded-full">
                   <img
                     alt="User Avatar"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
+                    src={data?.data?.image || "https://tinyurl.com/cwrva2uh"}
                   />
                 </div>
               </div>
@@ -117,15 +119,31 @@ const Navbar = () => {
                 tabIndex={0}
                 className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
               >
-                <li>
-                  <a className="justify-between">
-                    Profile
-                    <span className="badge">New</span>
-                  </a>
-                </li>
-                <li>
-                  <a>Settings</a>
-                </li>
+                {user.role === "ADMIN" ? (
+                  <li>
+                    <NavLink to="/adminDashboard" className="justify-between">
+                      My dashboard
+                      <span className="badge">New</span>
+                    </NavLink>
+                  </li>
+                ) : user.role === "VENDOR" ? (
+                  <li>
+                    <NavLink to="/vendorDashboard" className="justify-between">
+                      My dashboard
+                      <span className="badge">New</span>
+                    </NavLink>
+                  </li>
+                ) : (
+                  <li>
+                    <NavLink
+                      to="/customerDashboard"
+                      className="justify-between"
+                    >
+                      My dashboard
+                      <span className="badge">New</span>
+                    </NavLink>
+                  </li>
+                )}
                 <li>
                   <button onClick={handleLogout}>Logout</button>
                 </li>
