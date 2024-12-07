@@ -33,7 +33,10 @@ const ASForm = <T extends FieldValues>({
         className={`space-y-4 ${className}`}
       >
         {children}
-        <button type="submit" className="btn btn-sm btn-primary">
+        <button
+          type="submit"
+          className={`btn btn-sm btn-primary ${label ? "" : "hidden"}`}
+        >
           {label}
         </button>
       </form>

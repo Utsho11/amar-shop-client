@@ -121,14 +121,20 @@ const Navbar = () => {
               >
                 {user.role === "ADMIN" ? (
                   <li>
-                    <NavLink to="/adminDashboard" className="justify-between">
+                    <NavLink
+                      to="/adminDashboard/profile"
+                      className="justify-between"
+                    >
                       My dashboard
                       <span className="badge">New</span>
                     </NavLink>
                   </li>
                 ) : user.role === "VENDOR" ? (
                   <li>
-                    <NavLink to="/vendorDashboard" className="justify-between">
+                    <NavLink
+                      to="/vendorDashboard/profile"
+                      className="justify-between"
+                    >
                       My dashboard
                       <span className="badge">New</span>
                     </NavLink>
@@ -136,7 +142,7 @@ const Navbar = () => {
                 ) : (
                   <li>
                     <NavLink
-                      to="/customerDashboard"
+                      to="/customerDashboard/profile"
                       className="justify-between"
                     >
                       My dashboard

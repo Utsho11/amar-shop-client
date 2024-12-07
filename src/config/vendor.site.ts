@@ -8,8 +8,8 @@ export const vendorSideLink = [
     path: "myShop",
   },
   {
-    label: "My Products",
-    path: "myProducts",
+    label: "Manage Products",
+    path: "manageProducts",
   },
   {
     label: "Back to Home",

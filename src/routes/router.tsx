@@ -15,6 +15,7 @@ import { routeGenerator } from "../utils/routeGenerator";
 import { vendorPaths } from "./vendor.routes";
 import { adminPaths } from "./admin.routes";
 import { customerPaths } from "./customer.routes";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -59,17 +60,29 @@ const router = createBrowserRouter([
   },
   {
     path: "/adminDashboard",
-    element: <AdminDashboardLayout />,
+    element: (
+      <ProtectedRoute role="ADMIN">
+        <AdminDashboardLayout />
+      </ProtectedRoute>
+    ),
     children: routeGenerator(adminPaths),
   },
   {
     path: "/customerDashboard",
-    element: <CustomerDashboardLayout />,
+    element: (
+      <ProtectedRoute role="CUSTOMER">
+        <CustomerDashboardLayout />
+      </ProtectedRoute>
+    ),
     children: routeGenerator(customerPaths),
   },
   {
     path: "/vendorDashboard",
-    element: <VendorDashboardLayout />,
+    element: (
+      <ProtectedRoute role="VENDOR">
+        <VendorDashboardLayout />
+      </ProtectedRoute>
+    ),
     children: routeGenerator(vendorPaths),
   },
 ]);

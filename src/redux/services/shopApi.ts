@@ -21,7 +21,14 @@ const extendedShop = baseApi.injectEndpoints({
       }),
       providesTags: ["shop"],
     }),
+    createShop: builder.mutation({
+      query: (data) => ({
+        url: "vendor/create-shop",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetMyShopQuery } = extendedShop;
+export const { useGetMyShopQuery, useCreateShopMutation } = extendedShop;

@@ -2,7 +2,7 @@ import Banner1 from "../components/banner/Banner1";
 import { useGetCategoriesQuery } from "../redux/services/categoryApi";
 
 const Homepage = () => {
-  const { data } = useGetCategoriesQuery();
+  const { data } = useGetCategoriesQuery(null);
 
   console.log(data);
 

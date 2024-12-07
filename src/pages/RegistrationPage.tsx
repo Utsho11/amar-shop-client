@@ -36,9 +36,9 @@ const RegistrationPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { theme } = useTheme();
   const [register] = useRegisterMutation();
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const handleFileChange = (file: File | null) => {
     setSelectedFile(file);
@@ -88,7 +88,7 @@ const RegistrationPage = () => {
       dispatch(setUser({ user: user, token: res.data.accessToken }));
 
       if (user?.role === "VENDOR") {
-        navigate("/createShop");
+        navigate("/vendorDashboard/myShop");
       } else navigate("/");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

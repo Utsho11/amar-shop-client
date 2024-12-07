@@ -1,23 +1,18 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-export type TOption = {
-  value: string;
-  label: string;
-};
-
-interface ASSelectFieldProps {
+interface ASTextareaProps {
   name: string;
   label: string;
-  options: TOption[];
-  isLoading?: boolean;
+  placeholder?: string;
+  rows?: number;
 }
 
-const ASSelectField: React.FC<ASSelectFieldProps> = ({
+const ASTextarea: React.FC<ASTextareaProps> = ({
   name,
   label,
-  options,
-  isLoading,
+  placeholder = "",
+  rows = 4,
 }) => {
   const {
     register,
@@ -29,18 +24,12 @@ const ASSelectField: React.FC<ASSelectFieldProps> = ({
       <label className="label">
         <span className="label-text">{label}</span>
       </label>
-      <select
-        disabled={isLoading}
+      <textarea
         {...register(name, { required: `${label} is required` })}
-        className="select select-bordered w-full"
-      >
-        <option value="">Select {label}</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+        placeholder={placeholder}
+        rows={rows}
+        className="textarea textarea-bordered w-full"
+      />
       {errors[name] && (
         <span className="text-red-500 text-sm">
           {errors[name]?.message as string}
@@ -50,4 +39,4 @@ const ASSelectField: React.FC<ASSelectFieldProps> = ({
   );
 };
 
-export default ASSelectField;
+export default ASTextarea;
