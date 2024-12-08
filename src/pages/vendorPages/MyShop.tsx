@@ -3,36 +3,51 @@ import { useGetMyShopQuery } from "../../redux/services/shopApi";
 import CreateShopPage from "./CreateShopPage";
 
 const MyShop = () => {
-  const { data: shop } = useGetMyShopQuery(null);
+  const { data: shops, isLoading, isError } = useGetMyShopQuery(null);
 
-  console.log(shop?.data);
+  console.log(shops);
+
+  if (isLoading) {
+    return <div className="loading-spinner loading-lg">Loading...</div>; // Handle loading state
+  }
+
+  if (isError || !shops) {
+    return <div>Error loading shops. Please try again later.</div>; // Handle error state
+  }
 
   return (
-    <div className="">
-      {shop ? (
-        <div>
-          {" "}
-          <div className="hero w-2/3 mx-auto">
-            <div className="hero-content flex-col lg:flex-row space-x-4">
-              <img
-                src={shop?.data?.logoUrl}
-                className="max-w-sm rounded-lg shadow-2xl"
-              />
-              <div>
-                <h1 className="text-5xl font-bold">{shop?.data?.name}</h1>
-                <p className="py-6">
-                  {shop?.data?.description}
-                  Provident cupiditate voluptatem et in. Quaerat fugiat ut
-                  assumenda excepturi exercitationem quasi. In deleniti eaque
-                  aut repudiandae et a id nisi.
-                </p>
-                <NavLink to="/">
-                  <button className="btn btn-sm btn-primary">Go to home</button>
-                </NavLink>
+    <div className="container mx-auto">
+      {shops.data && shops.data.length > 0 ? (
+        shops.data.map(
+          (
+            shop: {
+              id: string | number;
+              name: string;
+              description: string;
+              logoUrl: string;
+            },
+            index: number
+          ) => (
+            <div key={shop.id || index} className="hero w-2/3 mx-auto mb-8">
+              <div className="hero-content flex-col lg:flex-row space-x-4">
+                <img
+                  src={shop.logoUrl}
+                  alt={shop.name}
+                  className="max-w-sm rounded-lg shadow-2xl"
+                />
+                <div>
+                  <h1 className="text-5xl font-bold">{shop.name}</h1>
+                  <p className="py-6">{shop.description}</p>
+                  <NavLink to="/">
+                    <button className="btn btn-sm btn-primary">
+                      Go to Home
+                    </button>
+                  </NavLink>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          )
+        )
       ) : (
         <CreateShopPage />
       )}

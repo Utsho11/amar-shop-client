@@ -79,3 +79,15 @@ export type TProduct = {
   createdAt?: string;
   updatedAt?: string;
 };
+
+export type TUsers = {
+  id: string;
+  role: string;
+  email: string;
+  password: string;
+  needPasswordChange: boolean;
+  status: string;
+  isDeleted: boolean;
+  createdAt: string;
+  updatedAt: string;
+};

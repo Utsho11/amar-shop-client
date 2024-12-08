@@ -15,7 +15,39 @@ const extendedCategory = baseApi.injectEndpoints({
         };
       },
     }),
+    addCategory: builder.mutation({
+      query: (newCategory: FormData) => ({
+        url: `admin/create-category`,
+        method: "POST",
+        body: newCategory,
+      }),
+      invalidatesTags: ["category"],
+    }),
+
+    // Update an existing category
+    updateCategory: builder.mutation({
+      query: ({ id, ...updatedCategory }) => ({
+        url: `category/${id}`,
+        method: "PATCH",
+        body: updatedCategory,
+      }),
+      invalidatesTags: ["category"],
+    }),
+
+    // Delete a category
+    deleteCategory: builder.mutation({
+      query: (id: string) => ({
+        url: `category/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["category"],
+    }),
   }),
 });
 
-export const { useGetCategoriesQuery } = extendedCategory;
+export const {
+  useGetCategoriesQuery,
+  useAddCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+} = extendedCategory;

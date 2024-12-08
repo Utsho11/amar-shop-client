@@ -1,9 +1,4 @@
-import {
-  DuplicateIcon,
-  EditIcon,
-  EyeOpenIcon,
-  ThrashIcon,
-} from "../icons/icon";
+import { BanIcon, ThrashIcon, TickIcon } from "../icons/icon";
 
 interface Column<T> {
   key: keyof T; // Key corresponding to the data field
@@ -14,21 +9,17 @@ interface ASTableProps<T> {
   columns: Column<T>[]; // Array of column definitions
   data: T[]; // Array of data objects
   isLoading?: boolean; // Optional loading state
+  onSuspend: (id: string) => void; // Callback for delete action
   onDelete: (id: string) => void; // Callback for delete action
-  onEdit: (id: string) => void; // Callback for edit action
-  onView: (id: string) => void; // Callback for view action
-  onDuplicate: (id: string) => void; // Callback for duplicate action
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ASTable = <T extends Record<string, any>>({
+const ASUserTable = <T extends Record<string, any>>({
   columns,
   data,
   isLoading = false,
+  onSuspend,
   onDelete,
-  onEdit,
-  onView,
-  onDuplicate,
 }: ASTableProps<T>) => {
   console.log(data);
 
@@ -77,17 +68,29 @@ const ASTable = <T extends Record<string, any>>({
                     </td>
                   ))}
                   <td className="space-x-2">
-                    <button onClick={() => onView(id)} title="View">
-                      <EyeOpenIcon size={16} />
-                    </button>
-                    <button onClick={() => onEdit(id)} title="Edit">
-                      <EditIcon size={16} />
-                    </button>
-                    <button onClick={() => onDuplicate(id)} title="Duplicate">
-                      <DuplicateIcon size={16} />
-                    </button>
-                    <button onClick={() => onDelete(id)} title="Delete">
-                      <ThrashIcon size={16} />
+                    {row.status === "ACTIVE" ? (
+                      <button
+                        onClick={() => onSuspend(id)}
+                        title="Suspend User"
+                      >
+                        <BanIcon size={16} />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => onSuspend(id)}
+                        title="Activate User"
+                      >
+                        <TickIcon size={16} />
+                      </button>
+                    )}
+                    <button onClick={() => onDelete(id)} title="Delete User">
+                      {row.isDeleted === true ? (
+                        <span className="badge badge-error badge-outline">
+                          deleted
+                        </span>
+                      ) : (
+                        <ThrashIcon size={16} />
+                      )}
                     </button>
                   </td>
                 </tr>
@@ -106,4 +109,4 @@ const ASTable = <T extends Record<string, any>>({
   );
 };
 
-export default ASTable;
+export default ASUserTable;

@@ -31,6 +31,7 @@ const ManageProduct = () => {
 
   const columns: Column<TProduct>[] = [
     { key: "id", label: "ID" },
+    { key: "imageUrls", label: "Image" },
     { key: "name", label: "Name" },
     { key: "price", label: "Price" },
     { key: "discount", label: "Discount" },

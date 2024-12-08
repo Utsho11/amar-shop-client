@@ -22,6 +22,8 @@ const Navbar = () => {
   // Get user details (optional, to show updated avatar)
   const { data, isFetching, refetch } = useGetMeQuery(null, { skip: !token });
 
+  console.log(data?.data?.image);
+
   // Trigger a refetch when the token changes
   useEffect(() => {
     if (token) {
@@ -108,7 +110,7 @@ const Navbar = () => {
                 role="button"
                 className="btn btn-ghost btn-circle avatar"
               >
-                <div className="w-10 rounded-full">
+                <div className="w-10 rounded-full ring ring-offset-2">
                   <img
                     alt="User Avatar"
                     src={data?.data?.image || "https://tinyurl.com/cwrva2uh"}
