@@ -5,22 +5,34 @@ import {
   useDeleteProductMutation,
   useDuplicateProductMutation,
   useEditProductMutation,
-  useGetProductsQuery,
 } from "../../redux/services/productApi";
-import { TProduct } from "../../types";
 import EditProductModal from "../../components/modals/EditProductModal";
 import { toast } from "sonner";
 import { NavLink } from "react-router-dom";
+import { FieldValues } from "react-hook-form";
+import { useGetProductsByVendorQuery } from "../../redux/services/vendorApi";
+
+type TProduct = {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  discount: string;
+  inventoryCount: string;
+  imageUrl: string;
+  shopName?: string | undefined;
+  categoryName?: string | undefined;
+};
 
 interface Column<T> {
-  key: keyof T; // The key should match a field in the data
-  label: string; // The display name for the column
+  key: keyof T;
+  label: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   render?: (value: any, row: T) => React.ReactNode;
 }
 const ManageProduct = () => {
   const [selectedProduct, setSelectedProduct] = useState<TProduct | null>(null);
-  const { data, isLoading } = useGetProductsQuery(null);
+  const { data, isLoading } = useGetProductsByVendorQuery(null);
   const [deleteProduct] = useDeleteProductMutation();
   const [duplicateProduct] = useDuplicateProductMutation();
   const [editProduct] = useEditProductMutation();
@@ -29,10 +41,17 @@ const ManageProduct = () => {
     return <div className="loading loading-spinner">Loading...</div>;
   }
 
+  const flatProducts = data?.data?.map((product) => ({
+    ...product,
+    shopName: product?.shop?.name,
+    categoryName: product?.category?.name,
+  }));
+
   const columns: Column<TProduct>[] = [
-    { key: "id", label: "ID" },
-    { key: "imageUrls", label: "Image" },
+    { key: "imageUrl", label: "Image" },
     { key: "name", label: "Name" },
+    { key: "shopName", label: "Shop" },
+    { key: "categoryName", label: "Category" },
     { key: "price", label: "Price" },
     { key: "discount", label: "Discount" },
     { key: "inventoryCount", label: "Inventory Count" },
@@ -43,26 +62,21 @@ const ManageProduct = () => {
   };
 
   const handleEdit = (id: string) => {
-    const productToEdit = data?.data?.find((product) => product.id === id);
+    const productToEdit = flatProducts?.find((product) => product.id === id);
     if (productToEdit) {
       setSelectedProduct(productToEdit);
     }
   };
 
-  const handleSave = (updatedProduct: TProduct) => {
+  const handleSave = async (updatedProduct: FieldValues) => {
     try {
-      const { id, ...data } = updatedProduct;
-
-      // Call the editProduct mutation to update the product
-      editProduct({ id: id!, data }).unwrap();
-      toast.success("Product edited successfully");
+      await editProduct(updatedProduct).unwrap();
     } catch (error) {
       toast.error("Failed to edit product");
     }
   };
 
   const handleView = (id: string) => {
-    // Handle view logic here
     console.log(`View product with ID: ${id}`);
   };
 
@@ -79,7 +93,7 @@ const ManageProduct = () => {
       </div>
       <ASTable<TProduct>
         columns={columns}
-        data={data?.data || []}
+        data={flatProducts || []}
         isLoading={false}
         onDelete={handleDelete}
         onEdit={handleEdit}

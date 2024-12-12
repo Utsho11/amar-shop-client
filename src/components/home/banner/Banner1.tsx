@@ -1,5 +1,5 @@
-import banner from "../../assets/banner-1.avif";
-import { ShopIcon } from "../icons/icon";
+import banner from "../../../assets/banner-1.avif";
+import { ShopIcon } from "../../icons/icon";
 const Banner1 = () => {
   return (
     <div

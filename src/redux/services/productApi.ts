@@ -1,3 +1,4 @@
+import { PaginatedProducts } from "../../components/home/ProductSection";
 import { TProduct, TResponseRedux } from "../../types";
 import { baseApi } from "../api/baseApi";
 
@@ -5,14 +6,26 @@ const extendedProduct = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Get Products
     getProducts: builder.query({
-      query: () => ({
-        url: "product",
-        method: "GET",
-      }),
-      providesTags: ["product"],
-      transformResponse: (response: TResponseRedux<TProduct[]>) => {
+      query: ({ page = 1, limit = 8, sortByPrice, category, keyword }) => {
+        // Construct query parameters dynamically
+        const params = new URLSearchParams({
+          page: page.toString(),
+          limit: limit.toString(),
+        });
+
+        if (category) params.append("category", category);
+        if (keyword) params.append("keyword", keyword);
+        if (sortByPrice) params.append("sortByPrice", sortByPrice);
+
         return {
-          data: response.data,
+          url: `product?${params.toString()}`,
+          method: "GET",
+        };
+      },
+      providesTags: ["product"],
+      transformResponse: (response: TResponseRedux<PaginatedProducts>) => {
+        return {
+          data: response?.data,
         };
       },
     }),
@@ -38,12 +51,9 @@ const extendedProduct = baseApi.injectEndpoints({
     }),
 
     // Edit Product
-    editProduct: builder.mutation<
-      TProduct,
-      { id: string; data: Partial<TProduct> }
-    >({
-      query: ({ id, data }) => ({
-        url: `vendor/update-product/${id}`,
+    editProduct: builder.mutation({
+      query: (data) => ({
+        url: `vendor/update-product`,
         method: "PATCH",
         body: data,
       }),

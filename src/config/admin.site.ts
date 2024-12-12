@@ -12,6 +12,10 @@ export const adminSideLink = [
     path: "manageCategory",
   },
   {
+    label: "Manage Shop",
+    path: "manageShop",
+  },
+  {
     label: "Back to Home",
     path: "/",
   },

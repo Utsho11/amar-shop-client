@@ -5,6 +5,7 @@ import ASInput from "../../components/form/ASInput";
 import ASTextarea from "../../components/form/ASTextarea";
 import { toast } from "sonner";
 import { useAddCategoryMutation } from "../../redux/services/categoryApi";
+import { useNavigate } from "react-router-dom";
 
 export interface CategoryFormValue {
   name: string;
@@ -13,6 +14,7 @@ export interface CategoryFormValue {
 const CreateCategory = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [createCategory] = useAddCategoryMutation();
+  const navigate = useNavigate();
 
   const handleFileChange = (file: File | null) => {
     setSelectedFile(file);
@@ -36,6 +38,8 @@ const CreateCategory = () => {
         id: toastId,
         duration: 2000,
       });
+
+      navigate("/adminDashboard/manageCategory");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error("Failed to add category.");

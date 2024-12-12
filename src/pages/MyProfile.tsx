@@ -20,7 +20,7 @@ const MyProfile = () => {
           {/* Profile Image */}
           <div className="flex-shrink-0">
             <img
-              className="w-36 h-36 rounded-full border-2 border-blue-500"
+              className="w-40 h-40"
               src={data?.data?.image || "/default-profile.png"}
               alt="Profile"
             />

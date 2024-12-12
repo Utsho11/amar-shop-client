@@ -11,13 +11,13 @@ interface Column<T> {
 }
 
 interface ASTableProps<T> {
-  columns: Column<T>[]; // Array of column definitions
-  data: T[]; // Array of data objects
-  isLoading?: boolean; // Optional loading state
-  onDelete: (id: string) => void; // Callback for delete action
-  onEdit: (id: string) => void; // Callback for edit action
-  onView: (id: string) => void; // Callback for view action
-  onDuplicate: (id: string) => void; // Callback for duplicate action
+  columns: Column<T>[];
+  data: T[];
+  isLoading?: boolean;
+  onDelete: (id: string) => void;
+  onEdit: (id: string) => void;
+  onView: (id: string) => void;
+  onDuplicate: (id: string) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,7 +33,7 @@ const ASTable = <T extends Record<string, any>>({
   console.log(data);
 
   return (
-    <div className="overflow-scroll w-full">
+    <div className="overflow-y-auto max-h-96">
       <table className="table w-full">
         {/* ASTable Header */}
         <thead>
@@ -61,7 +61,7 @@ const ASTable = <T extends Record<string, any>>({
                 <tr key={rowIndex}>
                   {columns.map((col) => (
                     <td key={`${rowIndex}-${col.key as string}`}>
-                      {col.key === "imageUrls" ? (
+                      {col.key === "imageUrl" ? (
                         <img
                           src={row[col.key] as string}
                           alt={`Image for ${id}`}

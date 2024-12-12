@@ -9,6 +9,7 @@ const extendedCategory = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["category"],
+
       transformResponse: (response: TResponseRedux<TCategory[]>) => {
         return {
           data: response.data,
@@ -26,10 +27,10 @@ const extendedCategory = baseApi.injectEndpoints({
 
     // Update an existing category
     updateCategory: builder.mutation({
-      query: ({ id, ...updatedCategory }) => ({
-        url: `category/${id}`,
+      query: (data) => ({
+        url: `admin/edit-category`,
         method: "PATCH",
-        body: updatedCategory,
+        body: data,
       }),
       invalidatesTags: ["category"],
     }),
@@ -37,7 +38,7 @@ const extendedCategory = baseApi.injectEndpoints({
     // Delete a category
     deleteCategory: builder.mutation({
       query: (id: string) => ({
-        url: `category/${id}`,
+        url: `admin/delete-category/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["category"],

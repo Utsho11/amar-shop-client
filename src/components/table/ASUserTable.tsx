@@ -68,30 +68,36 @@ const ASUserTable = <T extends Record<string, any>>({
                     </td>
                   ))}
                   <td className="space-x-2">
-                    {row.status === "ACTIVE" ? (
-                      <button
-                        onClick={() => onSuspend(id)}
-                        title="Suspend User"
-                      >
-                        <BanIcon size={16} />
-                      </button>
+                    {row.isDeleted === true ? (
+                      <span className="badge badge-error badge-outline">
+                        deleted
+                      </span>
                     ) : (
-                      <button
-                        onClick={() => onSuspend(id)}
-                        title="Activate User"
-                      >
-                        <TickIcon size={16} />
-                      </button>
+                      <span className="space-x-2">
+                        {row.status === "ACTIVE" ? (
+                          <button
+                            onClick={() => onSuspend(id)}
+                            title="Suspend User"
+                          >
+                            <BanIcon size={16} />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => onSuspend(id)}
+                            title="Activate User"
+                          >
+                            <TickIcon size={16} />
+                          </button>
+                        )}
+
+                        <button
+                          onClick={() => onDelete(id)}
+                          title="Delete User"
+                        >
+                          <ThrashIcon size={16} />
+                        </button>
+                      </span>
                     )}
-                    <button onClick={() => onDelete(id)} title="Delete User">
-                      {row.isDeleted === true ? (
-                        <span className="badge badge-error badge-outline">
-                          deleted
-                        </span>
-                      ) : (
-                        <ThrashIcon size={16} />
-                      )}
-                    </button>
                   </td>
                 </tr>
               );

@@ -22,8 +22,6 @@ const Navbar = () => {
   // Get user details (optional, to show updated avatar)
   const { data, isFetching, refetch } = useGetMeQuery(null, { skip: !token });
 
-  console.log(data?.data?.image);
-
   // Trigger a refetch when the token changes
   useEffect(() => {
     if (token) {
@@ -44,7 +42,7 @@ const Navbar = () => {
 
   return (
     <div className="mb-3">
-      <div className="navbar bg-base-100 shadow-md">
+      <div className="navbar bg-base-100">
         {/* Dropdown for small screens */}
         <div className="flex md:hidden">
           <DropdownSideBar toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />

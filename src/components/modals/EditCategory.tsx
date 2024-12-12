@@ -1,42 +1,39 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
-import { TProduct } from "../../types";
 import ASFileInput from "../form/ASFileInput";
 import ASForm from "../form/ASForm";
 import ASInput from "../form/ASInput";
 import ASTextarea from "../form/ASTextarea";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
+import { TCategory } from "../../types";
 
-interface EditProductModalProps {
-  product: TProduct;
+interface EditCategoryModalProps {
+  category: TCategory;
   onClose: () => void;
   onSave: (updatedProduct: FormData) => void;
 }
 
-const EditProductModal = ({
-  product,
+const EditCategoryModal = ({
+  category,
   onClose,
   onSave,
-}: EditProductModalProps) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
+}: EditCategoryModalProps) => {
   const handleFileChange = (file: File | null) => {
     setSelectedFile(file);
   };
-  const handleSubmit = async (updatedProduct: FieldValues) => {
-    const toastId = toast.loading("Updating product...");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const handleSubmit = async (updatedData: FieldValues) => {
+    const toastId = toast.loading("Updating Category...");
     try {
       const formData = new FormData();
       if (selectedFile) {
         formData.append("file", selectedFile);
       }
-      const { shop, category, shopName, categoryName, ...rest } =
-        updatedProduct;
 
-      formData.append("data", JSON.stringify(rest));
+      formData.append("data", JSON.stringify(updatedData));
       await onSave(formData);
-      toast.success("Product updated successfully", {
+      toast.success("Category updated successfully", {
         id: toastId,
         duration: 2000,
       });
@@ -51,30 +48,12 @@ const EditProductModal = ({
   return (
     <div className="modal modal-open">
       <div className="modal-box">
-        <h2 className="text-center ">Edit Product</h2>
-        <ASForm<TProduct> onSubmit={handleSubmit} defaultValues={product}>
+        <h2 className="text-center ">Edit Category</h2>
+        <ASForm<TCategory> onSubmit={handleSubmit} defaultValues={category}>
           <ASInput
             name="name"
             label="Product Name"
             placeholder="Enter product name"
-          />
-          <ASInput
-            name="price"
-            label="Price"
-            type="number"
-            placeholder="Enter product price"
-          />
-          <ASInput
-            name="inventoryCount"
-            label="Inventory Count"
-            type="number"
-            placeholder="Enter inventory count"
-          />
-          <ASInput
-            name="discount"
-            label="Discount"
-            type="number"
-            placeholder="Enter discount percentage"
           />
           <ASTextarea
             name="description"
@@ -101,4 +80,4 @@ const EditProductModal = ({
   );
 };
 
-export default EditProductModal;
+export default EditCategoryModal;

@@ -19,20 +19,15 @@ const ManageUser = () => {
   const [deleteUser] = useDeleteUserMutation();
 
   const columns: Column<TUsers>[] = [
-    { key: "id", label: "ID" },
-    { key: "email", label: "Name" },
+    { key: "email", label: "User Email" },
     { key: "status", label: "Status" },
     { key: "role", label: "Role" },
   ];
 
-  console.log(data?.data);
-
   const toggleSuspend = (id: string) => {
-    console.log(id);
     suspenUser(id);
   };
   const handleDelete = (id: string) => {
-    console.log(id);
     deleteUser(id);
   };
 

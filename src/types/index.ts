@@ -65,20 +65,27 @@ export type TUserPath = {
   children?: TUserPath[];
 };
 
-export type TProduct = {
-  id?: string;
-  shopId?: string;
-  name?: string;
-  description?: string;
-  price?: string;
-  categoryId?: string;
-  discount?: string;
-  inventoryCount?: number;
-  imageUrls?: string[];
-  isDeleted?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
-};
+export interface TProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  discount: string;
+  inventoryCount: string;
+  imageUrl: string;
+  shopName?: string;
+  categoryName?: string;
+  shop?: TProductShop;
+  category?: TProductCategory;
+}
+
+export interface TProductShop {
+  name: string;
+}
+
+export interface TProductCategory {
+  name: string;
+}
 
 export type TUsers = {
   id: string;

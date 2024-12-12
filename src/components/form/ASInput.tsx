@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 
 interface ASInputProps {
   name: string;
-  label: string;
+  label?: string;
   type?: string;
   placeholder?: string;
 }
@@ -28,7 +28,7 @@ const ASInput: React.FC<ASInputProps> = ({
         {...register(name, { required: `${label} is required` })}
         type={type}
         placeholder={placeholder}
-        className="input input-bordered w-full"
+        className="input input-bordered w-full input-sm"
       />
       {errors[name] && (
         <span className="text-red-500 text-sm">

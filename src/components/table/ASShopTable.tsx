@@ -1,26 +1,24 @@
-import { EditIcon, ThrashIcon } from "../icons/icon";
+import { BanIcon, TickIcon } from "../icons/icon";
 
 interface Column<T> {
   key: keyof T;
   label: string;
 }
 
-interface ASCategoryTableProps<T> {
+interface ASShopTableProps<T> {
   columns: Column<T>[];
   data: T[];
   isLoading?: boolean;
-  onDelete: (id: string) => void;
-  onEdit: (id: string) => void;
+  onBlock: (id: string) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ASCategoryTable = <T extends Record<string, any>>({
+const ASShopTable = <T extends Record<string, any>>({
   columns,
   data,
   isLoading = false,
-  onDelete,
-  onEdit,
-}: ASCategoryTableProps<T>) => {
+  onBlock,
+}: ASShopTableProps<T>) => {
   return (
     <div className="w-full">
       <div className="overflow-y-auto max-h-96">
@@ -64,20 +62,15 @@ const ASCategoryTable = <T extends Record<string, any>>({
                         )}
                       </td>
                     ))}
-                    <td className="">
-                      {row.isDeleted === true ? (
-                        <span className="text-center badge badge-error">
-                          deleted
-                        </span>
+                    <td className="text-center">
+                      {row.isBlacklisted === false ? (
+                        <button onClick={() => onBlock(id)} title="Block Shop">
+                          <BanIcon size={16} />
+                        </button>
                       ) : (
-                        <span className="space-x-2">
-                          <button onClick={() => onEdit(id)} title="Edit">
-                            <EditIcon size={16} />
-                          </button>
-                          <button onClick={() => onDelete(id)} title="Delete">
-                            <ThrashIcon size={16} />
-                          </button>
-                        </span>
+                        <button onClick={() => onBlock(id)} title="Active Shop">
+                          <TickIcon size={16} />
+                        </button>
                       )}
                     </td>
                   </tr>
@@ -97,4 +90,4 @@ const ASCategoryTable = <T extends Record<string, any>>({
   );
 };
 
-export default ASCategoryTable;
+export default ASShopTable;
