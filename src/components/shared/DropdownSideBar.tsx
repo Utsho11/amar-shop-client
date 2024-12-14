@@ -45,9 +45,9 @@ const DropdownSideBar: React.FC<DropdownSideBarProps> = ({
         }`}
       >
         <div className="flex flex-col">
-          <NavLink to="/shop" className="p-2 flex items-center gap-3">
+          <NavLink to="/products" className="p-2 flex items-center gap-3">
             <ShopIcon size={16} />
-            Shop
+            All Products
           </NavLink>
           <NavLink to="/about" className="p-2 flex items-center gap-3">
             <AboutIcon size={16} />

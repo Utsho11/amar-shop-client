@@ -5,7 +5,7 @@ const MainLayout = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white shadow-md">
+      <header className="sticky top-0 z-50 shadow-md">
         <Navbar />
       </header>
 

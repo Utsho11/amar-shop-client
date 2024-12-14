@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, Logo, MoonIcon, SunIcon } from "../icons/icon";
-import { NavLink } from "react-router-dom";
+import { CartIcon, Logo, MoonIcon, SunIcon } from "../icons/icon";
+import { NavLink, useNavigate } from "react-router-dom";
 import DropdownSideBar from "./DropdownSideBar";
 import { useTheme } from "../../context/ThemeContext";
 import {
@@ -11,6 +11,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { toast } from "sonner";
 import { useGetMeQuery } from "../../redux/services/authApi";
+import { clearCart } from "../../redux/features/cartSlice";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -18,6 +19,7 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const token = useAppSelector(useCurrentToken);
   const user = useAppSelector(selectCurrentUser);
+  const navigate = useNavigate();
 
   // Get user details (optional, to show updated avatar)
   const { data, isFetching, refetch } = useGetMeQuery(null, { skip: !token });
@@ -34,14 +36,16 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
+    dispatch(clearCart());
     dispatch(logout());
     toast.success("Logged out");
+    navigate("/");
   };
 
   if (isFetching) return <p>Loading...</p>;
 
   return (
-    <div className="mb-3">
+    <div className="">
       <div className="navbar bg-base-100">
         {/* Dropdown for small screens */}
         <div className="flex md:hidden">
@@ -58,30 +62,9 @@ const Navbar = () => {
 
         {/* Links (visible on medium screens and above) */}
         <div className="hidden md:flex md:flex-1 gap-4">
-          <NavLink to="/shop" className="font-semibold">
-            Shop
+          <NavLink to="/products" className="font-semibold">
+            All Products
           </NavLink>
-          <div className="dropdown">
-            <div
-              tabIndex={0}
-              role="button"
-              className="font-semibold m-1 flex items-center"
-            >
-              Categories
-              <ChevronDown size={16} />
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-            >
-              <li>
-                <a>Item 1</a>
-              </li>
-              <li>
-                <a>Item 2</a>
-              </li>
-            </ul>
-          </div>
           <NavLink to="/about" className="font-semibold">
             About us
           </NavLink>
@@ -92,13 +75,20 @@ const Navbar = () => {
 
         {/* Theme Toggle and Profile Dropdown */}
         <div className="flex items-center gap-4">
-          <div>
+          <div className="space-x-3">
             <button onClick={toggleTheme}>
               {theme === "light" ? (
                 <MoonIcon size={16} />
               ) : (
                 <SunIcon size={16} />
               )}
+            </button>
+            <button
+              onClick={() => {
+                navigate("/cart");
+              }}
+            >
+              <CartIcon size={16} />
             </button>
           </div>
           {user ? (

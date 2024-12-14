@@ -80,6 +80,7 @@ export interface TProduct {
 }
 
 export interface TProductShop {
+  id: string;
   name: string;
 }
 

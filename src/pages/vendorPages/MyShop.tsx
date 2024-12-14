@@ -9,6 +9,7 @@ import CreateShopPage from "./CreateShopPage";
 import EditShop from "../../components/modals/EditShop";
 import { toast } from "sonner";
 import { FieldValues } from "react-hook-form";
+import Loading from "../../components/shared/Loading";
 
 const MyShop = () => {
   const { data: shop, isLoading, isError } = useGetMyShopQuery(null);
@@ -18,7 +19,7 @@ const MyShop = () => {
   console.log(shop);
 
   if (isLoading) {
-    return <div className="loading-spinner loading-lg">Loading...</div>; // Handle loading state
+    return <Loading />;
   }
 
   if (isError || !shop) {

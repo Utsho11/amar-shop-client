@@ -1,5 +1,6 @@
 import MyProfile from "../pages/MyProfile";
 import AddProduct from "../pages/vendorPages/AddProduct";
+import CreateShopPage from "../pages/vendorPages/CreateShopPage";
 import ManageProduct from "../pages/vendorPages/ManageProduct";
 import MyShop from "../pages/vendorPages/MyShop";
 
@@ -19,5 +20,9 @@ export const vendorPaths = [
   {
     path: "addProduct",
     element: <AddProduct />,
+  },
+  {
+    path: "createShop",
+    element: <CreateShopPage />,
   },
 ];

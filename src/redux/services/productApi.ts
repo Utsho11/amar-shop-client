@@ -22,8 +22,24 @@ const extendedProduct = baseApi.injectEndpoints({
           method: "GET",
         };
       },
+      keepUnusedDataFor: 0,
       providesTags: ["product"],
       transformResponse: (response: TResponseRedux<PaginatedProducts>) => {
+        return {
+          data: response?.data,
+        };
+      },
+    }),
+
+    //get single product
+    getSingleProduct: builder.query({
+      query: (id: string) => ({
+        url: `product/${id}`,
+        method: "GET",
+      }),
+      keepUnusedDataFor: 0,
+      providesTags: ["product"],
+      transformResponse: (response: TResponseRedux<TProduct>) => {
         return {
           data: response?.data,
         };
@@ -77,4 +93,5 @@ export const {
   useDeleteProductMutation,
   useDuplicateProductMutation,
   useEditProductMutation,
+  useGetSingleProductQuery,
 } = extendedProduct;

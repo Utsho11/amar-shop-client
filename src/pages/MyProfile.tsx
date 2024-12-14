@@ -1,10 +1,11 @@
+import Loading from "../components/shared/Loading";
 import { useGetMeQuery } from "../redux/services/authApi";
 
 const MyProfile = () => {
   const { data, isLoading } = useGetMeQuery(null);
 
   if (isLoading) {
-    return <div className="loading loading-spinner">Loading...</div>;
+    return <Loading />;
   }
 
   return (

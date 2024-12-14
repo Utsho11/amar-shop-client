@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { NavLink } from "react-router-dom";
 import { FieldValues } from "react-hook-form";
 import { useGetProductsByVendorQuery } from "../../redux/services/vendorApi";
+import Loading from "../../components/shared/Loading";
 
 type TProduct = {
   id: string;
@@ -38,7 +39,7 @@ const ManageProduct = () => {
   const [editProduct] = useEditProductMutation();
 
   if (isLoading) {
-    return <div className="loading loading-spinner">Loading...</div>;
+    return <Loading />;
   }
 
   const flatProducts = data?.data?.map((product) => ({

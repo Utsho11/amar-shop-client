@@ -7,7 +7,6 @@ import AboutPage from "../pages/AboutPage";
 import LoginPage from "../pages/LoginPage";
 import Auth from "../Auth";
 import RegistrationPage from "../pages/RegistrationPage";
-import CreateShopPage from "../pages/vendorPages/CreateShopPage";
 import AdminDashboardLayout from "../layouts/Dashboard/AdminDashboardLayout";
 import CustomerDashboardLayout from "../layouts/Dashboard/CustomerDashboardLayout";
 import VendorDashboardLayout from "../layouts/Dashboard/VendorDashboardLayout";
@@ -16,6 +15,10 @@ import { vendorPaths } from "./vendor.routes";
 import { adminPaths } from "./admin.routes";
 import { customerPaths } from "./customer.routes";
 import ProtectedRoute from "./ProtectedRoute";
+import ProductPage from "../pages/ProductPage";
+import ProductDetailsPage from "../pages/ProductDetailsPage";
+import CartPage from "../pages/CartPage";
+import CheckoutPage from "../pages/CheckoutPage";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +34,14 @@ const router = createBrowserRouter([
         element: <ShopPage />,
       },
       {
+        path: "products",
+        element: <ProductPage />,
+      },
+      {
+        path: "products/:id",
+        element: <ProductDetailsPage />,
+      },
+      {
         path: "contact",
         element: <ContactPage />,
       },
@@ -39,8 +50,12 @@ const router = createBrowserRouter([
         element: <AboutPage />,
       },
       {
-        path: "createShop",
-        element: <CreateShopPage />,
+        path: "cart",
+        element: <CartPage />,
+      },
+      {
+        path: "checkout",
+        element: <CheckoutPage />,
       },
     ],
   },

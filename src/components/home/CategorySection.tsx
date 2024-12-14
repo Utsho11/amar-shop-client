@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useGetCategoriesQuery } from "../../redux/services/categoryApi";
 
@@ -32,7 +33,13 @@ const CategorySection = () => {
                 theme === "dark" ? "text-white" : "text-gray-700"
               } hover:text-primary transition-colors`}
             >
-              {category.name}
+              <Link
+                to={`/products?category=${encodeURIComponent(category.name)}`}
+                className="text-blue-500 hover:underline"
+              >
+                {category.name}
+              </Link>
+              {/* {category.name} */}
             </h2>
           </div>
         ))}
