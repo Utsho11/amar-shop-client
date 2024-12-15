@@ -9,7 +9,6 @@ const extendedCategory = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["category"],
-      keepUnusedDataFor: 0,
 
       transformResponse: (response: TResponseRedux<TCategory[]>) => {
         return {

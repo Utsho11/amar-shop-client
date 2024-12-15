@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import banner from "../../../assets/banner-1.avif";
 import { ShopIcon } from "../../icons/icon";
 const Banner1 = () => {
@@ -18,9 +19,11 @@ const Banner1 = () => {
             Discover the best deals on your favorite products. Shop now and
             enjoy unbeatable discounts and premium quality!
           </p>
-          <button className="btn bg-[#ffb703] text-white text-lg font-bold hover:text-black hover:bg-transparent">
-            <ShopIcon /> Start Shopping
-          </button>
+          <Link to="/products">
+            <button className="btn bg-[#ffb703] text-white text-lg font-bold hover:text-black hover:bg-transparent">
+              <ShopIcon /> Start Shopping
+            </button>
+          </Link>
         </div>
       </div>
     </div>

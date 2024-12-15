@@ -27,7 +27,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
 
   const { data: categories } = useGetCategoriesQuery(null);
   const category = categories?.data || [];
-  const [searchParams] = useSearchParams(); // Get the search parameters
+  const [searchParams] = useSearchParams();
 
   const categoryParams = searchParams.get("category") || cateParam || null;
 
@@ -54,8 +54,8 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
   }, [data, categoryParams]);
 
   useEffect(() => {
-    setPage(1); // Reset page to 1 when filters change
-    setProductList([]); // Clear previous products
+    setPage(1);
+    setProductList([]);
   }, [selectedCategory, priceSort]);
 
   const loadMoreProducts = () => {
