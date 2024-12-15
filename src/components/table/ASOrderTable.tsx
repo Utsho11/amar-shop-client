@@ -1,29 +1,25 @@
-import { EditIcon, ThrashIcon } from "../icons/icon";
-
 interface Column<T> {
   key: keyof T;
   label: string;
 }
 
-interface ASCategoryTableProps<T> {
+interface ASOrderTableProps<T> {
   columns: Column<T>[];
   data: T[];
   isLoading?: boolean;
-  onDelete: (id: string) => void;
-  onEdit: (id: string) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const ASCategoryTable = <T extends Record<string, any>>({
+const ASOrderTable = <T extends Record<string, any>>({
   columns,
   data,
   isLoading = false,
-  onDelete,
-  onEdit,
-}: ASCategoryTableProps<T>) => {
+}: ASOrderTableProps<T>) => {
+  console.log("data:", data);
+
   return (
     <div className="w-full">
-      <div className=" max-h-96">
+      <div className="overflow-y-auto max-h-96">
         <table className="table w-full">
           <thead>
             <tr>
@@ -32,7 +28,6 @@ const ASCategoryTable = <T extends Record<string, any>>({
                   {col.label}
                 </th>
               ))}
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -44,15 +39,13 @@ const ASCategoryTable = <T extends Record<string, any>>({
               </tr>
             ) : data.length > 0 ? (
               data.map((row, rowIndex) => {
-                const id = row.id as string;
                 return (
                   <tr key={rowIndex}>
                     {columns.map((col) => (
                       <td key={`${rowIndex}-${col.key as string}`}>
-                        {col.key === "logoUrl" ? (
+                        {col.key === "productImage" ? (
                           <img
                             src={row[col.key] as string}
-                            alt={`Image for ${id}`}
                             style={{
                               width: "50px",
                               height: "50px",
@@ -64,22 +57,6 @@ const ASCategoryTable = <T extends Record<string, any>>({
                         )}
                       </td>
                     ))}
-                    <td className="">
-                      {row.isDeleted === true ? (
-                        <span className="text-center badge badge-error">
-                          deleted
-                        </span>
-                      ) : (
-                        <span className="space-x-2">
-                          <button onClick={() => onEdit(id)} title="Edit">
-                            <EditIcon size={16} />
-                          </button>
-                          <button onClick={() => onDelete(id)} title="Delete">
-                            <ThrashIcon size={16} />
-                          </button>
-                        </span>
-                      )}
-                    </td>
                   </tr>
                 );
               })
@@ -97,4 +74,4 @@ const ASCategoryTable = <T extends Record<string, any>>({
   );
 };
 
-export default ASCategoryTable;
+export default ASOrderTable;

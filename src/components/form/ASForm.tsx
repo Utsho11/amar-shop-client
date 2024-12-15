@@ -26,10 +26,18 @@ const ASForm = <T extends FieldValues>({
     defaultValues: defaultValues as DefaultValues<T>,
   });
 
+  const handleSubmitAndReset = async (data: T) => {
+    // Call the onSubmit handler
+    await onSubmit(data);
+
+    // Reset the form after submission
+    methods.reset();
+  };
+
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={methods.handleSubmit(onSubmit)}
+        onSubmit={methods.handleSubmit(handleSubmitAndReset)}
         className={`space-y-4 ${className}`}
       >
         {children}

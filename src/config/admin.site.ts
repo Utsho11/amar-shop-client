@@ -16,6 +16,14 @@ export const adminSideLink = [
     path: "manageShop",
   },
   {
+    label: "View Transactions",
+    path: "viewTransaction",
+  },
+  {
+    label: "Create Coupon",
+    path: "createCoupon",
+  },
+  {
     label: "Back to Home",
     path: "/",
   },

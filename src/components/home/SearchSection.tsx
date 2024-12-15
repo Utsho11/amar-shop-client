@@ -4,10 +4,12 @@ import ASInput from "../form/ASInput";
 import { useState } from "react";
 import { useGetProductsQuery } from "../../redux/services/productApi";
 import { useTheme } from "../../context/ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 const SearchSection = () => {
   const [keyword, setKeyword] = useState<string>("");
   const { theme } = useTheme();
+  const navigate = useNavigate();
 
   const { data, isFetching } = useGetProductsQuery({
     keyword,
@@ -16,6 +18,10 @@ const SearchSection = () => {
   const onSubmit = async (data: FieldValues) => {
     const keyword = data.keyword;
     setKeyword(keyword);
+  };
+
+  const handleProductClick = (id: string) => {
+    navigate(`/products/${id}`);
   };
 
   return (
@@ -41,6 +47,7 @@ const SearchSection = () => {
             {data?.data?.products?.map((product) => (
               <div
                 key={product.id}
+                onClick={() => handleProductClick(product.id)}
                 className={`flex flex-col items-start ${
                   theme === "dark"
                     ? "bg-slate-700 hover:bg-slate-500"

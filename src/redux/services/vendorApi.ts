@@ -1,4 +1,4 @@
-import { TProduct, TResponseRedux } from "../../types";
+import { TOrderHistory, TProduct, TResponseRedux } from "../../types";
 import { baseApi } from "../api/baseApi";
 
 const vendorApi = baseApi.injectEndpoints({
@@ -17,7 +17,21 @@ const vendorApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getOrderHistoryForVendor: builder.query({
+      query: () => ({
+        url: "vendor/order-history",
+        method: "GET",
+      }),
+      providesTags: ["order"],
+      keepUnusedDataFor: 0,
+      transformResponse: (response: TResponseRedux<TOrderHistory[]>) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useGetProductsByVendorQuery } = vendorApi;
+export const { useGetProductsByVendorQuery, useGetOrderHistoryForVendorQuery } =
+  vendorApi;

@@ -1,8 +1,12 @@
 import { useState } from "react";
-import { useAppSelector } from "../hooks/hook";
-import { selectCurrentUser } from "../redux/features/auth/authSlice";
-import { useCreateOrderMutation } from "../redux/services/orderApi";
 import { toast } from "sonner";
+import { useCreateOrderMutation } from "../../redux/services/orderApi";
+import { useAppSelector } from "../../hooks/hook";
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import ASForm from "../../components/form/ASForm";
+import ASInput from "../../components/form/ASInput";
+import { FieldValues } from "react-hook-form";
+import { useCheckCouponMutation } from "../../redux/services/authApi";
 
 interface OrderItem {
   productId: string;
@@ -24,6 +28,8 @@ const CheckoutPage = () => {
   const user = useAppSelector(selectCurrentUser);
   const cartItems = useAppSelector((state) => state.cart.items);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const [checkCoupon] = useCheckCouponMutation();
+  const [discount, setDiscount] = useState<number | null>(null);
 
   const handleCheckout = async () => {
     if (!user || !user.email) {
@@ -31,13 +37,20 @@ const CheckoutPage = () => {
       return;
     }
 
+    // Calculate the total amount before discount
+    const totalAmount = cartItems.reduce(
+      (total, product) => total + parseFloat(product.price) * product.quantity,
+      0
+    );
+
+    // Apply discount if any
+    const finalAmount = discount
+      ? totalAmount - (totalAmount * discount) / 100
+      : totalAmount;
+
     const order = {
       customerEmail: user.email,
-      totalAmount: cartItems.reduce(
-        (total, product) =>
-          total + parseFloat(product.price) * product.quantity,
-        0
-      ),
+      totalAmount: finalAmount,
       paymentMethod: "AmarPay",
       OrderItem: {
         data: cartItems.map((product) => ({
@@ -49,9 +62,8 @@ const CheckoutPage = () => {
     };
 
     setOrderData(order);
-    const res = await createOrder(order).unwrap();
 
-    // console.log(res.data.data);
+    const res = await createOrder(order).unwrap();
 
     if (res) {
       window.location.href = res.data.payment_url;
@@ -60,14 +72,24 @@ const CheckoutPage = () => {
     }
   };
 
+  const handleSubmit = async (data: FieldValues) => {
+    console.log(data);
+    const result = await checkCoupon(data).unwrap();
+    console.log(result.data);
+
+    // Assuming the result contains the discount percentage
+    setDiscount(result.data); // Store the discount in the state
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Checkout</h1>
+      <div className="divider"></div>
 
       {cartItems.length === 0 ? (
         <p>Your cart is empty.</p>
       ) : (
-        <div className="bg-white p-6 rounded-lg">
+        <div className=" p-6 rounded-lg">
           <div className="mb-4">
             <h2 className="text-xl font-semibold">Order Summary</h2>
             {cartItems.map((product) => (
@@ -102,6 +124,30 @@ const CheckoutPage = () => {
                   )
                   .toFixed(2)}
             </p>
+          </div>
+
+          {/* Show the discount applied */}
+          {discount && (
+            <div className="flex justify-between items-center mt-2">
+              <h3 className="text-xl font-bold">Discount Applied:</h3>
+              <p className="text-xl">
+                - $
+                {(
+                  (discount / 100) *
+                  cartItems.reduce(
+                    (total, product) =>
+                      total + parseFloat(product.price) * product.quantity,
+                    0
+                  )
+                ).toFixed(2)}
+              </p>
+            </div>
+          )}
+
+          <div className="max-w-60">
+            <ASForm label="Apply code" onSubmit={handleSubmit}>
+              <ASInput label="Coupon Code" name="code" />
+            </ASForm>
           </div>
 
           <button

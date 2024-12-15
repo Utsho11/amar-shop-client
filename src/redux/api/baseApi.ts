@@ -3,7 +3,7 @@
 // export const baseApi = createApi({
 //   reducerPath: "baseApi",
 //   baseQuery: fetchBaseQuery({
-//     baseUrl: "http://localhost:5000/api",
+//     baseUrl: "https://amar-shop-server-alpha.vercel.app/api",
 //   }),
 //   tagTypes: ["category"],
 //   endpoints: () => ({}),
@@ -26,7 +26,7 @@ interface ErrorData {
 }
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:5000/api",
+  baseUrl: "https://amar-shop-server-alpha.vercel.app/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -62,10 +62,13 @@ const baseQueryWithRefreshToken: BaseQueryFn<
       //* Send Refresh
       console.log("Sending refresh token");
 
-      const res = await fetch("http://localhost:5000/api/auth/refresh-token", {
-        method: "POST",
-        credentials: "include",
-      });
+      const res = await fetch(
+        "https://amar-shop-server-alpha.vercel.app/api/auth/refresh-token",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
 
       const data = await res.json();
 
@@ -92,6 +95,14 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["category", "shop", "user", "product"],
+  tagTypes: [
+    "category",
+    "shop",
+    "user",
+    "product",
+    "review",
+    "order",
+    "follow",
+  ],
   endpoints: () => ({}),
 });

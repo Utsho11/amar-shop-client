@@ -2,7 +2,7 @@ import React from "react";
 import { useFormContext } from "react-hook-form";
 
 export type TOption = {
-  value: string;
+  value: string | number;
   label: string;
 };
 

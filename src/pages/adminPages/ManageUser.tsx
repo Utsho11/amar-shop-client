@@ -1,3 +1,5 @@
+import { useState } from "react";
+import ReactPaginate from "react-paginate";
 import ASUserTable from "../../components/table/ASUserTable";
 import {
   useDeleteUserMutation,
@@ -15,34 +17,69 @@ interface Column<T> {
 
 const ManageUser = () => {
   const { data } = useGetUsersQuery(null);
-  const [suspenUser] = useSuspendUserMutation();
+  const [suspendUser] = useSuspendUserMutation();
   const [deleteUser] = useDeleteUserMutation();
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 5; // Number of users per page
+
+  // Columns configuration
   const columns: Column<TUsers>[] = [
     { key: "email", label: "User Email" },
     { key: "status", label: "Status" },
     { key: "role", label: "Role" },
   ];
 
-  const toggleSuspend = (id: string) => {
-    suspenUser(id);
+  // Paginated data
+  const paginatedData = data?.data?.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+  const totalPages = Math.ceil((data?.data?.length || 0) / itemsPerPage);
+
+  const handlePageClick = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
   };
+
+  const toggleSuspend = (id: string) => {
+    suspendUser(id);
+  };
+
   const handleDelete = (id: string) => {
     deleteUser(id);
   };
 
   return (
-    <div className="">
-      <div className=""></div>
-      <div className="">
+    <div>
+      <div className="mb-4 text-right">
+        <h2 className="text-xl font-semibold">Manage Users</h2>
+      </div>
+      <div>
         <ASUserTable
           onSuspend={toggleSuspend}
           onDelete={handleDelete}
           columns={columns}
-          data={data?.data || []}
+          data={paginatedData || []}
           isLoading={false}
         />
       </div>
+      {/* Pagination Controls */}
+      <ReactPaginate
+        pageCount={totalPages}
+        onPageChange={handlePageClick}
+        containerClassName="flex justify-center items-center gap-2 mt-4"
+        pageClassName="px-4 py-2 border rounded hover:bg-gray-200"
+        activeClassName="bg-blue-500 text-white"
+        previousClassName={`px-4 py-2 border rounded ${
+          currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+        nextClassName={`px-4 py-2 border rounded ${
+          currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+        previousLabel="Previous"
+        nextLabel="Next"
+        disabledClassName="opacity-50 cursor-not-allowed"
+      />
     </div>
   );
 };

@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
-import ReactPaginate from "react-paginate";
+import { useGetTNXDetailsQuery } from "../../redux/services/userApi";
+import { TTNXHistory } from "../../types";
 import Loading from "../../components/shared/Loading";
 import ASOrderTable from "../../components/table/ASOrderTable";
-import { TOrderHistory } from "../../types";
-import { useGetOrderHistoryForCustomerQuery } from "../../redux/services/orderApi";
+import ReactPaginate from "react-paginate";
 
 interface Column<T> {
   key: keyof T;
@@ -15,29 +14,28 @@ interface Column<T> {
 
 const ITEMS_PER_PAGE = 5;
 
-const MyOrders = () => {
-  const [currentPage, setCurrentPage] = useState(0); // Track current page
-  const { data, isLoading } = useGetOrderHistoryForCustomerQuery(null);
+const ViewTransaction = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const { data, isLoading } = useGetTNXDetailsQuery(null);
 
   if (isLoading) {
     return <Loading />;
   }
+  console.log(data?.data);
 
-  // console.log(data?.data);
-
-  // Paginated Data
   const pageCount = Math.ceil((data?.data?.length || 0) / ITEMS_PER_PAGE);
   const paginatedOrderHistorys =
     data?.data?.slice(
       currentPage * ITEMS_PER_PAGE,
       (currentPage + 1) * ITEMS_PER_PAGE
     ) || [];
-  const columns: Column<TOrderHistory>[] = [
-    { key: "productImage", label: "Image" },
-    { key: "productName", label: "Name" },
-    { key: "quantity", label: "Quantity" },
-    { key: "productPrice", label: "Price per Item" },
-    { key: "transactionId", label: "TransactionId" },
+
+  const columns: Column<TTNXHistory>[] = [
+    { key: "orderId", label: "orderId" },
+    { key: "transactionId", label: "transactionId" },
+    { key: "amount", label: "amount" },
+    { key: "paymentStatus", label: "paymentStatus" },
   ];
 
   const handlePageClick = ({ selected }: { selected: number }) => {
@@ -46,7 +44,7 @@ const MyOrders = () => {
 
   return (
     <div>
-      <ASOrderTable<TOrderHistory>
+      <ASOrderTable<TTNXHistory>
         columns={columns}
         data={paginatedOrderHistorys || []}
         isLoading={false}
@@ -71,4 +69,4 @@ const MyOrders = () => {
   );
 };
 
-export default MyOrders;
+export default ViewTransaction;

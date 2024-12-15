@@ -1,3 +1,4 @@
+import { TResponseRedux, TTNXHistory } from "../../types";
 import { baseApi } from "../api/baseApi";
 
 const userApi = baseApi.injectEndpoints({
@@ -26,6 +27,20 @@ const userApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["user"],
     }),
+
+    getTNXDetails: builder.query({
+      query: () => ({
+        url: "admin/all-transactions",
+        method: "GET",
+      }),
+
+      keepUnusedDataFor: 0,
+      transformResponse: (response: TResponseRedux<TTNXHistory[]>) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
   }),
 });
 
@@ -33,4 +48,5 @@ export const {
   useGetUsersQuery,
   useSuspendUserMutation,
   useDeleteUserMutation,
+  useGetTNXDetailsQuery,
 } = userApi;

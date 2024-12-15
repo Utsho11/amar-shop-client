@@ -16,7 +16,7 @@ const MainLayout = () => {
 
       {/* Footer */}
       <footer className="bg-gray-100 py-4 text-center text-sm text-gray-600 mt-auto">
-        <p>© {new Date().getFullYear()} Your Company. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} AmarShop. All rights reserved.</p>
       </footer>
     </div>
   );

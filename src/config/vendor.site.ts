@@ -12,6 +12,10 @@ export const vendorSideLink = [
     path: "manageProducts",
   },
   {
+    label: "Order History",
+    path: "orderHistory",
+  },
+  {
     label: "Back to Home",
     path: "/",
   },

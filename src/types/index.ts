@@ -70,7 +70,7 @@ export interface TProduct {
   name: string;
   description: string;
   price: string;
-  discount: string;
+  discount: number;
   inventoryCount: string;
   imageUrl: string;
   shopName?: string;
@@ -99,3 +99,36 @@ export type TUsers = {
   createdAt: string;
   updatedAt: string;
 };
+
+export interface TOrderItem {
+  id: string;
+  productId: string;
+  product: IProduct;
+}
+
+export interface IProduct {
+  name: string;
+  imageUrl: string;
+}
+
+export interface TOrderHistory {
+  quantity: number;
+  productName: string;
+  productImage: string;
+  productPrice: string;
+  transactionId: string;
+}
+
+export interface TTNXHistory {
+  orderId: string;
+  transactionId: string;
+  amount: string;
+  paymentStatus: string;
+}
+
+export interface TReview {
+  rating: number;
+  comment: string;
+  username: string;
+  image: string;
+}

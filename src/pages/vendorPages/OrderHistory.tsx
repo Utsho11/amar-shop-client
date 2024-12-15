@@ -3,8 +3,8 @@ import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import Loading from "../../components/shared/Loading";
 import ASOrderTable from "../../components/table/ASOrderTable";
+import { useGetOrderHistoryForVendorQuery } from "../../redux/services/vendorApi";
 import { TOrderHistory } from "../../types";
-import { useGetOrderHistoryForCustomerQuery } from "../../redux/services/orderApi";
 
 interface Column<T> {
   key: keyof T;
@@ -15,9 +15,9 @@ interface Column<T> {
 
 const ITEMS_PER_PAGE = 5;
 
-const MyOrders = () => {
+const OrderHistory = () => {
   const [currentPage, setCurrentPage] = useState(0); // Track current page
-  const { data, isLoading } = useGetOrderHistoryForCustomerQuery(null);
+  const { data, isLoading } = useGetOrderHistoryForVendorQuery(null);
 
   if (isLoading) {
     return <Loading />;
@@ -71,4 +71,4 @@ const MyOrders = () => {
   );
 };
 
-export default MyOrders;
+export default OrderHistory;

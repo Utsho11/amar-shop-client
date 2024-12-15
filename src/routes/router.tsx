@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Homepage from "../pages/Homepage";
 import ShopPage from "../pages/ShopPage";
-import ContactPage from "../pages/ContactPage";
 import AboutPage from "../pages/AboutPage";
 import LoginPage from "../pages/LoginPage";
 import Auth from "../Auth";
@@ -17,8 +16,12 @@ import { customerPaths } from "./customer.routes";
 import ProtectedRoute from "./ProtectedRoute";
 import ProductPage from "../pages/ProductPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage";
-import CartPage from "../pages/CartPage";
-import CheckoutPage from "../pages/CheckoutPage";
+import ForgotPass from "../pages/ForgotPass";
+import ResetPass from "../pages/ResetPass";
+import CheckoutPage from "../pages/customerPages/CheckoutPage";
+import ChangePassword from "../pages/ChangePassword";
+import FlashSalePage from "../pages/FlashSalePage";
+import RecentProductPage from "../pages/RecentProductPage";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +33,7 @@ const router = createBrowserRouter([
         element: <Homepage />,
       },
       {
-        path: "shop",
+        path: "shop/:id",
         element: <ShopPage />,
       },
       {
@@ -42,20 +45,32 @@ const router = createBrowserRouter([
         element: <ProductDetailsPage />,
       },
       {
-        path: "contact",
-        element: <ContactPage />,
+        path: "/recent",
+        element: <RecentProductPage />,
       },
       {
         path: "about",
         element: <AboutPage />,
       },
       {
-        path: "cart",
-        element: <CartPage />,
-      },
-      {
         path: "checkout",
         element: <CheckoutPage />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPass />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPass />,
+      },
+      {
+        path: "change-password",
+        element: <ChangePassword />,
+      },
+      {
+        path: "flash-sale",
+        element: <FlashSalePage />,
       },
     ],
   },

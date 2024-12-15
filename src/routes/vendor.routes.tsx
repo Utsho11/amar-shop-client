@@ -3,6 +3,7 @@ import AddProduct from "../pages/vendorPages/AddProduct";
 import CreateShopPage from "../pages/vendorPages/CreateShopPage";
 import ManageProduct from "../pages/vendorPages/ManageProduct";
 import MyShop from "../pages/vendorPages/MyShop";
+import OrderHistory from "../pages/vendorPages/OrderHistory";
 
 export const vendorPaths = [
   {
@@ -24,5 +25,9 @@ export const vendorPaths = [
   {
     path: "createShop",
     element: <CreateShopPage />,
+  },
+  {
+    path: "orderHistory",
+    element: <OrderHistory />,
   },
 ];

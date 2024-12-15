@@ -20,6 +20,7 @@ const Navbar = () => {
   const token = useAppSelector(useCurrentToken);
   const user = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
+  const cartItems = useAppSelector((state) => state.cart.items);
 
   // Get user details (optional, to show updated avatar)
   const { data, isFetching, refetch } = useGetMeQuery(null, { skip: !token });
@@ -65,11 +66,11 @@ const Navbar = () => {
           <NavLink to="/products" className="font-semibold">
             All Products
           </NavLink>
+          <NavLink to="/recent" className="font-semibold">
+            Recently Viewed
+          </NavLink>
           <NavLink to="/about" className="font-semibold">
             About us
-          </NavLink>
-          <NavLink to="/contact" className="font-semibold">
-            Contact us
           </NavLink>
         </div>
 
@@ -84,11 +85,17 @@ const Navbar = () => {
               )}
             </button>
             <button
-              onClick={() => {
-                navigate("/cart");
-              }}
+              className="relative"
+              onClick={() => navigate("/customerDashboard/cart")}
             >
               <CartIcon size={16} />
+              <span
+                className={`${
+                  cartItems.length > 0 ? "" : "hidden"
+                } absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-xs font-bold text-white w-4 h-4 flex items-center justify-center rounded-full`}
+              >
+                {cartItems.length}
+              </span>
             </button>
           </div>
           {user ? (
@@ -141,6 +148,9 @@ const Navbar = () => {
                   </li>
                 )}
                 <li>
+                  <NavLink to="change-password">Change Password</NavLink>
+                </li>
+                <li>
                   <button onClick={handleLogout}>Logout</button>
                 </li>
               </ul>
@@ -152,7 +162,7 @@ const Navbar = () => {
                   theme === "dark" ? "text-white" : ""
                 } bg-[#e9c46a] btn-sm`}
               >
-                <NavLink to="auth/login">Login</NavLink>
+                <NavLink to="/auth/login">Login</NavLink>
               </button>
             </div>
           )}

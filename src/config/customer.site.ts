@@ -8,8 +8,12 @@ export const customerSideLink = [
     path: "cart",
   },
   {
-    label: "My Orders",
-    path: "orders",
+    label: "My Order",
+    path: "myOrder",
+  },
+  {
+    label: "To Review",
+    path: "toReview",
   },
   {
     label: "Back to Home",

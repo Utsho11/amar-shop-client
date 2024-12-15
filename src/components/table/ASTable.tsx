@@ -33,7 +33,7 @@ const ASTable = <T extends Record<string, any>>({
   console.log(data);
 
   return (
-    <div className="overflow-y-auto max-h-96">
+    <div className="max-h-96">
       <table className="table w-full">
         {/* ASTable Header */}
         <thead>

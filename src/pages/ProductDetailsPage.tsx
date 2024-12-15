@@ -1,26 +1,72 @@
-import { useParams } from "react-router-dom";
-import { useGetSingleProductQuery } from "../redux/services/productApi";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useGetReviewsSingleProductQuery,
+  useGetSingleProductQuery,
+} from "../redux/services/productApi";
 import Loading from "../components/shared/Loading";
 import { useTheme } from "../context/ThemeContext";
 import ProductSection from "../components/home/ProductSection";
 import { useDispatch } from "react-redux";
-import { addProduct } from "../redux/features/cartSlice";
+import { addProduct, clearCart } from "../redux/features/cartSlice";
+import ReviewSection from "../components/home/ReviewSection";
+import { TReview } from "../types";
+import { addRecentProduct } from "../redux/features/recentProductsSlice";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetSingleProductQuery(id as string);
+  const { data: reviews } = useGetReviewsSingleProductQuery(id as string);
   const { theme } = useTheme();
-  const dispatch = useDispatch(); // Hook to dispatch actions
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const product = data?.data;
+
+  // Move useEffect to ensure it's not called conditionally
+  useEffect(() => {
+    if (product) {
+      dispatch(
+        addRecentProduct({
+          id: product.id,
+          name: product.name,
+          price: Number(product.price),
+          imageUrl: product.imageUrl,
+          link: `/products/${product.id}`,
+        })
+      );
+    }
+  }, [product, dispatch]);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  const product = data?.data;
+  const reviewData: TReview[] = (reviews?.data || []) as TReview[];
+
+  const handleShop = () => {
+    navigate(`/shop/${product?.shop?.id}`);
+  };
 
   const handleAddToCart = () => {
-    if (product && product.shop) {
-      dispatch(addProduct(product));
+    try {
+      dispatch(addProduct(product!));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error.message === "DIFFERENT_VENDOR_DETECTED") {
+        if (
+          window.confirm(
+            "Your cart contains items from a different vendor. Do you want to replace the cart with this product?"
+          )
+        ) {
+          dispatch(clearCart());
+          dispatch(addProduct(product!));
+          alert("Cart replaced with the new product!");
+        } else {
+          alert("Product addition cancelled.");
+        }
+      }
     }
   };
 
@@ -43,7 +89,6 @@ const ProductDetailsPage = () => {
             alt={product?.name}
             className="col-span-3 min-w-full rounded-lg shadow-md"
           />
-
           <div className="col-span-4">
             <h1
               className={`text-3xl lg:text-5xl font-bold mb-4 ${
@@ -67,7 +112,13 @@ const ProductDetailsPage = () => {
                 {product?.category?.name}
               </p>
               <p>
-                <span className="font-medium">Shop:</span> {product?.shop?.name}
+                <span className="font-medium">Shop:</span>{" "}
+                <span
+                  onClick={handleShop}
+                  className="hover:text-blue-600 hover:underline cursor-pointer"
+                >
+                  {product?.shop?.name}
+                </span>
               </p>
             </div>
 
@@ -79,7 +130,7 @@ const ProductDetailsPage = () => {
               >
                 ${product?.price}
               </p>
-              {product?.discount && (
+              {product!.discount > 0 && (
                 <p className="text-sm text-red-500">
                   Discount: {product?.discount}%
                 </p>
@@ -101,6 +152,8 @@ const ProductDetailsPage = () => {
           </div>
         </div>
       </div>
+      <div className="divider"></div>
+      <ReviewSection reviews={reviewData} />
       <div className="divider"></div>
       <h1 className="text-start text-3xl font-semibold mb-8">
         Related Products

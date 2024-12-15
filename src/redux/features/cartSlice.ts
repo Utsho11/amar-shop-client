@@ -23,7 +23,7 @@ const cartSlice = createSlice({
       const product = action.payload;
 
       if (state.vendorId && state.vendorId !== product?.shop?.id) {
-        throw new Error("Different vendor detected");
+        throw new Error("DIFFERENT_VENDOR_DETECTED"); // Custom error identifier
       }
 
       if (!state.vendorId) state.vendorId = product?.shop?.id ?? null;

@@ -32,8 +32,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
 
   const location = useLocation();
 
-  console.log(location.pathname);
-
   useEffect(() => {
     if (categoryParams) {
       setSelectedCategory(categoryParams);
@@ -157,7 +155,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
                   <span className="text-xl font-semibold text-[#ed8f60]">
                     ${product.price}
                   </span>
-                  {product.discount && (
+                  {product.discount > 0 && (
                     <span className="ml-2 text-sm text-red-500">
                       -{product.discount}%
                     </span>

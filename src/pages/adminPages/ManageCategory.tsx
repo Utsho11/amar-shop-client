@@ -10,6 +10,7 @@ import { useState } from "react";
 import EditCategoryModal from "../../components/modals/EditCategory";
 import { toast } from "sonner";
 import { FieldValues } from "react-hook-form";
+import ReactPaginate from "react-paginate";
 
 interface Column<T> {
   key: keyof T;
@@ -32,9 +33,23 @@ const ManageCategory = () => {
     null
   );
 
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 5; // Number of items per page
+
+  // Calculate paginated data
+  const paginatedData = data?.data?.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+
+  const totalPages = Math.ceil((data?.data?.length || 0) / itemsPerPage);
+
+  const handlePageClick = ({ selected }: { selected: number }) => {
+    setCurrentPage(selected);
+  };
+
   const handleDelete = (id: string) => {
     const toastId = toast.loading("Deleting category...");
-
     deleteCategory(id);
     toast.success("Category deleted.", {
       id: toastId,
@@ -59,16 +74,16 @@ const ManageCategory = () => {
   };
 
   return (
-    <div className="">
+    <div>
       <div className="text-end my-8">
         <button className="btn btn-success btn-sm">
           <NavLink to="/adminDashboard/addCategory">+ADD CATEGORY</NavLink>
         </button>
       </div>
-      <div className="">
+      <div>
         <ASCategoryTable
           columns={columns}
-          data={data?.data || []}
+          data={paginatedData || []}
           isLoading={false}
           onDelete={handleDelete}
           onEdit={handleEdit}
@@ -81,6 +96,23 @@ const ManageCategory = () => {
           />
         )}
       </div>
+      {/* Pagination Controls */}
+      <ReactPaginate
+        pageCount={totalPages}
+        onPageChange={handlePageClick}
+        containerClassName="flex justify-center items-center gap-2 mt-4"
+        pageClassName="px-4 py-2 border rounded hover:bg-gray-200"
+        activeClassName="bg-blue-500 text-white"
+        previousClassName={`px-4 py-2 border rounded ${
+          currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+        nextClassName={`px-4 py-2 border rounded ${
+          currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+        previousLabel="Previous"
+        nextLabel="Next"
+        disabledClassName="opacity-50 cursor-not-allowed"
+      />
     </div>
   );
 };

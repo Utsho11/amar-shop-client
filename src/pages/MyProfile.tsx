@@ -10,7 +10,7 @@ const MyProfile = () => {
 
   return (
     <div className="flex justify-center items-center">
-      <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg">
+      <div className="w-full max-w-2xl shadow-lg rounded-lg">
         {/* Card Header */}
         <div className="bg-blue-500 text-white rounded-t-lg px-6 py-4">
           <h1 className="text-2xl font-bold text-center">My Profile</h1>
@@ -19,9 +19,9 @@ const MyProfile = () => {
         {/* Card Content */}
         <div className="flex flex-col md:flex-row items-center p-6 space-y-4 md:space-y-0 md:space-x-6">
           {/* Profile Image */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 rounded-lg">
             <img
-              className="w-40 h-40"
+              className="w-40 h-40 rounded-lg"
               src={data?.data?.image || "/default-profile.png"}
               alt="Profile"
             />
@@ -34,6 +34,9 @@ const MyProfile = () => {
             </p>
             <p className="text-lg font-semibold">
               Email: <span className="font-normal">{data?.data?.email}</span>
+            </p>
+            <p className="text-lg font-semibold">
+              Role: <span className="font-normal">{data?.data?.role}</span>
             </p>
             <p className="text-lg font-semibold">
               Phone Number:{" "}

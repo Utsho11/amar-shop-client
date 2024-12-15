@@ -49,6 +49,45 @@ const extendedShop = baseApi.injectEndpoints({
       // Invalidates the product cache to refetch updated data
       invalidatesTags: ["shop"],
     }),
+    getSingleShop: builder.query({
+      query: (id) => ({
+        url: `shop/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["shop"],
+    }),
+
+    getProductsBySingleShop: builder.query({
+      query: (id) => ({
+        url: `shop/products/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["shop"],
+    }),
+
+    getFollowers: builder.query({
+      query: (id: string) => ({
+        url: `shop/followers/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["follow"],
+    }),
+
+    followShop: builder.mutation({
+      query: (shopId: string) => ({
+        url: `shop/follow/${shopId}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["follow"],
+    }),
+
+    unfollowShop: builder.mutation({
+      query: (shopId: string) => ({
+        url: `shop/unfollow/${shopId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["follow"],
+    }),
   }),
 });
 
@@ -58,4 +97,9 @@ export const {
   useGetAllShopQuery,
   useBlockShopMutation,
   useEditShopMutation,
+  useGetSingleShopQuery,
+  useGetProductsBySingleShopQuery,
+  useGetFollowersQuery,
+  useFollowShopMutation,
+  useUnfollowShopMutation,
 } = extendedShop;

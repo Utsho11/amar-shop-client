@@ -1,5 +1,5 @@
 import { PaginatedProducts } from "../../components/home/ProductSection";
-import { TProduct, TResponseRedux } from "../../types";
+import { TProduct, TResponseRedux, TReview } from "../../types";
 import { baseApi } from "../api/baseApi";
 
 const extendedProduct = baseApi.injectEndpoints({
@@ -46,6 +46,20 @@ const extendedProduct = baseApi.injectEndpoints({
       },
     }),
 
+    getReviewsSingleProduct: builder.query({
+      query: (id: string) => ({
+        url: `product/review/${id}`,
+        method: "GET",
+      }),
+      keepUnusedDataFor: 0,
+      providesTags: ["product"],
+      transformResponse: (response: TResponseRedux<TReview>) => {
+        return {
+          data: response?.data,
+        };
+      },
+    }),
+
     // Delete Product
     deleteProduct: builder.mutation<void, string>({
       query: (id) => ({
@@ -84,6 +98,20 @@ const extendedProduct = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["product"],
     }),
+
+    getFlashSaleProducts: builder.query({
+      query: () => ({
+        url: `product/flashSaleProducts`,
+        method: "GET",
+      }),
+      providesTags: ["product"],
+
+      transformResponse: (response: TResponseRedux<TProduct[]>) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
   }),
 });
 
@@ -94,4 +122,6 @@ export const {
   useDuplicateProductMutation,
   useEditProductMutation,
   useGetSingleProductQuery,
+  useGetFlashSaleProductsQuery,
+  useGetReviewsSingleProductQuery,
 } = extendedProduct;
