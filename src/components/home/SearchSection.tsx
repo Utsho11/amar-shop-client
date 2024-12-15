@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useGetProductsQuery } from "../../redux/services/productApi";
 import { useTheme } from "../../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
+import Loading from "../shared/Loading";
 
 const SearchSection = () => {
   const [keyword, setKeyword] = useState<string>("");
@@ -23,6 +24,10 @@ const SearchSection = () => {
   const handleProductClick = (id: string) => {
     navigate(`/products/${id}`);
   };
+
+  if (isFetching) {
+    return <Loading />;
+  }
 
   return (
     <div className="py-10">

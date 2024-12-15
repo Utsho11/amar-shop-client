@@ -3,7 +3,7 @@
 // export const baseApi = createApi({
 //   reducerPath: "baseApi",
 //   baseQuery: fetchBaseQuery({
-//     baseUrl: "https://amar-shop-server-alpha.vercel.app/api",
+//     baseUrl: "https://amar-shop-server-one.vercel.app/api",
 //   }),
 //   tagTypes: ["category"],
 //   endpoints: () => ({}),
@@ -26,7 +26,7 @@ interface ErrorData {
 }
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://amar-shop-server-alpha.vercel.app/api",
+  baseUrl: "https://amar-shop-server-one.vercel.app/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -63,7 +63,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
       console.log("Sending refresh token");
 
       const res = await fetch(
-        "https://amar-shop-server-alpha.vercel.app/api/auth/refresh-token",
+        "https://amar-shop-server-one.vercel.app/api/auth/refresh-token",
         {
           method: "POST",
           credentials: "include",

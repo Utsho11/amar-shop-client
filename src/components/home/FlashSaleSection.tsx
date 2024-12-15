@@ -2,9 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useGetFlashSaleProductsQuery } from "../../redux/services/productApi";
 import Timer from "./Timer";
+import Loading from "../shared/Loading";
 
 const FlashSaleSection = () => {
-  const { data } = useGetFlashSaleProductsQuery(null);
+  const { data, isFetching } = useGetFlashSaleProductsQuery(null);
   const { theme } = useTheme();
   const navigate = useNavigate();
 
@@ -15,6 +16,10 @@ const FlashSaleSection = () => {
   const handleProductClick = (id: string) => {
     navigate(`/products/${id}`);
   };
+
+  if (isFetching) {
+    return <Loading />;
+  }
 
   return (
     <div className="">

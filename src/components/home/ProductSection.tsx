@@ -5,6 +5,7 @@ import { TProduct } from "../../types";
 import { useGetCategoriesQuery } from "../../redux/services/categoryApi";
 import { useTheme } from "../../context/ThemeContext";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import Loading from "../shared/Loading";
 
 export type PaginatedProducts = {
   products: TProduct[];
@@ -38,7 +39,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
     }
   }, [categoryParams]);
 
-  const { data, isFetching } = useGetProductsQuery({
+  const { data, isFetching, isLoading } = useGetProductsQuery({
     page,
     limit: 8,
     category: selectedCategory,
@@ -73,6 +74,10 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
   const handleProductClick = (id: string) => {
     navigate(`/products/${id}`);
   };
+
+  if (isFetching || isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="py-10">

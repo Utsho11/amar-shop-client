@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { toast } from "sonner";
 import { useGetMeQuery } from "../../redux/services/authApi";
 import { clearCart } from "../../redux/features/cartSlice";
+import Loading from "./Loading";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -42,8 +43,6 @@ const Navbar = () => {
     toast.success("Logged out");
     navigate("/");
   };
-
-  if (isFetching) return <p>Loading...</p>;
 
   return (
     <div className="">
@@ -105,12 +104,16 @@ const Navbar = () => {
                 role="button"
                 className="btn btn-ghost btn-circle avatar"
               >
-                <div className="w-10 rounded-full ring ring-offset-2">
-                  <img
-                    alt="User Avatar"
-                    src={data?.data?.image || "https://tinyurl.com/cwrva2uh"}
-                  />
-                </div>
+                {isFetching ? (
+                  <Loading />
+                ) : (
+                  <div className="w-10 rounded-full ring ring-offset-2">
+                    <img
+                      alt="User Avatar"
+                      src={data?.data?.image || "https://tinyurl.com/cwrva2uh"}
+                    />
+                  </div>
+                )}
               </div>
               <ul
                 tabIndex={0}

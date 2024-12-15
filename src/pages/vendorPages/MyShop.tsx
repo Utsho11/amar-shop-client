@@ -16,8 +16,6 @@ const MyShop = () => {
   const [editShop] = useEditShopMutation();
   const [selectedShopId, setSelectedShopId] = useState<string | null>(null);
 
-  console.log(shop);
-
   if (isLoading) {
     return <Loading />;
   }
@@ -53,11 +51,11 @@ const MyShop = () => {
             className="mx-auto mb-8 rounded border-2 border-blue-400"
           >
             <div className="hero-content flex-col lg:flex-row">
-              <div className="h-50 w-50">
+              <div className="">
                 <img
                   src={shop.logoUrl}
                   alt={shop.name}
-                  className="max-w-sm rounded-lg shadow-2xl"
+                  className="max-w-sm rounded-lg shadow-2xl h-50 w-50"
                 />
               </div>
               <div className="space-y-5">

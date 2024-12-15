@@ -105,6 +105,7 @@ const extendedProduct = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["product"],
+      keepUnusedDataFor: 0,
 
       transformResponse: (response: TResponseRedux<TProduct[]>) => {
         return {

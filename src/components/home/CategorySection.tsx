@@ -1,12 +1,17 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useGetCategoriesQuery } from "../../redux/services/categoryApi";
+import Loading from "../shared/Loading";
 
 const CategorySection = () => {
-  const { data } = useGetCategoriesQuery(null);
+  const { data, isFetching } = useGetCategoriesQuery(null);
   const { theme } = useTheme();
 
   const categories = data?.data || [];
+
+  if (isFetching) {
+    return <Loading />;
+  }
 
   return (
     <div className="py-10">
