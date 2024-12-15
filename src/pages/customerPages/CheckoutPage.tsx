@@ -73,9 +73,9 @@ const CheckoutPage = () => {
   };
 
   const handleSubmit = async (data: FieldValues) => {
-    console.log(data);
+    // console.log(data);
     const result = await checkCoupon(data).unwrap();
-    console.log(result.data);
+    // console.log(result.data);
 
     // Assuming the result contains the discount percentage
     setDiscount(result.data); // Store the discount in the state
@@ -146,6 +146,7 @@ const CheckoutPage = () => {
 
           <div className="max-w-60">
             <ASForm label="Apply code" onSubmit={handleSubmit}>
+              <span className="text-gray-500 text-sm">Apply NEWYEAR2025</span>
               <ASInput label="Coupon Code" name="code" />
             </ASForm>
           </div>

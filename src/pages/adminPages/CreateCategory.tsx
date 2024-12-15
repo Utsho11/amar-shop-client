@@ -22,7 +22,7 @@ const CreateCategory = () => {
 
   const onSubmit = async (data: CategoryFormValue) => {
     const toastId = toast.loading("Adding category...");
-    console.log(data);
+    // console.log(data);
     if (!selectedFile) {
       alert("Please select a file to upload.");
       return;

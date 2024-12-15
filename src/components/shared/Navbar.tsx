@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { CartIcon, Logo, MoonIcon, SunIcon } from "../icons/icon";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import DropdownSideBar from "./DropdownSideBar";
 import { useTheme } from "../../context/ThemeContext";
 import {
@@ -54,10 +54,10 @@ const Navbar = () => {
 
         {/* Logo and Shop Section */}
         <div className="flex-1 lg:flex-auto">
-          <NavLink to="/" className="flex border-none bg-transparent">
+          <Link to="/" className="flex border-none bg-transparent">
             <Logo />
             <p className="font-bold text-inherit">AmarShop</p>
-          </NavLink>
+          </Link>
         </div>
 
         {/* Links (visible on medium screens and above) */}

@@ -30,7 +30,7 @@ const ASTable = <T extends Record<string, any>>({
   onView,
   onDuplicate,
 }: ASTableProps<T>) => {
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="max-h-96">

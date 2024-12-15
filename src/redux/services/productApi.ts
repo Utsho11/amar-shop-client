@@ -23,6 +23,7 @@ const extendedProduct = baseApi.injectEndpoints({
         };
       },
       providesTags: ["product"],
+      keepUnusedDataFor: 0,
       transformResponse: (response: TResponseRedux<PaginatedProducts>) => {
         return {
           data: response?.data,

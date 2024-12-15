@@ -51,7 +51,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
       setProductList((prev = []) => [...prev, ...(data?.data?.products || [])]);
       setHasMore(data?.data?.hasMore);
     }
-  }, [data, categoryParams]);
+  }, [data, categoryParams, location.pathname]);
 
   useEffect(() => {
     setPage(1);
@@ -118,7 +118,9 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
       )}
 
       {isFetching && productList.length === 0 ? (
-        <div className="text-center">Loading...</div>
+        <div className="text-center">
+          <Loading />
+        </div>
       ) : (
         <InfiniteScroll
           dataLength={productList.length}

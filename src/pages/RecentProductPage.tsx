@@ -25,11 +25,17 @@ const RecentProductPage = () => {
           </div>
         ))}
       </div>
-      <div className="text-center my-8">
-        <Link to="/products" className="text-blue-600 hover:underline">
-          <button className="btn btn-sm btn-primary">View All Products</button>
-        </Link>
-      </div>
+      {recentProducts.length > 0 ? (
+        <div className="text-center my-8">
+          <Link to="/products" className="text-blue-600 hover:underline">
+            <button className="btn btn-sm btn-primary">
+              View All Products
+            </button>
+          </Link>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

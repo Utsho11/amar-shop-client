@@ -21,7 +21,7 @@ const ASUserTable = <T extends Record<string, any>>({
   onSuspend,
   onDelete,
 }: ASTableProps<T>) => {
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="overflow-scroll w-full">

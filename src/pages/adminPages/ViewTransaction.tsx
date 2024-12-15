@@ -22,7 +22,7 @@ const ViewTransaction = () => {
   if (isLoading) {
     return <Loading />;
   }
-  console.log(data?.data);
+  // console.log(data?.data);
 
   const pageCount = Math.ceil((data?.data?.length || 0) / ITEMS_PER_PAGE);
   const paginatedOrderHistorys =

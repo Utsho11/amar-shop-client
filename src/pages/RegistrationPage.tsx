@@ -74,7 +74,7 @@ const RegistrationPage = () => {
 
       const user = verifyToken(res.data.accessToken);
 
-      console.log(user.role);
+      // console.log(user.role);
 
       toast.success("Successfully Registered.", {
         id: toastId,

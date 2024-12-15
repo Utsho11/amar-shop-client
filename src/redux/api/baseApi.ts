@@ -60,7 +60,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     }
     if (result.error.status === 401) {
       //* Send Refresh
-      console.log("Sending refresh token");
+      // console.log("Sending refresh token");
 
       const res = await fetch(
         "https://amar-shop-server-one.vercel.app/api/auth/refresh-token",

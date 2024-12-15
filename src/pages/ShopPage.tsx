@@ -29,6 +29,9 @@ const ShopPage = () => {
   const user = useAppSelector(selectCurrentUser);
 
   const handleFollowShop = () => {
+    if (!user) {
+      navigate("/auth/login");
+    }
     followShop(id as string);
   };
 
@@ -36,7 +39,7 @@ const ShopPage = () => {
     unfollowShop(id as string);
   };
 
-  console.log(data?.data);
+  // console.log(data?.data);
 
   const isExistFollowShop = data?.data?.filter(
     (follow: TFollow) => follow.customerEmail === user?.email
@@ -48,8 +51,8 @@ const ShopPage = () => {
   const { theme } = useTheme();
 
   // console.log(data?.data);
-  console.log(products?.data);
-  console.log(id);
+  // console.log(products?.data);
+  // console.log(id);
 
   const handleProductClick = (id: string) => {
     navigate(`/products/${id}`);

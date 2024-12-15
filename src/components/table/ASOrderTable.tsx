@@ -15,7 +15,7 @@ const ASOrderTable = <T extends Record<string, any>>({
   data,
   isLoading = false,
 }: ASOrderTableProps<T>) => {
-  console.log("data:", data);
+  // console.log("data:", data);
 
   return (
     <div className="w-full">

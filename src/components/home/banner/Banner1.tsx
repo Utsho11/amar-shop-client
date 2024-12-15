@@ -19,7 +19,7 @@ const Banner1 = () => {
             Discover the best deals on your favorite products. Shop now and
             enjoy unbeatable discounts and premium quality!
           </p>
-          <Link to="/products">
+          <Link to="products">
             <button className="btn bg-[#ffb703] text-white text-lg font-bold hover:text-black hover:bg-transparent">
               <ShopIcon /> Start Shopping
             </button>
