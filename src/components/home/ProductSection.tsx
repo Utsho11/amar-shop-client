@@ -39,9 +39,9 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
     }
   }, [categoryParams]);
 
-  const { data, isFetching, isLoading } = useGetProductsQuery({
+  const { data, isFetching } = useGetProductsQuery({
     page,
-    limit: 8,
+    limit: 12,
     category: selectedCategory,
     sortByPrice: priceSort,
   });
@@ -74,10 +74,6 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
   const handleProductClick = (id: string) => {
     navigate(`/products/${id}`);
   };
-
-  if (isFetching || isLoading) {
-    return <Loading />;
-  }
 
   return (
     <div className="py-10">
@@ -126,7 +122,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ cateParam }) => {
           dataLength={productList.length}
           next={loadMoreProducts}
           hasMore={hasMore}
-          loader={<h4 className="text-center">Loading more products...</h4>}
+          loader={<Loading />}
           endMessage={
             <p className="text-center mt-4 text-gray-500">
               Nothing is available to display.
