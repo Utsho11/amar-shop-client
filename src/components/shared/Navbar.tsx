@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { useGetMeQuery } from "../../redux/services/authApi";
 import { clearCart } from "../../redux/features/cartSlice";
 import Loading from "./Loading";
+import { useGetCategoriesQuery } from "../../redux/services/categoryApi";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -25,6 +26,10 @@ const Navbar = () => {
 
   // Get user details (optional, to show updated avatar)
   const { data, isFetching, refetch } = useGetMeQuery(null, { skip: !token });
+
+  const { data: cate } = useGetCategoriesQuery(null);
+
+  const categories = cate?.data || [];
 
   // Trigger a refetch when the token changes
   useEffect(() => {
@@ -45,8 +50,8 @@ const Navbar = () => {
   };
 
   return (
-    <div className="">
-      <div className="navbar bg-base-100">
+    <div className="sm:mx-[12rem]">
+      <div className="navbar bg-base-100 ">
         {/* Dropdown for small screens */}
         <div className="flex md:hidden">
           <DropdownSideBar toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
@@ -65,6 +70,31 @@ const Navbar = () => {
           <NavLink to="/products" className="font-semibold">
             All Products
           </NavLink>
+          <div className="navbar-center hidden lg:flex">
+            <ul className="menu menu-horizontal px-1">
+              <li>
+                <details>
+                  <summary className="font-semibold text-base">
+                    Category
+                  </summary>
+                  <ul className="">
+                    {categories?.map((category, idx) => (
+                      <li key={idx}>
+                        <Link
+                          to={`/products?category=${encodeURIComponent(
+                            category.name
+                          )}`}
+                          className="font-semibold"
+                        >
+                          {category.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </li>
+            </ul>
+          </div>
           <NavLink to="/recent" className="font-semibold">
             Recently Viewed
           </NavLink>

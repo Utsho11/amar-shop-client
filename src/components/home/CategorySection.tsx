@@ -4,8 +4,8 @@ import { useGetCategoriesQuery } from "../../redux/services/categoryApi";
 import Loading from "../shared/Loading";
 
 const CategorySection = () => {
-  const { data, isFetching } = useGetCategoriesQuery(null);
   const { theme } = useTheme();
+  const { data, isFetching } = useGetCategoriesQuery(null);
 
   const categories = data?.data || [];
 

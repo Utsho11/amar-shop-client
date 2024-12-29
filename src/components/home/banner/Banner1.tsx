@@ -1,29 +1,31 @@
 import { Link } from "react-router-dom";
-import banner from "../../../assets/banner-1.avif";
+import banner from "../../../assets/shop.png";
 import { ShopIcon } from "../../icons/icon";
 const Banner1 = () => {
   return (
     <div
-      className="hero sm:min-h-full lg:min-h-screen"
+      className="hero sm:min-h-[calc(100vh-12rem)]"
       style={{
         backgroundImage: `url(${banner})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
       }}
     >
-      <div className="hero-overlay bg-opacity-40"></div>
+      <div className="hero-overlay bg-opacity-60"></div>
       <div className="hero-content text-neutral-content text-center">
-        <div className="max-w-lg text-gray-100">
-          <h1 className="mb-5 text-5xl font-bold">Welcome to Amar Shop</h1>
-          <p className="mb-5">
+        <div className="max-w-md sm:max-w-2xl text-gray-100 space-y-16">
+          <h1 className="mb-5 text-5xl sm:text-7xl font-bold">
+            Welcome to Amar Shop
+          </h1>
+          <p className="mb-5 text-xl sm:text-3xl">
             Discover the best deals on your favorite products. Shop now and
             enjoy unbeatable discounts and premium quality!
           </p>
-          <Link to="products">
-            <button className="btn bg-[#ffb703] text-white text-lg font-bold hover:text-black hover:bg-transparent">
-              <ShopIcon /> Start Shopping
-            </button>
-          </Link>
+          <div className="">
+            <Link to="products">
+              <button className="btn bg-[#ffb703] text-white text-lg font-bold hover:text-black hover:bg-[#ffbc03]">
+                <ShopIcon /> Start Shopping
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

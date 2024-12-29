@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useTheme } from "../context/ThemeContext";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useGetCategoriesQuery } from "../redux/services/categoryApi";
 import { useGetProductsQuery } from "../redux/services/productApi";
 import { TProduct } from "../types";
 import Loading from "../components/shared/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ProductCard from "../components/product/ProductCard";
 
 const ProductPage = () => {
   const [productList, setProductList] = useState<TProduct[]>([]);
@@ -13,8 +13,6 @@ const ProductPage = () => {
   const [hasMore, setHasMore] = useState<boolean>(true);
   const [selectedCategory, setSelectedCategory] = useState<string>(""); // For category filter
   const [priceSort, setPriceSort] = useState<string>("");
-  const { theme } = useTheme();
-  const navigate = useNavigate();
 
   const { data: categories } = useGetCategoriesQuery(null);
   const category = categories?.data || [];
@@ -60,10 +58,6 @@ const ProductPage = () => {
 
   const handlePriceSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setPriceSort(e.target.value);
-  };
-
-  const handleProductClick = (id: string) => {
-    navigate(`/products/${id}`);
   };
 
   if (isLoading) {
@@ -126,40 +120,7 @@ const ProductPage = () => {
         >
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {productList.map((product, index) => (
-              <div
-                onClick={() => handleProductClick(product.id)}
-                key={index}
-                className={`flex flex-col items-start ${
-                  theme === "dark"
-                    ? "bg-slate-700 hover:bg-slate-500"
-                    : "bg-white hover:bg-gray-200"
-                } p-4 rounded-md shadow-md hover:shadow-lg transition-shadow duration-300`}
-              >
-                <div className="w-full h-40 bg-gray-100 rounded-md overflow-hidden mb-3">
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <h2
-                  className={`text-lg font-medium ${
-                    theme === "dark" ? "text-zinc-200" : "text-gray-700"
-                  } mb-2 hover:text-primary transition-colors`}
-                >
-                  {product.name}
-                </h2>
-                <div className="text-gray-600 mb-1">
-                  <span className="text-xl font-semibold text-[#ed8f60]">
-                    ${product.price}
-                  </span>
-                  {product.discount > 0 && (
-                    <span className="ml-2 text-sm text-red-500">
-                      -{product.discount}%
-                    </span>
-                  )}
-                </div>
-              </div>
+              <ProductCard product={product} key={index} />
             ))}
           </div>
         </InfiniteScroll>

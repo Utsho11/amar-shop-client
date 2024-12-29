@@ -1,26 +1,38 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
+  useGetProductsQuery,
   useGetReviewsSingleProductQuery,
   useGetSingleProductQuery,
 } from "../redux/services/productApi";
 import Loading from "../components/shared/Loading";
 import { useTheme } from "../context/ThemeContext";
-import ProductSection from "../components/home/ProductSection";
 import { useDispatch } from "react-redux";
 import { addProduct, clearCart } from "../redux/features/cartSlice";
 import ReviewSection from "../components/home/ReviewSection";
 import { TReview } from "../types";
 import { addRecentProduct } from "../redux/features/recentProductsSlice";
+import StarRating from "../components/StarRating";
+import ProductCard from "../components/product/ProductCard";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading } = useGetSingleProductQuery(id as string);
   const { data: reviews } = useGetReviewsSingleProductQuery(id as string);
+  const category = data?.data?.category?.name;
+
+  console.log(category);
+
+  const { data: prod, isFetching } = useGetProductsQuery({
+    category: category,
+  });
+
   const { theme } = useTheme();
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
+
+  const products = prod?.data?.products || [];
 
   const product = data?.data;
 
@@ -44,6 +56,12 @@ const ProductDetailsPage = () => {
   }
 
   const reviewData: TReview[] = (reviews?.data || []) as TReview[];
+  const totalRating = reviewData.reduce(
+    (acc, review) => acc + review.rating,
+    0
+  );
+
+  const averageRating = totalRating / reviewData.length;
 
   const handleShop = () => {
     navigate(`/shop/${product?.shop?.id}`);
@@ -121,6 +139,14 @@ const ProductDetailsPage = () => {
                 </span>
               </p>
             </div>
+            <div className="my-4">
+              <p className="flex gap-3 items-center">
+                <span className="font-medium">Ratings:</span>{" "}
+                <span>
+                  <StarRating rating={averageRating} />
+                </span>
+              </p>
+            </div>
 
             <div className="mb-6">
               <p
@@ -159,7 +185,15 @@ const ProductDetailsPage = () => {
         Related Products
       </h1>
       <div className="">
-        <ProductSection cateParam={product?.category?.name || ""} />
+        {isFetching ? (
+          <Loading />
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.map((product, idx) => (
+              <ProductCard key={idx} product={product} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

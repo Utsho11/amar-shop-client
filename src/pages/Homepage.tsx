@@ -5,6 +5,7 @@ import CategorySection from "../components/home/CategorySection";
 import FlashSaleSection from "../components/home/FlashSaleSection";
 import ProductSection from "../components/home/ProductSection";
 import SearchSection from "../components/home/SearchSection";
+import ShopSection from "../components/home/ShopSection";
 
 const Homepage = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -35,6 +36,7 @@ const Homepage = () => {
       <Banner1 />
       <SearchSection />
       <CategorySection />
+      <ShopSection />
       <FlashSaleSection />
       <ProductSection />
 

@@ -22,6 +22,7 @@ type CreateProductFormValue = {
 
 const AddProduct = () => {
   const { data, isLoading } = useGetCategoriesQuery(null);
+  const navigate = useNavigate();
   const [addProduct] = useAddProductMutation();
 
   const options: TOption[] = [];
@@ -34,7 +35,6 @@ const AddProduct = () => {
   );
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const navigate = useNavigate();
 
   const handleFileChange = (file: File | null) => {
     setSelectedFile(file);
