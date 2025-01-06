@@ -23,7 +23,7 @@ const ASCategoryTable = <T extends Record<string, any>>({
 }: ASCategoryTableProps<T>) => {
   return (
     <div className="w-full">
-      <div className=" max-h-96">
+      <div className="overflow-scroll w-full max-h-96">
         <table className="table w-full">
           <thead>
             <tr>

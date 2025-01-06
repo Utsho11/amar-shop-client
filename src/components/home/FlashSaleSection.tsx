@@ -22,7 +22,7 @@ const FlashSaleSection = () => {
   }
 
   return (
-    <div className="">
+    <div className="my-10">
       <Timer />
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 my-8">
         {slicedProducts?.map((product, index) => (
@@ -67,7 +67,7 @@ const FlashSaleSection = () => {
           onClick={() => navigate("/flash-sale")}
           className="btn btn-sm btn-primary"
         >
-          Show all
+          Show more discount products
         </button>
       </div>
     </div>

@@ -13,7 +13,7 @@ const CreateCoupon = () => {
   };
 
   return (
-    <div className="">
+    <div className="sm:mx-12 my-16 mx-auto">
       <h1 className="text-3xl font-semibold text-center">Create Coupon</h1>
       <div className="">
         <ASForm label="Create coupon" onSubmit={handleSubmit}>

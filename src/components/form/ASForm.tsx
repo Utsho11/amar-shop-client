@@ -43,7 +43,7 @@ const ASForm = <T extends FieldValues>({
         {children}
         <button
           type="submit"
-          className={`btn btn-sm btn-primary ${label ? "" : "hidden"}`}
+          className={`btn btn-sm ${label ? "" : "hidden"} bg-[#e9c46a]`}
         >
           {label}
         </button>

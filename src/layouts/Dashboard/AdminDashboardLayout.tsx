@@ -27,13 +27,13 @@ const AdminDashboardLayout = () => {
           </ul>
         </div>
       </div>
-      <div className="drawer sm:hidden">
+      <div className="drawer sm:hidden z-10">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
           {/* Page content here */}
           <label
             htmlFor="my-drawer"
-            className="flex gap-3 drawer-button items-center fixed top-4 left-4 z-50"
+            className="flex gap-3 drawer-button items-center fixed top-4 left-4 z-10"
           >
             <svg
               className="fill-current"
@@ -69,7 +69,7 @@ const AdminDashboardLayout = () => {
         </div>
       </div>
 
-      <div className="col-span-10 mx-auto my-24">
+      <div className="col-span-10">
         <Outlet />
       </div>
     </div>

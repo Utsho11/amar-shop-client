@@ -25,7 +25,7 @@ const ASInput: React.FC<ASInputProps> = ({
         <span className="label-text">{label}</span>
       </label>
       <input
-        {...register(name, { required: `${label} is required` })}
+        {...register(name, { required: `field can not be empty!` })}
         type={type}
         placeholder={placeholder}
         className="input input-bordered w-full input-sm"

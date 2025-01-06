@@ -62,7 +62,7 @@ const ASShopTable = <T extends Record<string, any>>({
                         )}
                       </td>
                     ))}
-                    <td className="text-center">
+                    <td className="text-left">
                       {row.isBlacklisted === false ? (
                         <button onClick={() => onBlock(id)} title="Block Shop">
                           <BanIcon size={16} />

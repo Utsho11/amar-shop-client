@@ -9,7 +9,7 @@ const MyProfile = () => {
   }
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center sm:mx-12 my-16">
       <div className="w-full max-w-2xl shadow-lg rounded-lg">
         {/* Card Header */}
         <div className="bg-blue-500 text-white rounded-t-lg px-6 py-4">

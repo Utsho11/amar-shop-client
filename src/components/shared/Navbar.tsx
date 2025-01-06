@@ -58,7 +58,7 @@ const Navbar = () => {
         </div>
 
         {/* Logo and Shop Section */}
-        <div className="flex-1 lg:flex-auto">
+        <div className="flex-auto sm:flex">
           <Link to="/" className="flex border-none bg-transparent">
             <Logo />
             <p className="font-bold text-inherit">AmarShop</p>
@@ -66,7 +66,7 @@ const Navbar = () => {
         </div>
 
         {/* Links (visible on medium screens and above) */}
-        <div className="hidden md:flex md:flex-1 gap-4">
+        <div className="hidden lg:flex lg:flex-auto gap-4">
           <NavLink to="/products" className="font-semibold">
             All Products
           </NavLink>

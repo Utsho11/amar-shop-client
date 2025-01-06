@@ -4,7 +4,7 @@ import Banner1 from "../components/home/banner/Banner1";
 import CategorySection from "../components/home/CategorySection";
 import FlashSaleSection from "../components/home/FlashSaleSection";
 import ProductSection from "../components/home/ProductSection";
-import SearchSection from "../components/home/SearchSection";
+// import SearchSection from "../components/home/SearchSection";
 import ShopSection from "../components/home/ShopSection";
 
 const Homepage = () => {
@@ -34,7 +34,6 @@ const Homepage = () => {
   return (
     <div className="space-y-5">
       <Banner1 />
-      <SearchSection />
       <CategorySection />
       <ShopSection />
       <FlashSaleSection />

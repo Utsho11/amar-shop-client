@@ -50,9 +50,9 @@ const ManageUser = () => {
   };
 
   return (
-    <div>
-      <div className="mb-4 text-right">
-        <h2 className="text-xl font-semibold">Manage Users</h2>
+    <div className="sm:mx-12 my-16">
+      <div className="mb-4">
+        <h2 className="text-2xl text-center font-semibold">Manage Users</h2>
       </div>
       <div>
         <ASUserTable

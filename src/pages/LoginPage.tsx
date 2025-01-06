@@ -1,6 +1,4 @@
 import { useState } from "react";
-import ASForm from "../components/form/ASForm";
-import ASInput from "../components/form/ASInput";
 import logoBanner from "../assets/login.png";
 import { Logo } from "../components/icons/icon";
 import { useTheme } from "../context/ThemeContext";
@@ -11,10 +9,6 @@ import { verifyToken } from "../utils/verifyToken";
 import { setUser } from "../redux/features/auth/authSlice";
 import { toast } from "sonner";
 
-interface LoginFormValues {
-  email: string;
-  password: string;
-}
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { theme } = useTheme();
@@ -22,12 +16,16 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const toastId = toast.loading("Logging in");
     try {
       const userInfo = {
-        email: data.email,
-        password: data.password,
+        email: email,
+        password: password,
       };
 
       const res = await login(userInfo).unwrap();
@@ -49,6 +47,18 @@ const LoginPage = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const handleDemoLogin = (role: "admin" | "customer" | "vendor") => {
+    const credentials = {
+      admin: { email: "admin@amarShop.com", password: "admin@12345" },
+      customer: { email: "user@gmail.com", password: "123456" },
+      vendor: { email: "hossain@gmail.com", password: "123456" },
+    };
+    setEmail(credentials[role].email);
+    setPassword(credentials[role].password);
+  };
+
+  // console.log(defaultCredentials);
 
   return (
     <div className="grid min-h-screen grid-cols-12 overflow-auto">
@@ -76,45 +86,92 @@ const LoginPage = () => {
               Experience.
             </h3>
           </div>
+          <div className="mt-4">
+            <div className="flex gap-2 justify-center">
+              <h1 className="text-sm text-gray-400">Choose any demo user:</h1>
+              <button
+                onClick={() => handleDemoLogin("admin")}
+                className="btn btn-sm bg-[#e9c46a]"
+              >
+                Admin
+              </button>
+              <button
+                onClick={() => handleDemoLogin("customer")}
+                className="btn btn-sm bg-[#e9c46a]"
+              >
+                Customer
+              </button>
+              <button
+                onClick={() => handleDemoLogin("vendor")}
+                className="btn btn-sm bg-[#e9c46a]"
+              >
+                {" "}
+                Vendor
+              </button>
+            </div>
+          </div>
           <div className="mt-3">
-            <ASForm
-              onSubmit={onSubmit}
-              defaultValues={{ email: "", password: "" }}
-              className="p-4 text-center"
-              label="Login"
-            >
-              <ASInput
-                name="email"
-                label="Email Address"
-                type="email"
-                placeholder="Enter your email"
-              />
-
-              <ASInput
-                name="password"
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-              />
+            <form onSubmit={onSubmit} className="p-4 text-center">
               <div className="form-control">
-                <label className="flex items-center gap-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    onClick={togglePasswordVisibility}
-                    className="checkbox checkbox-primary checkbox-sm"
-                  />
-                  <span className="label-text">Show Password</span>
+                <label htmlFor="email" className="label">
+                  Email
                 </label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="input input-bordered w-full"
+                  required
+                />
               </div>
-              <p className="text-center text-sm text-base-content/70">
-                Forgot your password?
-                <NavLink to="/forgot-password" className="text-blue-500 ml-2">
-                  Reset it
-                </NavLink>
-              </p>
-            </ASForm>
+
+              <div className="form-control mt-4">
+                <label htmlFor="password" className="label">
+                  Password
+                </label>
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="input input-bordered w-full"
+                  required
+                />
+              </div>
+              <div className="sm:flex justify-between mt-4">
+                <div className="form-control">
+                  <label className="flex items-center gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      onClick={togglePasswordVisibility}
+                      className="checkbox checkbox-primary checkbox-sm"
+                    />
+                    <span className="label-text">Show Password</span>
+                  </label>
+                </div>
+                <div className="">
+                  <NavLink to="/forgot-password" className="">
+                    <p className="text-sm text-base-content/70 text-blue-500 ml-2 hover:underline">
+                      Forgot your password?
+                    </p>
+                  </NavLink>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="btn btn-sm mt-6 bg-[#e9c46a] w-full"
+              >
+                Login
+              </button>
+            </form>
             <div>
-              <p className="text-center text-sm text-base-content/70">
+              <p className="text-center text-sm text-base-content/70 my-4">
                 Don't have an account?
                 <NavLink to="/auth/register" className="text-blue-500 ml-2">
                   Sign up now

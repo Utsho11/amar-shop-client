@@ -14,7 +14,7 @@ const CategorySection = () => {
   }
 
   return (
-    <div className="py-10">
+    <div className="my-10">
       <h1 className="text-start text-3xl font-semibold mb-8">Categories</h1>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {categories.map((category) => (

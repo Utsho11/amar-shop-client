@@ -32,7 +32,7 @@ const recentProductsSlice = createSlice({
 
       state.products.unshift(action.payload); // Add new product to the top
 
-      if (state.products.length > 10) {
+      if (state.products.length > 12) {
         state.products.pop(); // Remove the oldest product
       }
 

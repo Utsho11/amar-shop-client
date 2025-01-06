@@ -30,9 +30,9 @@ const ProductCard = ({ product }: { product: TProduct }) => {
         theme === "dark"
           ? "bg-slate-700 hover:bg-slate-500"
           : "bg-white hover:bg-gray-200"
-      } p-4 rounded-md shadow-md hover:shadow-lg transition-shadow duration-300`}
+      } p-4 rounded-md shadow-md border-2 border-gray-100 hover:shadow-lg transition-shadow duration-300 sm:w-[22rem]`}
     >
-      <div className="w-full h-40 bg-gray-100 rounded-md overflow-hidden mb-3">
+      <div className="w-full sm:h-40 bg-gray-100 rounded-md overflow-hidden mb-3">
         <img
           src={product.imageUrl}
           alt={product.name}
@@ -46,7 +46,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
       >
         {product.name.length > 20 ? product.name.slice(0, 20) : product.name}
       </h2>
-      <div className="text-gray-600 my-3 flex justify-between items-center">
+      <div className="text-gray-600 my-3 sm:flex justify-between items-center">
         <div>
           <span className="text-xl font-semibold text-[#ed8f60]">
             ${product.price}

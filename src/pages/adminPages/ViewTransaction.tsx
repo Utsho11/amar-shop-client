@@ -43,7 +43,12 @@ const ViewTransaction = () => {
   };
 
   return (
-    <div>
+    <div className="sm:mx-12 my-16">
+      <div className="mb-4">
+        <h1 className="text-2xl text-center font-semibold">
+          View all Transactions
+        </h1>
+      </div>
       <ASOrderTable<TTNXHistory>
         columns={columns}
         data={paginatedOrderHistorys || []}

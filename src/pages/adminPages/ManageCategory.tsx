@@ -74,13 +74,16 @@ const ManageCategory = () => {
   };
 
   return (
-    <div>
+    <div className="sm:mx-12 my-16">
       <div className="text-end my-8">
+        <h2 className="text-2xl text-center font-semibold mb-8">
+          Manage Categories
+        </h2>
         <button className="btn btn-success btn-sm">
           <NavLink to="/adminDashboard/addCategory">+ADD CATEGORY</NavLink>
         </button>
       </div>
-      <div>
+      <div className="">
         <ASCategoryTable
           columns={columns}
           data={paginatedData || []}
@@ -100,7 +103,7 @@ const ManageCategory = () => {
       <ReactPaginate
         pageCount={totalPages}
         onPageChange={handlePageClick}
-        containerClassName="flex justify-center items-center gap-2 mt-4"
+        containerClassName="flex justify-center items-center gap-2 mt-4 my-4"
         pageClassName="px-4 py-2 border rounded hover:bg-gray-200"
         activeClassName="bg-blue-500 text-white"
         previousClassName={`px-4 py-2 border rounded ${
