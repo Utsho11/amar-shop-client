@@ -43,41 +43,38 @@ const MyShop = () => {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="sm:mx-12 my-16">
+      <div className="text-end my-8  border-b-2">
+        <h2 className="text-2xl text-center font-semibold mb-8">Manage Shop</h2>
+      </div>
       {shop.data && shop.data.length > 0 ? (
         shop.data.map((shop: TShop, index: number) => (
           <div
             key={shop.id || index}
-            className="mx-auto mb-8 rounded border-2 border-blue-400"
+            className="sm:flex justify-center gap-16 mb-8 p-8"
           >
-            <div className="hero-content flex-col lg:flex-row">
-              <div className="">
-                <img
-                  src={shop.logoUrl}
-                  alt={shop.name}
-                  className="max-w-sm rounded-lg shadow-2xl h-50 w-50"
+            <div className="">
+              <img src={shop.logoUrl} alt={shop.name} className="" />
+            </div>
+            <div className="space-y-5 text-center">
+              <h1 className="text-5xl font-bold">{shop.name}</h1>
+              <p className="">{shop.description}</p>
+              <div className="flex justify-center">
+                <button
+                  onClick={() => handleSelect(shop.id as string)}
+                  className="text-white flex items-center gap-3 justify-center btn btn-sm bg-[#0077b6]"
+                >
+                  <EditIcon size={16} />
+                  Edit Shop
+                </button>
+              </div>
+              {selectedShopId && (
+                <EditShop
+                  shop={shop}
+                  onClose={() => setSelectedShopId(null)}
+                  onSave={handleSave}
                 />
-              </div>
-              <div className="space-y-5">
-                <h1 className="text-5xl font-bold">{shop.name}</h1>
-                <p className="">{shop.description}</p>
-                <div>
-                  <button
-                    onClick={() => handleSelect(shop.id as string)}
-                    className="text-white flex items-center gap-3 justify-center btn btn-sm bg-[#0077b6]"
-                  >
-                    <EditIcon size={16} />
-                    Edit Shop
-                  </button>
-                </div>
-                {selectedShopId && (
-                  <EditShop
-                    shop={shop}
-                    onClose={() => setSelectedShopId(null)}
-                    onSave={handleSave}
-                  />
-                )}
-              </div>
+              )}
             </div>
           </div>
         ))

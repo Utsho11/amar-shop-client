@@ -90,7 +90,9 @@ export interface TProductCategory {
 
 export type TUsers = {
   id: string;
+  name?: string;
   role: string;
+  image?: string;
   email: string;
   password: string;
   needPasswordChange: boolean;

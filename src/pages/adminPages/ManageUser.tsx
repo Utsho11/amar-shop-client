@@ -16,7 +16,7 @@ interface Column<T> {
 }
 
 const ManageUser = () => {
-  const { data } = useGetUsersQuery(null);
+  const { data, isLoading } = useGetUsersQuery(null);
   const [suspendUser] = useSuspendUserMutation();
   const [deleteUser] = useDeleteUserMutation();
 
@@ -25,6 +25,8 @@ const ManageUser = () => {
 
   // Columns configuration
   const columns: Column<TUsers>[] = [
+    { key: "image", label: "Image" },
+    { key: "name", label: "Name" },
     { key: "email", label: "User Email" },
     { key: "status", label: "Status" },
     { key: "role", label: "Role" },
@@ -60,7 +62,7 @@ const ManageUser = () => {
           onDelete={handleDelete}
           columns={columns}
           data={paginatedData || []}
-          isLoading={false}
+          isLoading={isLoading}
         />
       </div>
       {/* Pagination Controls */}

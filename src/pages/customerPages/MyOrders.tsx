@@ -19,10 +19,6 @@ const MyOrders = () => {
   const [currentPage, setCurrentPage] = useState(0); // Track current page
   const { data, isLoading } = useGetOrderHistoryForCustomerQuery(null);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   // console.log(data?.data);
 
   // Paginated Data
@@ -45,11 +41,14 @@ const MyOrders = () => {
   };
 
   return (
-    <div>
+    <div className="sm:mx-12 my-16">
+      <div className="text-end my-8">
+        <h2 className="text-2xl text-center font-semibold mb-8">My Orders</h2>{" "}
+      </div>
       <ASOrderTable<TOrderHistory>
         columns={columns}
         data={paginatedOrderHistorys || []}
-        isLoading={false}
+        isLoading={isLoading}
       />
       <div className="mt-16">
         <ReactPaginate

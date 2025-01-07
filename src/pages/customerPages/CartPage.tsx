@@ -60,7 +60,7 @@ const CartPage = () => {
       <h1 className="text-3xl text-center font-bold mb-6">My Cart</h1>
 
       {cartItems.length === 0 ? (
-        <p>Your cart is empty</p>
+        <p className="text-center">Your cart is empty</p>
       ) : (
         <div className=" p-6 rounded-lg">
           {cartItems.map((product) => (

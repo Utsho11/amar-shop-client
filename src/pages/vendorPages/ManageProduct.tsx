@@ -107,6 +107,11 @@ const ManageProduct = () => {
   return (
     <div>
       <div className="text-end my-8">
+        <h2 className="text-2xl text-center font-semibold mb-8">
+          Manage Products
+        </h2>
+      </div>
+      <div className="sm:mx-12 my-16">
         <button className="btn btn-success btn-sm">
           <NavLink to="/vendorDashboard/addProduct">+ADD YOUR PRODUCT</NavLink>
         </button>

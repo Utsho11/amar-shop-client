@@ -1,4 +1,5 @@
 import { BanIcon, ThrashIcon, TickIcon } from "../icons/icon";
+import Loading from "../shared/Loading";
 
 interface Column<T> {
   key: keyof T; // Key corresponding to the data field
@@ -25,92 +26,99 @@ const ASUserTable = <T extends Record<string, any>>({
 
   return (
     <div className="overflow-scroll w-full">
-      <table className="table w-full">
-        {/* ASTable Header */}
-        <thead>
-          <tr>
-            {columns.map((col) => (
-              <th key={col.key as string} className="text-left">
-                {col.label}
-              </th>
-            ))}
-            <th>Actions</th>
-          </tr>
-        </thead>
-        {/* ASTable Body */}
-        <tbody>
-          {isLoading ? (
-            <tr>
-              <td colSpan={columns.length + 1} className="text-center">
-                <span className="loading loading-spinner loading-md"></span>
-              </td>
-            </tr>
-          ) : data.length > 0 ? (
-            data.map((row, rowIndex) => {
-              const id = row.id as string; // assuming 'id' is part of your data
-              return (
-                <tr key={rowIndex}>
-                  {columns.map((col) => (
-                    <td key={`${rowIndex}-${col.key as string}`}>
-                      {col.key === "imageUrls" ? (
-                        <img
-                          src={row[col.key] as string}
-                          alt={`Image for ${id}`}
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        row[col.key]
-                      )}
-                    </td>
-                  ))}
-                  <td className="space-x-2">
-                    {row.isDeleted === true ? (
-                      <span className="badge badge-error badge-outline">
-                        deleted
-                      </span>
-                    ) : (
-                      <span className="space-x-2">
-                        {row.status === "ACTIVE" ? (
-                          <button
-                            onClick={() => onSuspend(id)}
-                            title="Suspend User"
-                          >
-                            <BanIcon size={16} />
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => onSuspend(id)}
-                            title="Activate User"
-                          >
-                            <TickIcon size={16} />
-                          </button>
-                        )}
+      <>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <table className="table w-full">
+            {/* ASTable Header */}
+            <thead>
+              <tr>
+                {columns.map((col) => (
+                  <th key={col.key as string} className="text-left">
+                    {col.label}
+                  </th>
+                ))}
+                <th>Actions</th>
+              </tr>
+            </thead>
+            {/* ASTable Body */}
 
-                        <button
-                          onClick={() => onDelete(id)}
-                          title="Delete User"
-                        >
-                          <ThrashIcon size={16} />
-                        </button>
-                      </span>
-                    )}
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={columns.length + 1} className="text-center">
+                    <span className="loading loading-spinner loading-md"></span>
                   </td>
                 </tr>
-              );
-            })
-          ) : (
-            <tr>
-              <td colSpan={columns.length + 1} className="text-center">
-                No data available
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+              ) : data.length > 0 ? (
+                data.map((row, rowIndex) => {
+                  const id = row.id as string; // assuming 'id' is part of your data
+                  return (
+                    <tr key={rowIndex}>
+                      {columns.map((col) => (
+                        <td key={`${rowIndex}-${col.key as string}`}>
+                          {col.key === "image" ? (
+                            <img
+                              src={row[col.key] as string}
+                              alt={`Image for ${id}`}
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          ) : (
+                            row[col.key]
+                          )}
+                        </td>
+                      ))}
+                      <td className="space-x-2">
+                        {row.isDeleted === true ? (
+                          <span className="badge badge-error badge-outline">
+                            deleted
+                          </span>
+                        ) : (
+                          <span className="space-x-2">
+                            {row.status === "ACTIVE" ? (
+                              <button
+                                onClick={() => onSuspend(id)}
+                                title="Suspend User"
+                              >
+                                <BanIcon size={16} />
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => onSuspend(id)}
+                                title="Activate User"
+                              >
+                                <TickIcon size={16} />
+                              </button>
+                            )}
+
+                            <button
+                              onClick={() => onDelete(id)}
+                              title="Delete User"
+                            >
+                              <ThrashIcon size={16} />
+                            </button>
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={columns.length + 1} className="text-center">
+                    No data available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </>
     </div>
   );
 };

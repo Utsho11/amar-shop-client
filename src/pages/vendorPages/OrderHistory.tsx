@@ -45,7 +45,12 @@ const OrderHistory = () => {
   };
 
   return (
-    <div>
+    <div className="sm:mx-12 my-16">
+      <div className="text-end my-8">
+        <h2 className="text-2xl text-center font-semibold mb-8">
+          View All Orders
+        </h2>
+      </div>
       <ASOrderTable<TOrderHistory>
         columns={columns}
         data={paginatedOrderHistorys || []}

@@ -19,9 +19,9 @@ const MyProfile = () => {
         {/* Card Content */}
         <div className="flex flex-col md:flex-row items-center p-6 space-y-4 md:space-y-0 md:space-x-6">
           {/* Profile Image */}
-          <div className="flex-shrink-0 rounded-lg">
+          <div className="flex-shrink-0 rounded-sm">
             <img
-              className="w-40 h-40 rounded-lg"
+              className="w-40 h-40 rounded-md"
               src={data?.data?.image || "/default-profile.png"}
               alt="Profile"
             />

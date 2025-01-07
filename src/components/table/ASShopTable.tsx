@@ -1,4 +1,5 @@
 import { BanIcon, TickIcon } from "../icons/icon";
+import Loading from "../shared/Loading";
 
 interface Column<T> {
   key: keyof T;
@@ -16,75 +17,85 @@ interface ASShopTableProps<T> {
 const ASShopTable = <T extends Record<string, any>>({
   columns,
   data,
-  isLoading = false,
+  isLoading,
   onBlock,
 }: ASShopTableProps<T>) => {
   return (
     <div className="w-full">
-      <div className="overflow-y-auto max-h-96">
-        <table className="table w-full">
-          <thead>
-            <tr>
-              {columns.map((col) => (
-                <th key={col.key as string} className="text-left">
-                  {col.label}
-                </th>
-              ))}
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
+      <div className="overflow-y-auto">
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <table className="table w-full">
+            <thead>
               <tr>
-                <td colSpan={columns.length + 1} className="text-center">
-                  <span className="loading loading-spinner loading-md"></span>
-                </td>
+                {columns.map((col) => (
+                  <th key={col.key as string} className="text-left">
+                    {col.label}
+                  </th>
+                ))}
+                <th>Actions</th>
               </tr>
-            ) : data.length > 0 ? (
-              data.map((row, rowIndex) => {
-                const id = row.id as string;
-                return (
-                  <tr key={rowIndex}>
-                    {columns.map((col) => (
-                      <td key={`${rowIndex}-${col.key as string}`}>
-                        {col.key === "logoUrl" ? (
-                          <img
-                            src={row[col.key] as string}
-                            alt={`Image for ${id}`}
-                            style={{
-                              width: "50px",
-                              height: "50px",
-                              objectFit: "cover",
-                            }}
-                          />
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={columns.length + 1} className="text-center">
+                    <span className="loading loading-spinner loading-md"></span>
+                  </td>
+                </tr>
+              ) : data.length > 0 ? (
+                data.map((row, rowIndex) => {
+                  const id = row.id as string;
+                  return (
+                    <tr key={rowIndex}>
+                      {columns.map((col) => (
+                        <td key={`${rowIndex}-${col.key as string}`}>
+                          {col.key === "logoUrl" ? (
+                            <img
+                              src={row[col.key] as string}
+                              alt={`Image for ${id}`}
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          ) : (
+                            row[col.key]
+                          )}
+                        </td>
+                      ))}
+                      <td className="text-left">
+                        {row.isBlacklisted === false ? (
+                          <button
+                            onClick={() => onBlock(id)}
+                            title="Block Shop"
+                          >
+                            <BanIcon size={16} />
+                          </button>
                         ) : (
-                          row[col.key]
+                          <button
+                            onClick={() => onBlock(id)}
+                            title="Active Shop"
+                          >
+                            <TickIcon size={16} />
+                          </button>
                         )}
                       </td>
-                    ))}
-                    <td className="text-left">
-                      {row.isBlacklisted === false ? (
-                        <button onClick={() => onBlock(id)} title="Block Shop">
-                          <BanIcon size={16} />
-                        </button>
-                      ) : (
-                        <button onClick={() => onBlock(id)} title="Active Shop">
-                          <TickIcon size={16} />
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (
-              <tr>
-                <td colSpan={columns.length + 1} className="text-center">
-                  No data available
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan={columns.length + 1} className="text-center">
+                    No data available
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );

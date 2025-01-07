@@ -69,7 +69,7 @@ const VendorDashboardLayout = () => {
         </div>
       </div>
 
-      <div className="col-span-10 mx-auto my-24">
+      <div className="col-span-10">
         <Outlet />
       </div>
     </div>

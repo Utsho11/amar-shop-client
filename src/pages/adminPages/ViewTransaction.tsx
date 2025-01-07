@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useGetTNXDetailsQuery } from "../../redux/services/userApi";
 import { TTNXHistory } from "../../types";
-import Loading from "../../components/shared/Loading";
 import ASOrderTable from "../../components/table/ASOrderTable";
 import ReactPaginate from "react-paginate";
 
@@ -18,11 +17,6 @@ const ViewTransaction = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const { data, isLoading } = useGetTNXDetailsQuery(null);
-
-  if (isLoading) {
-    return <Loading />;
-  }
-  // console.log(data?.data);
 
   const pageCount = Math.ceil((data?.data?.length || 0) / ITEMS_PER_PAGE);
   const paginatedOrderHistorys =
@@ -42,6 +36,8 @@ const ViewTransaction = () => {
     setCurrentPage(selected);
   };
 
+  console.log(paginatedOrderHistorys);
+
   return (
     <div className="sm:mx-12 my-16">
       <div className="mb-4">
@@ -52,7 +48,7 @@ const ViewTransaction = () => {
       <ASOrderTable<TTNXHistory>
         columns={columns}
         data={paginatedOrderHistorys || []}
-        isLoading={false}
+        isLoading={isLoading}
       />
       <div className="mt-16">
         <ReactPaginate

@@ -26,7 +26,7 @@ const columns: Column<TCategory>[] = [
 ];
 
 const ManageCategory = () => {
-  const { data } = useGetCategoriesQuery(null);
+  const { data, isLoading } = useGetCategoriesQuery(null);
   const [updateCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
   const [selectedCategory, setSelectedCategory] = useState<TCategory | null>(
@@ -87,7 +87,7 @@ const ManageCategory = () => {
         <ASCategoryTable
           columns={columns}
           data={paginatedData || []}
-          isLoading={false}
+          isLoading={isLoading}
           onDelete={handleDelete}
           onEdit={handleEdit}
         />

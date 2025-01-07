@@ -23,7 +23,7 @@ const columns: Column<TShop>[] = [
 ];
 
 const ManageShop = () => {
-  const { data } = useGetAllShopQuery(null);
+  const { data, isLoading } = useGetAllShopQuery(null);
   const [blockShop] = useBlockShopMutation();
 
   const handleBlock = async (id: string) => {
@@ -65,7 +65,7 @@ const ManageShop = () => {
         <ASShopTable
           columns={columns}
           data={paginatedData || []}
-          isLoading={false}
+          isLoading={isLoading}
           onBlock={handleBlock}
         />
       </div>
