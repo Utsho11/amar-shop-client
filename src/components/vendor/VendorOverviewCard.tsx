@@ -20,7 +20,7 @@ const VendorOverviewCard = ({ theme }: VendorOverviewCardProps) => {
   const totalFollowers = followers?.data?.length;
   const totalOrders = Number(orders?.data?.length);
 
-  console.log(orders?.data);
+  // console.log(orders?.data);
 
   return (
     <div className="my-16 sm:mx-6">

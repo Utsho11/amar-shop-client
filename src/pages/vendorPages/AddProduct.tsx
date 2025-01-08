@@ -63,7 +63,7 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl p-4">
+    <div className="my-10 sm:w-1/2 flex flex-col justify-center mx-auto">
       <div className="text-center">
         <h3 className="text-3xl font-semibold">Add Your Product</h3>
         <h5 className="text-sm text-slate-400">

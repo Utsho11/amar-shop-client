@@ -11,7 +11,7 @@ const RevenueChart = () => {
   // console.log(data);
 
   const transactionData = data?.data || [];
-  console.log(transactionData);
+  // console.log(transactionData);
 
   const getTotalAmountByYear = (data: TTNXHistory[]) => {
     return data.reduce(
@@ -36,7 +36,7 @@ const RevenueChart = () => {
 
   // Example usage: Get the total amount for all years
   const totalAmountByYear = getTotalAmountByYear(transactionData);
-  console.log(totalAmountByYear);
+  // console.log(totalAmountByYear);
 
   return (
     <div className="">

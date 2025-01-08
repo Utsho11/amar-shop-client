@@ -45,7 +45,7 @@ const ShopPage = () => {
     (follow: TFollow) => follow.customerEmail === user?.email
   );
 
-  console.log(isExistFollowShop);
+  // console.log(isExistFollowShop);
 
   const navigate = useNavigate();
 

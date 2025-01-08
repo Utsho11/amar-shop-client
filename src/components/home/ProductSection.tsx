@@ -24,7 +24,7 @@ const ProductSection: React.FC<ProductSectionProps> = () => {
     limit: 12,
   });
 
-  console.log(data?.data);
+  // console.log(data?.data);
 
   useEffect(() => {
     if (data?.data) {

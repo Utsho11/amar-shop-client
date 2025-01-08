@@ -36,7 +36,7 @@ const ViewTransaction = () => {
     setCurrentPage(selected);
   };
 
-  console.log(paginatedOrderHistorys);
+  // console.log(paginatedOrderHistorys);
 
   return (
     <div className="sm:mx-12 my-16">

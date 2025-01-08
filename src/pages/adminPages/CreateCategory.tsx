@@ -46,7 +46,7 @@ const CreateCategory = () => {
     }
   };
   return (
-    <div className="">
+    <div className="my-10 sm:w-1/2 flex flex-col justify-center mx-auto">
       <div className="text-center text-3xl font-semibold font-serif my-5">
         <h1>Add Category</h1>
       </div>
