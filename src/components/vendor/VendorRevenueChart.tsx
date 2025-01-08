@@ -66,7 +66,7 @@ const VendorRevenueChart = () => {
               shape={(props: any) => <TriangleBar {...props} />}
               label={{ position: "top" }}
             >
-              {totalAmountByYear.map((entry, index) => (
+              {totalAmountByYear.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={colors[index % 20]} />
               ))}
             </Bar>

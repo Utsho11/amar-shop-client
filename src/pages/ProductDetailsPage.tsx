@@ -14,6 +14,7 @@ import { TReview } from "../types";
 import { addRecentProduct } from "../redux/features/recentProductsSlice";
 import StarRating from "../components/StarRating";
 import ProductCard from "../components/product/ProductCard";
+import { FaStar, FaShoppingCart, FaTags, FaStore } from "react-icons/fa";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -89,19 +90,22 @@ const ProductDetailsPage = () => {
       }`}
     >
       <div
-        className={`rounded-lg overflow-hidden ${
+        className={`rounded-lg overflow-hidden shadow-lg ${
           theme === "dark" ? "bg-gray-800" : "bg-base-100"
         }`}
       >
-        <div className="hero-content grid grid-cols-1 lg:grid-cols-7 lg:gap-20">
+        <div className="hero-content grid grid-cols-1 md:grid-cols-7 md:gap-8 p-6">
+          {/* Product Image */}
           <img
             src={product?.imageUrl}
             alt={product?.name}
-            className="col-span-3 min-w-full rounded-lg shadow-md"
+            className="col-span-3 rounded-lg shadow-lg object-cover w-full"
           />
+
+          {/* Product Information */}
           <div className="col-span-4">
             <h1
-              className={`text-3xl lg:text-5xl font-bold mb-4 ${
+              className={`text-3xl lg:text-4xl font-bold mb-4 ${
                 theme === "dark" ? "text-gray-100" : "text-gray-800"
               }`}
             >
@@ -109,37 +113,46 @@ const ProductDetailsPage = () => {
             </h1>
 
             <p
-              className={`leading-relaxed mb-6 ${
+              className={`leading-relaxed mb-4 ${
                 theme === "dark" ? "text-gray-300" : "text-gray-600"
               }`}
             >
               {product?.description}
             </p>
 
-            <div className="mb-6 space-y-2">
-              <p>
+            {/* Category and Shop */}
+            <div className="mb-6">
+              <p className="flex items-center gap-2">
+                <FaTags className="text-blue-500" />
                 <span className="font-medium">Category:</span>{" "}
                 {product?.category?.name}
               </p>
-              <p>
-                <span className="font-medium">Shop:</span>{" "}
+              <p className="flex items-center gap-2 mt-2">
+                <FaStore className="text-green-500" />
+                <span className="font-medium">Shop:</span>
                 <span
                   onClick={handleShop}
-                  className="hover:text-blue-600 hover:underline cursor-pointer"
+                  className="text-blue-600 hover:underline cursor-pointer"
                 >
                   {product?.shop?.name}
                 </span>
               </p>
             </div>
+
+            {/* Ratings */}
             <div className="my-4">
-              <p className="flex gap-3 items-center">
-                <span className="font-medium">Ratings:</span>{" "}
+              <div className="flex gap-3 items-center">
+                <span className="font-medium flex items-center gap-2">
+                  <FaStar className="text-yellow-500" />
+                  Ratings:
+                </span>
                 <span>
                   <StarRating rating={averageRating} />
                 </span>
-              </p>
+              </div>
             </div>
 
+            {/* Price and Discount */}
             <div className="mb-6">
               <p
                 className={`text-2xl font-semibold ${
@@ -148,18 +161,21 @@ const ProductDetailsPage = () => {
               >
                 ${product?.price}
               </p>
-              {product!.discount > 0 && (
+              {(product?.discount ?? 0) > 0 && (
                 <p className="text-sm text-red-500">
+                  <FaTags className="inline mr-1" />
                   Discount: {product?.discount}%
                 </p>
               )}
             </div>
 
-            <div className="">
+            {/* Add to Cart Button */}
+            <div className="mt-4">
               <button
                 onClick={handleAddToCart}
-                className={`btn btn-sm text-black bg-[#e9c46a] hover:text-white`}
+                className="flex items-center gap-2 px-4 py-2 bg-[#e9c46a] hover:bg-[#d4ab58] text-black rounded-lg shadow-lg transition duration-300 ease-in-out hover:text-white"
               >
+                <FaShoppingCart />
                 Add to Cart
               </button>
             </div>

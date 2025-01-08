@@ -75,6 +75,7 @@ const CheckoutPage = () => {
   const handleSubmit = async (data: FieldValues) => {
     // console.log(data);
     const result = await checkCoupon(data).unwrap();
+
     // console.log(result.data);
 
     // Assuming the result contains the discount percentage

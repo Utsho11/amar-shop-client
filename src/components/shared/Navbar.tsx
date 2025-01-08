@@ -181,7 +181,7 @@ const Navbar = () => {
                   </li>
                 )}
                 <li>
-                  <NavLink to="change-password">Change Password</NavLink>
+                  <NavLink to="/change-password">Change Password</NavLink>
                 </li>
                 <li>
                   <button onClick={handleLogout}>Logout</button>

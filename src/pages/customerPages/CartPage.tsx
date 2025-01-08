@@ -74,7 +74,11 @@ const CartPage = () => {
                   />
                   <div>
                     <h2 className="font-semibold">{product.name}</h2>
-                    <p>{product.description}</p>
+                    <p>
+                      {product.description.length > 20
+                        ? product.description.slice(0, 100) + "..."
+                        : product.description}
+                    </p>
                     <p className="font-bold text-xl">${product.price}</p>
                   </div>
                 </div>
