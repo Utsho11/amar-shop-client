@@ -5,7 +5,7 @@ export type ReviewSectionProps = {
 
 const ReviewSection: React.FC<ReviewSectionProps> = ({ reviews }) => {
   return (
-    <div className="">
+    <div className="my-10">
       <h2 className="text-2xl font-semibold mb-4">
         Customer Reviews: {reviews.length}
       </h2>

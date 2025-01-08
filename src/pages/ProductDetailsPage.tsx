@@ -21,7 +21,7 @@ const ProductDetailsPage = () => {
   const { data: reviews } = useGetReviewsSingleProductQuery(id as string);
   const category = data?.data?.category?.name;
 
-  console.log(category);
+  // console.log(category);
 
   const { data: prod, isFetching } = useGetProductsQuery({
     category: category,
@@ -39,15 +39,7 @@ const ProductDetailsPage = () => {
   // Move useEffect to ensure it's not called conditionally
   useEffect(() => {
     if (product) {
-      dispatch(
-        addRecentProduct({
-          id: product.id,
-          name: product.name,
-          price: Number(product.price),
-          imageUrl: product.imageUrl,
-          link: `/products/${product.id}`,
-        })
-      );
+      dispatch(addRecentProduct(product));
     }
   }, [product, dispatch]);
 
@@ -166,11 +158,7 @@ const ProductDetailsPage = () => {
             <div className="">
               <button
                 onClick={handleAddToCart}
-                className={`btn btn-primary btn-sm  ${
-                  theme === "dark"
-                    ? "bg-blue-600 hover:bg-blue-500 text-white"
-                    : "bg-blue-500 hover:bg-blue-400 text-white"
-                }`}
+                className={`btn btn-sm text-black bg-[#e9c46a] hover:text-white`}
               >
                 Add to Cart
               </button>

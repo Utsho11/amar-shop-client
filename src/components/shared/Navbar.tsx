@@ -51,7 +51,7 @@ const Navbar = () => {
 
   return (
     <div className="sm:mx-[12rem]">
-      <div className="navbar bg-base-100 ">
+      <div className="navbar">
         {/* Dropdown for small screens */}
         <div className="flex md:hidden">
           <DropdownSideBar toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />

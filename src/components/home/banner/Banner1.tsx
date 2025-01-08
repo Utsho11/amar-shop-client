@@ -4,7 +4,7 @@ import { ShopIcon } from "../../icons/icon";
 const Banner1 = () => {
   return (
     <div
-      className="hero sm:min-h-[calc(100vh-6rem)] mb-10"
+      className="hero sm:min-h-[70vh] mb-10"
       style={{
         backgroundImage: `url(${banner})`,
       }}

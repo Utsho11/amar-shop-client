@@ -1,15 +1,15 @@
+import AdminProfile from "../pages/adminPages/AdminProfile";
 import CreateCategory from "../pages/adminPages/CreateCategory";
 import CreateCoupon from "../pages/adminPages/CreateCoupon";
 import ManageCategory from "../pages/adminPages/ManageCategory";
 import ManageShop from "../pages/adminPages/ManageShop";
 import ManageUser from "../pages/adminPages/ManageUser";
 import ViewTransaction from "../pages/adminPages/ViewTransaction";
-import MyProfile from "../pages/MyProfile";
 
 export const adminPaths = [
   {
     path: "profile",
-    element: <MyProfile />,
+    element: <AdminProfile />,
   },
   {
     path: "manageUser",

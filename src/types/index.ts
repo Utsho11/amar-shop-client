@@ -119,6 +119,7 @@ export interface TOrderHistory {
   productImage: string;
   productPrice: string;
   transactionId: string;
+  createdAt: string;
 }
 
 export interface TTNXHistory {
@@ -126,6 +127,7 @@ export interface TTNXHistory {
   transactionId: string;
   amount: string;
   paymentStatus: string;
+  createdAt: string;
 }
 
 export interface TReview {

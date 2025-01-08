@@ -41,8 +41,10 @@ const ProductSection: React.FC<ProductSectionProps> = () => {
   return (
     <div className="my-10">
       {(location.pathname === "/products" || location.pathname === "/") && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 my-8">
-          <h1 className="text-start text-3xl font-semibold mb-8">Products</h1>
+        <div className="">
+          <h1 className="text-start text-3xl font-semibold mb-8">
+            Products For You
+          </h1>
         </div>
       )}
 

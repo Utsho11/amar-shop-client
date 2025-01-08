@@ -44,7 +44,7 @@ const DropdownSideBar: React.FC<DropdownSideBarProps> = ({
           isMenuOpen ? "block" : "hidden"
         }`}
       >
-        <div className="flex flex-col">
+        <div className="flex flex-col z-20">
           <NavLink to="/products" className="p-2 flex items-center gap-3">
             <ShopIcon size={16} />
             All Products

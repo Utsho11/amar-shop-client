@@ -17,7 +17,7 @@ const ShopSection = () => {
   //   console.log(shops);
 
   return (
-    <div className="py-10">
+    <div className="my-10">
       <h1 className="text-start text-3xl font-semibold mb-8">
         Top Related Shop
       </h1>

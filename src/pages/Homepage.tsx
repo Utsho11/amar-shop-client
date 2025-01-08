@@ -6,6 +6,7 @@ import FlashSaleSection from "../components/home/FlashSaleSection";
 import ProductSection from "../components/home/ProductSection";
 // import SearchSection from "../components/home/SearchSection";
 import ShopSection from "../components/home/ShopSection";
+import PromotionalSec from "../components/home/PromotionalSec";
 
 const Homepage = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,11 +33,12 @@ const Homepage = () => {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="">
       <Banner1 />
       <CategorySection />
       <ShopSection />
       <FlashSaleSection />
+      <PromotionalSec />
       <ProductSection />
 
       {isVisible && (

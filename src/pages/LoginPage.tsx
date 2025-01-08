@@ -91,19 +91,19 @@ const LoginPage = () => {
               <h1 className="text-sm text-gray-400">Choose any demo user:</h1>
               <button
                 onClick={() => handleDemoLogin("admin")}
-                className="btn btn-sm bg-[#e9c46a]"
+                className="btn btn-sm bg-[#e9c46a] text-black hover:text-white"
               >
                 Admin
               </button>
               <button
                 onClick={() => handleDemoLogin("customer")}
-                className="btn btn-sm bg-[#e9c46a]"
+                className="btn btn-sm bg-[#e9c46a] text-black hover:text-white"
               >
                 Customer
               </button>
               <button
                 onClick={() => handleDemoLogin("vendor")}
-                className="btn btn-sm bg-[#e9c46a]"
+                className="btn btn-sm bg-[#e9c46a] text-black hover:text-white"
               >
                 {" "}
                 Vendor

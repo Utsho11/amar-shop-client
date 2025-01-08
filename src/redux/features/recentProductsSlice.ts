@@ -1,15 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { TProduct } from "../../types";
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  link: string;
-}
+// interface Product {
+//   id: string;
+//   name: string;
+//   price: number;
+//   imageUrl: string;
+//   link: string;
+// }
 
 interface RecentProductsState {
-  products: Product[];
+  products: TProduct[];
 }
 
 const initialState: RecentProductsState = {
@@ -20,7 +21,7 @@ const recentProductsSlice = createSlice({
   name: "recentProducts",
   initialState,
   reducers: {
-    addRecentProduct: (state, action: PayloadAction<Product>) => {
+    addRecentProduct: (state, action: PayloadAction<TProduct>) => {
       const existingIndex = state.products.findIndex(
         (product) => product.id === action.payload.id
       );

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
-import Loading from "../../components/shared/Loading";
 import ASOrderTable from "../../components/table/ASOrderTable";
 import { TOrderHistory } from "../../types";
 import { useGetOrderHistoryForCustomerQuery } from "../../redux/services/orderApi";
