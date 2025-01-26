@@ -88,7 +88,7 @@ const RegistrationPage = () => {
       dispatch(setUser({ user: user, token: res.data.accessToken }));
 
       if (user?.role === "VENDOR") {
-        navigate("/vendorDashboard/myShop");
+        navigate("/vendorDashboard/createShop");
       } else navigate("/");
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -66,7 +66,7 @@ const MyProfile = ({ theme }: MyProfileProps) => {
             </p>
             <p className="flex items-center text-lg">
               <FaPhone className="mr-2 text-blue-500" />
-              <span className="font-semibold">Phone Number: </span>
+              <span className="font-semibold">Phone: </span>
               <span className="ml-1">{data?.data?.phone}</span>
             </p>
           </div>

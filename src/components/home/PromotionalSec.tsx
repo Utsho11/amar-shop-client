@@ -15,7 +15,7 @@ const PromotionalSec = () => {
               <h1 className="text-3xl md:text-5xl font-bold">A56 Headset</h1>
             </div>
             <div className="my-4 md:my-8 flex gap-4 md:gap-10">
-              <Link to="/products/62e55b76-ba47-4c94-9fd5-eaa73c39fcf5">
+              <Link to="/products/d3d0cc6c-11e0-4ed6-b374-6ece5f14e2c2">
                 <button className="flex justify-center gap-2 items-center text-sm md:text-lg bg-gray-50 backdrop-blur-md font-medium md:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-[#ffb703] hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-3 py-2 md:px-4 md:py-2.5 overflow-hidden border-2 rounded-full group">
                   Buy Now
                 </button>
@@ -47,7 +47,7 @@ const PromotionalSec = () => {
           className="col-span-2 flex flex-col justify-end p-4 h-[60vh]"
         >
           <div className="my-4 flex items-center sm:items-end justify-between gap-4 md:gap-10">
-            <Link to="/products/67675db1-1db2-41b0-a0b5-e8f7ca3a6f61">
+            <Link to="/products/e6c024db-dc6e-49a8-ba82-de1144388415">
               <button className="flex justify-center gap-2 items-center text-sm md:text-lg bg-gray-50 backdrop-blur-md font-medium md:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-[#ffb703] hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-3 py-2 md:px-4 md:py-2.5 overflow-hidden border-2 rounded-full group">
                 Buy Now
               </button>
