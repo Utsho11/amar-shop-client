@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
-import ASFileInput from "../../components/form/ASFileInput";
+import { useEffect, useState } from "react";
 import ASForm from "../../components/form/ASForm";
 import ASInput from "../../components/form/ASInput";
 import ASTextarea from "../../components/form/ASTextarea";
@@ -23,7 +22,7 @@ type CreateProductFormValue = {
 const AddProduct = () => {
   const { data, isLoading } = useGetCategoriesQuery(null);
   const navigate = useNavigate();
-  const [addProduct] = useAddProductMutation();
+  const [addProduct, { isLoading: isProductLoading }] = useAddProductMutation();
 
   const options: TOption[] = [];
 
@@ -31,31 +30,66 @@ const AddProduct = () => {
     options.push({
       value: category.id,
       label: category.name,
-    })
+    }),
   );
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
-  const handleFileChange = (file: File | null) => {
-    setSelectedFile(file);
+  const handleFileChange = (files: FileList | null) => {
+    if (!files) return;
+
+    const newFiles = Array.from(files);
+
+    const newUrls = newFiles.map((file) => URL.createObjectURL(file));
+
+    setSelectedFiles((prev) => [...prev, ...newFiles]);
+    setPreviewUrls((prev) => [...prev, ...newUrls]);
   };
+
+  const removeImage = (index: number) => {
+    const newFiles = [...selectedFiles];
+    const newUrls = [...previewUrls];
+
+    URL.revokeObjectURL(newUrls[index]);
+
+    newFiles.splice(index, 1);
+    newUrls.splice(index, 1);
+
+    setSelectedFiles(newFiles);
+    setPreviewUrls(newUrls);
+  };
+
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [previewUrls]);
 
   const onSubmit = async (data: CreateProductFormValue) => {
     const toastId = toast.loading("Product adding....");
-    if (!selectedFile) {
-      alert("Please select a file to upload.");
+
+    if (selectedFiles.length === 0) {
+      toast.error("Please select at least one image.", { id: toastId });
       return;
     }
+
     const formData = new FormData();
 
     try {
       formData.append("data", JSON.stringify(data));
-      formData.append("file", selectedFile);
+
+      selectedFiles.forEach((file) => {
+        formData.append("files", file);
+      });
+
       await addProduct(formData).unwrap();
-      toast.success("Successfully Registered.", {
+
+      toast.success("Product added successfully.", {
         id: toastId,
         duration: 2000,
       });
+
       navigate("/vendorDashboard/manageProducts");
     } catch (error) {
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
@@ -70,7 +104,12 @@ const AddProduct = () => {
           Best Platform for your business.
         </h5>
       </div>
-      <ASForm onSubmit={onSubmit} label="Add Product" className="card-body">
+      <ASForm
+        onSubmit={onSubmit}
+        label="Add Product"
+        className="card-body"
+        isLoading={isProductLoading}
+      >
         <div className="form-control">
           <ASInput name="name" label="Product Name" type="textArea" />
         </div>
@@ -101,12 +140,40 @@ const AddProduct = () => {
           <ASTextarea name="description" label="Product Description" />
         </div>
         <div className="form-control">
-          <ASFileInput
-            name="file"
-            label="Insert Product Photo/Logo"
-            accept="image/*" // Example: restrict to image files
-            onFileChange={handleFileChange}
+          <label className="label">
+            <span className="label-text">Insert Product Images</span>
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={(e) => handleFileChange(e.target.files)}
+            className="file-input file-input-bordered w-full"
           />
+
+          {previewUrls.length > 0 && (
+            <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {previewUrls.map((url, index) => (
+                <div key={index} className="relative group">
+                  <img
+                    src={url}
+                    alt={`preview-${index}`}
+                    className="h-28 w-full rounded-xl object-cover"
+                  />
+
+                  {/* Remove button */}
+                  <button
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute top-1 right-1 bg-black/60 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </ASForm>
     </div>

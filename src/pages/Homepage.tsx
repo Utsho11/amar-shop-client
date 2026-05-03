@@ -7,6 +7,8 @@ import ProductSection from "../components/home/ProductSection";
 // import SearchSection from "../components/home/SearchSection";
 import ShopSection from "../components/home/ShopSection";
 import PromotionalSec from "../components/home/PromotionalSec";
+import CTASection from "../components/home/CTAsection";
+import { useTheme } from "../context/ThemeContext";
 
 const Homepage = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -32,6 +34,8 @@ const Homepage = () => {
     });
   };
 
+  const { theme } = useTheme();
+
   return (
     <div className="">
       <Banner1 />
@@ -41,10 +45,12 @@ const Homepage = () => {
       <PromotionalSec />
       <ProductSection />
 
+      <CTASection theme={theme} />
+
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600"
+          className="fixed bottom-5 right-5 bg-[#A66B55] text-white p-3 rounded-full shadow-lg hover:bg-[#A66B55]"
         >
           ↑
         </button>

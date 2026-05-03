@@ -1,5 +1,4 @@
 import { useState } from "react";
-import logoBanner from "../assets/login.png";
 import { Logo } from "../components/icons/icon";
 import { useTheme } from "../context/ThemeContext";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -8,6 +7,7 @@ import { useAppDispatch } from "../hooks/hook";
 import { verifyToken } from "../utils/verifyToken";
 import { setUser } from "../redux/features/auth/authSlice";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -61,125 +61,112 @@ const LoginPage = () => {
   // console.log(defaultCredentials);
 
   return (
-    <div className="grid min-h-screen grid-cols-12 overflow-auto">
+    <div
+      className={`min-h-screen flex items-center justify-center px-4`}
+      style={{
+        backgroundImage: "url('/bg-auth.png')",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <div
-        className={`relative hidden  ${
-          theme === "dark" ? "bg-[#14181c]" : "bg-[#FFE9D1]"
-        } lg:col-span-7 lg:block xl:col-span-8 2xl:col-span-9`}
+        className={`w-full max-w-md rounded-3xl border shadow-xl p-8 ${
+          theme === "dark" ? "bg-black" : "bg-[#F9F5F0]"
+        }`}
       >
-        <div className="">
-          <img src={logoBanner} alt="" />
+        {/* Logo */}
+        <div className="flex flex-col items-center">
+          <div className="flex items-center gap-2">
+            <Logo size={36} />
+            <p className="text-xl font-bold">AmarShop</p>
+          </div>
+
+          <h3 className="mt-6 text-xl font-semibold">Login</h3>
+          <p className="mt-2 text-center text-sm opacity-70">
+            Seamless Access, Secure Connection
+          </p>
         </div>
-      </div>
-      <div className="col-span-12 lg:col-span-5 xl:col-span-4 2xl:col-span-3">
-        <div className="flex flex-col items-stretch p-8 lg:p-16">
-          <div className="flex flex-col items-center justify-between">
-            <div className="flex border-none bg-transparent">
-              <Logo size={36} />
-              <p className="font-bold text-inherit text-xl">AmarShop</p>
-            </div>
-            <h3 className="mt-4 text-center text-xl font-semibold lg:mt-16">
-              Login
-            </h3>
-            <h3 className="mt-2 text-center text-sm text-base-content/70">
-              Seamless Access, Secure Connection: Your Gateway to a Personalized
-              Experience.
-            </h3>
-          </div>
-          <div className="mt-4">
-            <div className="flex gap-2 justify-center">
-              <h1 className="text-sm text-gray-400">Choose any demo user:</h1>
-              <button
-                onClick={() => handleDemoLogin("admin")}
-                className="btn btn-sm bg-[#e9c46a] text-black hover:text-white"
-              >
-                Admin
-              </button>
-              <button
-                onClick={() => handleDemoLogin("customer")}
-                className="btn btn-sm bg-[#e9c46a] text-black hover:text-white"
-              >
-                Customer
-              </button>
-              <button
-                onClick={() => handleDemoLogin("vendor")}
-                className="btn btn-sm bg-[#e9c46a] text-black hover:text-white"
-              >
-                {" "}
-                Vendor
-              </button>
-            </div>
-          </div>
-          <div className="mt-3">
-            <form onSubmit={onSubmit} className="p-4 text-center">
-              <div className="form-control">
-                <label htmlFor="email" className="label">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email"
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
 
-              <div className="form-control mt-4">
-                <label htmlFor="password" className="label">
-                  Password
-                </label>
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-              <div className="sm:flex justify-between mt-4">
-                <div className="form-control">
-                  <label className="flex items-center gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      onClick={togglePasswordVisibility}
-                      className="checkbox checkbox-primary checkbox-sm"
-                    />
-                    <span className="label-text">Show Password</span>
-                  </label>
-                </div>
-                <div className="">
-                  <NavLink to="/forgot-password" className="">
-                    <p className="text-sm text-base-content/70 text-blue-500 ml-2 hover:underline">
-                      Forgot your password?
-                    </p>
-                  </NavLink>
-                </div>
-              </div>
+        {/* Demo Users */}
+        <div className="mt-4 flex justify-center gap-2 flex-wrap">
+          <button
+            onClick={() => handleDemoLogin("admin")}
+            className="btn btn-sm bg-[#A66B55] text-white hover:bg-[#8d5947]"
+          >
+            Admin
+          </button>
+          <button
+            onClick={() => handleDemoLogin("customer")}
+            className="btn btn-sm bg-[#A66B55] text-white hover:bg-[#8d5947]"
+          >
+            Customer
+          </button>
+          <button
+            onClick={() => handleDemoLogin("vendor")}
+            className="btn btn-sm bg-[#A66B55] text-white hover:bg-[#8d5947]"
+          >
+            Vendor
+          </button>
+        </div>
 
-              <button
-                type="submit"
-                className="btn btn-sm mt-6 bg-[#e9c46a] w-full"
-              >
-                Login
-              </button>
-            </form>
-            <div>
-              <p className="text-center text-sm text-base-content/70 my-4">
-                Don't have an account?
-                <NavLink to="/auth/register" className="text-blue-500 ml-2">
-                  Sign up now
+        {/* Form */}
+        <form onSubmit={onSubmit} className="mt-6 space-y-4">
+          <div>
+            <label className="text-sm">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="input input-bordered w-full mt-1"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <div className="flex items-center justify-between">
+              <label className="text-sm">Password</label>
+              <label htmlFor="">
+                <NavLink to="/forgot-password" className="">
+                  <p className="text-sm text-base-content/70 text-blue-500 ml-2 hover:underline">
+                    Forgot your password?
+                  </p>
                 </NavLink>
-              </p>
+              </label>
             </div>
+
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              className="input input-bordered w-full mt-1 pr-10"
+              required
+            />
+
+            {/* Eye Icon */}
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className={`absolute right-3 top-[38px] text-gray-500  ${theme == "dark" ? "hover:text-white" : "hover:text-black"}`}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
-        </div>
+
+          <button
+            type="submit"
+            className="btn btm-sm w-full bg-[#A66B55] text-white hover:bg-[#8d5947]"
+          >
+            Login
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-sm opacity-70">
+          Don't have an account?
+          <NavLink to="/auth/register" className="text-blue-500 ml-2">
+            Sign up
+          </NavLink>
+        </p>
       </div>
     </div>
   );

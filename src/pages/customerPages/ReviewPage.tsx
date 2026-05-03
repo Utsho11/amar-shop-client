@@ -8,6 +8,7 @@ import ASTextarea from "../../components/form/ASTextarea";
 import ASSelectField from "../../components/form/ASSelect";
 import { toast } from "sonner";
 import Loading from "../../components/shared/Loading";
+import { useTheme } from "../../context/ThemeContext";
 
 const ReviewPage = () => {
   const ratingOptions = [
@@ -60,10 +61,27 @@ const ReviewPage = () => {
     // console.log(data);
   };
 
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div className="my-16">
-      <div className="my-5">
-        <h1 className="text-center font-semibold text-3xl">Review Products</h1>
+      <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          Reviews
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          Review Products
+        </h1>
       </div>
 
       {isLoading ? (

@@ -1,58 +1,91 @@
 import { useEffect, useState } from "react";
+import { useTheme } from "../../context/ThemeContext";
+
+const getDeadline = () => {
+  const now = new Date();
+  let firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  if (Date.now() > firstDay.getTime() + 30 * 24 * 60 * 60 * 1000) {
+    firstDay = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  }
+
+  return firstDay.getTime() + 30 * 24 * 60 * 60 * 1000;
+};
 
 const Timer = () => {
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [mins, setMins] = useState(0);
-  const [secs, setSecs] = useState(0);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
-  const deadline = "January,31,2025";
-
-  const getTime = () => {
-    const time = Date.parse(deadline) - Date.now();
-    setDays(Math.floor(time / (1000 * 60 * 60 * 24)));
-    setHours(Math.floor((time / (1000 * 60 * 60)) % 24));
-    setMins(Math.floor((time / 1000 / 60) % 60));
-    setSecs(Math.floor((time / 1000) % 60));
-  };
+  const [deadline] = useState(getDeadline);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    mins: 0,
+    secs: 0,
+  });
 
   useEffect(() => {
-    const interval = setInterval(() => getTime(), 1000);
+    const getTime = () => {
+      const time = Math.max(deadline - Date.now(), 0);
+
+      setTimeLeft({
+        days: Math.floor(time / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((time / (1000 * 60 * 60)) % 24),
+        mins: Math.floor((time / 1000 / 60) % 60),
+        secs: Math.floor((time / 1000) % 60),
+      });
+    };
+
+    getTime();
+
+    const interval = setInterval(getTime, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [deadline]);
+
+  const items = [
+    { label: "Days", value: timeLeft.days },
+    { label: "Hours", value: timeLeft.hours },
+    { label: "Mins", value: timeLeft.mins },
+    { label: "Secs", value: timeLeft.secs },
+  ];
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-8 rounded-lg shadow-lg">
-      <div className="container mx-auto flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-semibold mb-6 text-center">
-          Flash Sale For Winter
-        </h1>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-10">
-          <div className="time-box bg-white text-blue-800 p-4 rounded-md shadow-md flex flex-col items-center">
-            <h1 className="text-4xl font-bold">
-              {days < 10 ? "0" + days : days}
-            </h1>
-            <span className="text-sm uppercase font-semibold">Days</span>
+    <div className="space-y-5">
+      <p
+        className={`text-sm font-medium ${
+          isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
+        }`}
+      >
+        Sale ends in
+      </p>
+
+      <div className="grid grid-cols-4 gap-3">
+        {items.map((item) => (
+          <div
+            key={item.label}
+            className={`rounded-2xl border px-3 py-4 text-center ${
+              isDark
+                ? "border-white/10 bg-[#2D2927]"
+                : "border-[#E8DED2] bg-[#F9F5F0]"
+            }`}
+          >
+            <h3
+              className={`text-2xl font-bold md:text-3xl ${
+                isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+              }`}
+            >
+              {String(item.value).padStart(2, "0")}
+            </h3>
+
+            <span
+              className={`mt-1 block text-[11px] uppercase tracking-widest ${
+                isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+              }`}
+            >
+              {item.label}
+            </span>
           </div>
-          <div className="time-box bg-white text-blue-800 p-4 rounded-md shadow-md flex flex-col items-center">
-            <h1 className="text-4xl font-bold">
-              {hours < 10 ? "0" + hours : hours}
-            </h1>
-            <span className="text-sm uppercase font-semibold">Hours</span>
-          </div>
-          <div className="time-box bg-white text-blue-800 p-4 rounded-md shadow-md flex flex-col items-center">
-            <h1 className="text-4xl font-bold">
-              {mins < 10 ? "0" + mins : mins}
-            </h1>
-            <span className="text-sm uppercase font-semibold">Minutes</span>
-          </div>
-          <div className="time-box bg-white text-blue-800 p-4 rounded-md shadow-md flex flex-col items-center">
-            <h1 className="text-4xl font-bold">
-              {secs < 10 ? "0" + secs : secs}
-            </h1>
-            <span className="text-sm uppercase font-semibold">Sec</span>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   );

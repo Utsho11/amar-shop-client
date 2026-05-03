@@ -8,6 +8,7 @@ import {
   updateQuantity,
 } from "../../redux/features/cartSlice";
 import { useAppSelector } from "../../hooks/hook";
+import { useTheme } from "../../context/ThemeContext";
 
 const CartPage = () => {
   const cartItems = useAppSelector((state) => state.cart.items);
@@ -55,9 +56,28 @@ const CartPage = () => {
     0
   );
 
+    const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl text-center font-bold mb-6">My Cart</h1>
+     <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+         Carts
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          My Cart
+        </h1>
+      </div>
 
       {cartItems.length === 0 ? (
         <p className="text-center">Your cart is empty</p>
@@ -68,7 +88,7 @@ const CartPage = () => {
               <div className="lg:flex lg:flex-row flex-col justify-between items-center mb-4">
                 <div className="flex items-center gap-8">
                   <img
-                    src={product.imageUrl}
+                    src={product.imageUrl[0]}
                     alt={product.name}
                     className="w-16 h-16 object-cover mr-4 rounded-lg"
                   />
@@ -123,12 +143,12 @@ const CartPage = () => {
           </div>
 
           <div className="mt-6 flex justify-between items-center">
-            <Link to="/checkout" className="btn btn-primary btn-sm">
+            <Link to="/checkout" className="btn bg-[#A66B55] text-white btn-sm">
               Proceed to Checkout
             </Link>
             <button
               onClick={() => dispatch(clearCart())}
-              className="btn btn-secondary btn-sm"
+              className="btn btn-error btn-sm"
             >
               Clear Cart
             </button>

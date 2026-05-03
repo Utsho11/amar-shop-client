@@ -19,9 +19,8 @@ const TotalShopCard = ({ theme }: TotalShopCardProps) => {
   ).length;
 
   return (
-    <div className="my-16 sm:mx-6">
       <div
-        className={`shadow-lg rounded-lg p-6 flex flex-col items-center text-center ${
+        className={`shadow-lg rounded-lg flex flex-col items-center text-center ${
           isDarkMode
             ? "bg-gray-800 text-gray-200 border border-gray-700"
             : "bg-white text-gray-800"
@@ -69,7 +68,6 @@ const TotalShopCard = ({ theme }: TotalShopCardProps) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

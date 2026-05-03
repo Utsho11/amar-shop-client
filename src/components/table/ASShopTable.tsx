@@ -1,5 +1,7 @@
+import { NavLink } from "react-router-dom";
 import { BanIcon, TickIcon } from "../icons/icon";
 import Loading from "../shared/Loading";
+import { Eye } from "lucide-react";
 
 interface Column<T> {
   key: keyof T;
@@ -61,12 +63,21 @@ const ASShopTable = <T extends Record<string, any>>({
                                 objectFit: "cover",
                               }}
                             />
+                          ) : col.key === "description" ? (
+                            (row[col.key] as string)?.length > 150 ? (
+                              `${(row[col.key] as string).slice(0, 150)}...`
+                            ) : (
+                              row[col.key]
+                            )
                           ) : (
                             row[col.key]
                           )}
                         </td>
                       ))}
-                      <td className="text-left">
+                      <td className="text-left flex items-center justify-between gap-2">
+                        <NavLink to={`/shop/${id}`} className="flex">
+                          <Eye size={16}/>
+                        </NavLink>
                         {row.isBlacklisted === false ? (
                           <button
                             onClick={() => onBlock(id)}

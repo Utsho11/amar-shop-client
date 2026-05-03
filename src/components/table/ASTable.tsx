@@ -33,7 +33,7 @@ const ASTable = <T extends Record<string, any>>({
   // console.log(data);
 
   return (
-    <div className="px-16">
+    <div className="px-8">
       <table className="table w-full">
         {/* ASTable Header */}
         <thead>
@@ -59,24 +59,44 @@ const ASTable = <T extends Record<string, any>>({
               const id = row.id as string; // assuming 'id' is part of your data
               return (
                 <tr key={rowIndex}>
-                  {columns.map((col) => (
-                    <td key={`${rowIndex}-${col.key as string}`}>
-                      {col.key === "imageUrl" ? (
-                        <img
-                          src={row[col.key] as string}
-                          alt={`Image for ${id}`}
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) : (
-                        row[col.key]
-                      )}
-                    </td>
-                  ))}
-                  <td className="space-x-2">
+                  {columns.map((col) => {
+                    const value = row[col.key];
+
+                    let imageSrc: string | undefined;
+
+                    if (col.key === "imageUrl") {
+                      if (Array.isArray(value)) {
+                        imageSrc = value[0]; // only first image
+                      } else if (typeof value === "string") {
+                        imageSrc = value;
+                      }
+                    }
+
+                    return (
+                      <td key={`${rowIndex}-${col.key as string}`}>
+                        {col.key === "imageUrl" ? (
+                          imageSrc ? (
+                            <img
+                              src={imageSrc}
+                              alt={`Image for ${id}`}
+                              style={{
+                                width: "50px",
+                                height: "50px",
+                                objectFit: "cover",
+                                borderRadius: "6px",
+                              }}
+                            />
+                          ) : (
+                            <span>No Image</span>
+                          )
+                        ) : (
+                          value
+                        )}
+                      </td>
+                    );
+                  })}
+
+                  <td className="space-x-2 w-full flex justify-center items-center">
                     <button onClick={() => onView(id)} title="View">
                       <EyeOpenIcon size={16} />
                     </button>

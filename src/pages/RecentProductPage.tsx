@@ -2,17 +2,38 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../redux/store/store";
 import ProductCard from "../components/product/ProductCard";
+import { useTheme } from "../context/ThemeContext";
+import type { TProduct } from "../types";
 
 const RecentProductPage = () => {
   const recentProducts = useSelector(
-    (state: RootState) => state.recentProducts.products
+    (state: RootState) => state.recentProducts.products,
   );
 
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
-    <div className="recent-products">
-      <h2 className="text-2xl font-bold mb-4">Recently Viewed Products</h2>
+    <div className="px-4 py-8 md:px-8">
+      <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          Recent Products
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          Recent Viewed Products
+        </h1>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {recentProducts.map((product) => (
+        {recentProducts.map((product: TProduct) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
@@ -25,7 +46,13 @@ const RecentProductPage = () => {
           </Link>
         </div>
       ) : (
-        ""
+        <p
+          className={`text-xs text-center font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          No Recent Products
+        </p>
       )}
     </div>
   );

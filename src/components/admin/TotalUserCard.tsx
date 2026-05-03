@@ -24,7 +24,6 @@ const TotalUserCard = ({ theme }: TotalUserCardProps) => {
   const isDarkMode = theme === "dark";
 
   return (
-    <div className="my-16 sm:mx-6">
       <div
         className={`shadow-lg rounded-lg p-6 flex flex-col items-center text-center ${
           isDarkMode
@@ -73,7 +72,6 @@ const TotalUserCard = ({ theme }: TotalUserCardProps) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

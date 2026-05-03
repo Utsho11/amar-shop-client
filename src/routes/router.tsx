@@ -22,6 +22,12 @@ import CheckoutPage from "../pages/customerPages/CheckoutPage";
 import ChangePassword from "../pages/ChangePassword";
 import FlashSalePage from "../pages/FlashSalePage";
 import RecentProductPage from "../pages/RecentProductPage";
+import Contact from "../pages/Contact";
+import FAQ from "../pages/FAQ";
+import Returns from "../pages/rules/Returns";
+import Shipping from "../pages/rules/Shipping";
+import Privacy from "../pages/rules/Privacy";
+import Terms from "../pages/rules/Terms";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +59,14 @@ const router = createBrowserRouter([
         element: <AboutPage />,
       },
       {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
+        path: "/faq",
+        element: <FAQ />,
+      },
+      {
         path: "checkout",
         element: <CheckoutPage />,
       },
@@ -71,6 +85,22 @@ const router = createBrowserRouter([
       {
         path: "flash-sale",
         element: <FlashSalePage />,
+      },
+      {
+        path: "returns",
+        element: <Returns />,
+      },
+      {
+        path: "shipping",
+        element: <Shipping />,
+      },
+      {
+        path: "privacy",
+        element: <Privacy />,
+      },
+      {
+        path: "terms",
+        element: <Terms />,
       },
     ],
   },

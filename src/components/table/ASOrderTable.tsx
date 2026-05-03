@@ -20,7 +20,7 @@ const ASOrderTable = <T extends Record<string, any>>({
   // console.log("data:", data);
 
   return (
-    <div className="w-full">
+    <div className="w-full px-8">
       <div className="overflow-y-auto">
         {isLoading ? (
           <Loading />

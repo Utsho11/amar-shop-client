@@ -10,6 +10,7 @@ import { TProduct } from "../types";
 import { useAppSelector } from "../hooks/hook";
 import { selectCurrentUser } from "../redux/features/auth/authSlice";
 import ProductCard from "../components/product/ProductCard";
+import { useTheme } from "../context/ThemeContext";
 
 type TFollow = {
   id: string;
@@ -42,7 +43,7 @@ const ShopPage = () => {
   // console.log(data?.data);
 
   const isExistFollowShop = data?.data?.filter(
-    (follow: TFollow) => follow.customerEmail === user?.email
+    (follow: TFollow) => follow.customerEmail === user?.email,
   );
 
   // console.log(isExistFollowShop);
@@ -52,6 +53,9 @@ const ShopPage = () => {
   // console.log(data?.data);
   // console.log(products?.data);
   // console.log(id);
+
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -93,7 +97,7 @@ const ShopPage = () => {
           ) : (
             <button
               onClick={handleFollowShop}
-              className="btn btn-sm btn-primary"
+              className="btn btn-sm bg-[#A66B55] text-white hover:bg-[#8d5947]"
             >
               Follow
             </button>
@@ -104,7 +108,23 @@ const ShopPage = () => {
 
       {/* Products Section */}
       <div className="mt-12">
-        <h2 className="text-2xl font-semibold mb-6">Products List:</h2>
+        <div className="mb-10 text-center">
+          <p
+            className={`text-xs font-medium uppercase tracking-[0.3em] ${
+              isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+            }`}
+          >
+            Products
+          </p>
+
+          <h1
+            className={`mt-3 text-3xl font-semibold md:text-4xl ${
+              isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+            }`}
+          >
+            All Products
+          </h1>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products?.data?.map((product: TProduct, index: number) => (
             <ProductCard product={product} key={index} />

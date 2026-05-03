@@ -34,13 +34,14 @@ const OrderViewCard = ({ theme }: OrderViewProps) => {
             className={` ${
               theme === "dark"
                 ? "bg-gray-800 border-gray-700"
-                : "border-gray-200"
+                : "border-gray-200 bg-white"
             } shadow-md rounded-lg p-6 flex flex-col justify-center items-center text-center border`}
           >
+            
             <div className="text-blue-500 text-3xl mb-4">
               <FaShoppingCart />
             </div>
-            <h4 className="text-lg font-semibold text-gray-500 dark:text-gray-400">
+            <h4 className={`text-lg font-semibold ${theme==="dark"?"text-gray-400":"text-black"}`}>
               Total Orders
             </h4>
             <p
@@ -62,13 +63,13 @@ const OrderViewCard = ({ theme }: OrderViewProps) => {
             className={` ${
               theme === "dark"
                 ? "bg-gray-800 border-gray-700"
-                : "border-gray-200"
+                : "border-gray-200 bg-white"
             } shadow-md rounded-lg p-6 flex flex-col justify-center items-center text-center border`}
           >
             <div className="text-green-500 text-3xl mb-4">
               <FaDollarSign />
             </div>
-            <h4 className="text-lg font-semibold text-gray-500 dark:text-gray-400">
+            <h4 className={`text-lg font-semibold ${theme==="dark"?"text-gray-400":"text-black"}`}>
               Total Spent
             </h4>
             <p
@@ -87,16 +88,16 @@ const OrderViewCard = ({ theme }: OrderViewProps) => {
 
           {/* Loyalty Points Card */}
           <div
-            className={` ${
+           className={` ${
               theme === "dark"
                 ? "bg-gray-800 border-gray-700"
-                : "border-gray-200"
+                : "border-gray-200 bg-white"
             } shadow-md rounded-lg p-6 flex flex-col justify-center items-center text-center border`}
           >
             <div className="text-yellow-500 text-3xl mb-4">
               <FaStar />
             </div>
-            <h4 className="text-lg font-semibold text-gray-500 dark:text-gray-400">
+            <h4 className={`text-lg font-semibold ${theme==="dark"?"text-gray-400":"text-black"}`}>
               Loyalty Points
             </h4>
             <p
@@ -115,12 +116,14 @@ const OrderViewCard = ({ theme }: OrderViewProps) => {
         </div>
       )}
       <div
-        className={` ${
-          theme === "dark" ? "bg-gray-800 border-gray-700" : "border-gray-200"
-        } mt-5 shadow-md rounded-lg p-6 border`}
+       className={` ${
+              theme === "dark"
+                ? "bg-gray-800 border-gray-700"
+                : "border-gray-200 bg-white"
+            } shadow-md rounded-lg p-6 flex flex-col justify-center items-center text-center border mt-8`}
       >
         <h1
-          className={`text-lg sm:text-3xl flex items-center justify-center gap-3 font-bold ${
+          className={`text-lg sm:text-xl flex items-center justify-center gap-3 font-bold ${
             theme === "dark" ? "text-white" : "text-gray-800"
           }`}
         >

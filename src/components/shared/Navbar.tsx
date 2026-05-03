@@ -14,6 +14,9 @@ import { useGetMeQuery } from "../../redux/services/authApi";
 import { clearCart } from "../../redux/features/cartSlice";
 import Loading from "./Loading";
 import { useGetCategoriesQuery } from "../../redux/services/categoryApi";
+import { useGetAllShopQuery, type TShop } from "../../redux/services/shopApi";
+import { ChevronDown, ShoppingCart } from "lucide-react";
+import { iconMap } from "../home/CategorySection";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -28,8 +31,10 @@ const Navbar = () => {
   const { data, isFetching, refetch } = useGetMeQuery(null, { skip: !token });
 
   const { data: cate } = useGetCategoriesQuery(null);
+  const { data: shopData } = useGetAllShopQuery(null);
 
   const categories = cate?.data || [];
+  const shops = shopData?.data || [];
 
   // Trigger a refetch when the token changes
   useEffect(() => {
@@ -45,12 +50,13 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(clearCart());
     dispatch(logout());
+    localStorage.removeItem("recentProducts");
     toast.success("Logged out");
     navigate("/");
   };
 
   return (
-    <div className="sm:mx-[12rem]">
+    <div className={`${theme === "dark" ? "bg-[#141312]" : "bg-[#F9F5F0]"}`}>
       <div className="navbar">
         {/* Dropdown for small screens */}
         <div className="flex md:hidden">
@@ -70,29 +76,56 @@ const Navbar = () => {
           <NavLink to="/products" className="font-semibold">
             All Products
           </NavLink>
-          <div className="navbar-center hidden lg:flex">
-            <ul className="menu menu-horizontal px-1">
-              <li>
-                <details>
-                  <summary className="font-semibold text-base">
-                    Category
-                  </summary>
-                  <ul className="">
-                    {categories?.map((category, idx) => (
-                      <li key={idx}>
-                        <Link
-                          to={`/products?category=${encodeURIComponent(
-                            category.name
-                          )}`}
-                          className="font-semibold"
-                        >
-                          {category.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
-              </li>
+          <div className="dropdown">
+            <div tabIndex={0} role="button" className="font-semibold">
+              <p className="font-semibold flex items-center">
+                Category <ChevronDown size={18} />
+              </p>
+            </div>
+            <ul
+              tabIndex={-1}
+              className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm top-10"
+            >
+              {categories?.map((category, idx) => {
+                const name = category?.name || "Category";
+                const Icon =
+                  (iconMap[name.toLowerCase()] as unknown as string) ||
+                  ShoppingCart;
+
+                return (
+                  <li key={idx}>
+                    <Link
+                      to={`/products?category=${encodeURIComponent(
+                        category.name,
+                      )}`}
+                      className="font-semibold"
+                    >
+                      <Icon size={16} />
+                      {category.name ? category.name : "No Categry"}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="dropdown">
+            <div tabIndex={0} role="button" className="font-semibold">
+              <p className="font-semibold flex items-center">
+                Shops <ChevronDown size={18} />
+              </p>
+            </div>
+            <ul
+              tabIndex={-1}
+              className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm top-10"
+            >
+              {shops?.map((shop: TShop, idx: number) => (
+                <li key={idx} className="">
+                  <Link to={`/shop/${shop.id}`} className="font-semibold">
+                    <img src={shop.logoUrl} width={30} height={10} />
+                    {shop.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           <NavLink to="/recent" className="font-semibold">
@@ -193,7 +226,7 @@ const Navbar = () => {
               <button
                 className={`btn ${
                   theme === "dark" ? "text-white" : ""
-                } bg-[#e9c46a] btn-sm`}
+                } bg-[#A66B55] text-white hover:bg-[#8d5947] btn-sm`}
               >
                 <NavLink to="/auth/login">Login</NavLink>
               </button>

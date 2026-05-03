@@ -13,6 +13,7 @@ interface ASFormProps<T extends FieldValues> {
   children: React.ReactNode;
   className?: string;
   label?: string;
+  isLoading?: boolean;
 }
 
 const ASForm = <T extends FieldValues>({
@@ -21,6 +22,7 @@ const ASForm = <T extends FieldValues>({
   children,
   className = "",
   label,
+  isLoading,
 }: ASFormProps<T>): JSX.Element => {
   const methods = useForm<T>({
     defaultValues: defaultValues as DefaultValues<T>,
@@ -42,8 +44,9 @@ const ASForm = <T extends FieldValues>({
       >
         {children}
         <button
+          disabled={isLoading}
           type="submit"
-          className={`btn btn-sm ${label ? "" : "hidden"} bg-[#e9c46a]`}
+          className={`btn btn-sm ${label ? "" : "hidden"} bg-[#A66B55] text-white hover:bg-[#8d5947]`}
         >
           {label}
         </button>

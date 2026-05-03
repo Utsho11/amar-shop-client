@@ -13,6 +13,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { FieldValues } from "react-hook-form";
 import { useGetProductsByVendorQuery } from "../../redux/services/vendorApi";
 import Loading from "../../components/shared/Loading";
+import { useTheme } from "../../context/ThemeContext";
 
 type TProduct = {
   id: string;
@@ -21,7 +22,7 @@ type TProduct = {
   price: string;
   discount: number;
   inventoryCount: string;
-  imageUrl: string;
+  imageUrl: string[];
   shopName?: string | undefined;
   categoryName?: string | undefined;
 };
@@ -43,6 +44,8 @@ const ManageProduct = () => {
   const [duplicateProduct] = useDuplicateProductMutation();
   const [editProduct] = useEditProductMutation();
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   if (isLoading) {
     return <Loading />;
@@ -59,7 +62,7 @@ const ManageProduct = () => {
   const paginatedProducts =
     flatProducts?.slice(
       currentPage * ITEMS_PER_PAGE,
-      (currentPage + 1) * ITEMS_PER_PAGE
+      (currentPage + 1) * ITEMS_PER_PAGE,
     ) || [];
 
   const columns: Column<TProduct>[] = [
@@ -104,15 +107,29 @@ const ManageProduct = () => {
     duplicateProduct(id);
   };
 
+  // console.log(paginatedProducts);
+
   return (
-    <div>
-      <div className="text-end my-8">
-        <h2 className="text-2xl text-center font-semibold mb-8">
-          Manage Products
-        </h2>
+    <div className="my-8">
+      <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          Recent Products
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          Recent Viewed Products
+        </h1>
       </div>
       <div className="sm:mx-12 my-16">
-        <button className="btn btn-success btn-sm">
+        <button className="btn bg-[#A66B55] text-white btn-sm">
           <NavLink to="/vendorDashboard/addProduct">+ADD YOUR PRODUCT</NavLink>
         </button>
       </div>
@@ -127,18 +144,18 @@ const ManageProduct = () => {
       />
       <div className="mt-16">
         <ReactPaginate
-          previousLabel={"← Previous"}
+          previousLabel={"← Prev"}
           nextLabel={"Next →"}
           breakLabel={"..."}
           pageCount={pageCount}
           onPageChange={handlePageClick}
           containerClassName="flex justify-center items-center gap-2 my-4"
           pageClassName="inline-block"
-          pageLinkClassName="px-4 py-2 border border-gray-300 rounded hover:bg-blue-500 hover:text-white transition"
-          previousClassName="px-4 py-2 border border-gray-300 rounded hover:bg-blue-500 hover:text-white transition"
-          nextClassName="px-4 py-2 border border-gray-300 rounded hover:bg-blue-500 hover:text-white transition"
+          pageLinkClassName="px-4 py-2 border border-gray-300 rounded hover:bg-[#A66B55] hover:text-white transition"
+          previousClassName="px-4 py-2 border border-gray-300 rounded hover:bg-[#A66B55] hover:text-white transition"
+          nextClassName="px-4 py-2 border border-gray-300 hover:bg-[#A66B55] hover:text-white transition"
           disabledClassName="opacity-50 cursor-not-allowed"
-          activeClassName="text-blue-600"
+          activeClassName="bg-[#A66B55] hover:text-white"
         />
       </div>
       {selectedProduct && (

@@ -3,6 +3,7 @@ import { useGetTNXDetailsQuery } from "../../redux/services/userApi";
 import { TTNXHistory } from "../../types";
 import ASOrderTable from "../../components/table/ASOrderTable";
 import ReactPaginate from "react-paginate";
+import { useTheme } from "../../context/ThemeContext";
 
 interface Column<T> {
   key: keyof T;
@@ -22,7 +23,7 @@ const ViewTransaction = () => {
   const paginatedOrderHistorys =
     data?.data?.slice(
       currentPage * ITEMS_PER_PAGE,
-      (currentPage + 1) * ITEMS_PER_PAGE
+      (currentPage + 1) * ITEMS_PER_PAGE,
     ) || [];
 
   const columns: Column<TTNXHistory>[] = [
@@ -38,11 +39,26 @@ const ViewTransaction = () => {
 
   // console.log(paginatedOrderHistorys);
 
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div className="sm:mx-12 my-16">
-      <div className="mb-4">
-        <h1 className="text-2xl text-center font-semibold">
-          View all Transactions
+      <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          Transactions
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          Manage All Transactions
         </h1>
       </div>
       <ASOrderTable<TTNXHistory>
@@ -59,11 +75,11 @@ const ViewTransaction = () => {
           onPageChange={handlePageClick}
           containerClassName="flex justify-center items-center gap-2 my-4"
           pageClassName="inline-block"
-          pageLinkClassName="px-4 py-2 border border-gray-300 rounded hover:bg-blue-500 hover:text-white transition"
-          previousClassName="px-4 py-2 border border-gray-300 rounded hover:bg-blue-500 hover:text-white transition"
-          nextClassName="px-4 py-2 border border-gray-300 rounded hover:bg-blue-500 hover:text-white transition"
+          pageLinkClassName="px-4 py-2 border border-gray-300 rounded hover:bg-[#A66B55] hover:text-white transition"
+          previousClassName="px-4 py-2 border border-gray-300 rounded hover:bg-[#A66B55] hover:text-white transition"
+          nextClassName="px-4 py-2 border border-gray-300 rounded hover:bg-[#A66B55] hover:text-white transition"
           disabledClassName="opacity-50 cursor-not-allowed"
-          activeClassName="text-blue-600"
+          activeClassName="bg-[#A66B55] hover:text-white"
         />
       </div>
     </div>

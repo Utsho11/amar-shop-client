@@ -20,12 +20,21 @@ const AboutPage = () => {
       }`}
     >
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-16">
-        <div className="max-w-5xl mx-auto px-6 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-2">
+      <section
+        className="relative py-20 text-white bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/about-hero.jpg')",
+        }}
+      >
+        {/* Overlay (important for readability) */}
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        <div className="relative mx-auto max-w-5xl px-6 text-center">
+          <h1 className="flex items-center justify-center gap-2 text-4xl font-bold md:text-5xl">
             Welcome to <span className="text-yellow-300">AmarShop</span>
           </h1>
-          <p className="text-lg md:text-xl">
+
+          <p className="mt-4 text-lg md:text-xl text-gray-200">
             Your one-stop destination for quality products and exceptional
             service.
           </p>
@@ -140,8 +149,14 @@ const AboutPage = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16">
-        <div className="max-w-5xl mx-auto px-6 text-center">
+      <section
+        className="relative py-20 text-white bg-cover bg-center"
+        style={{
+          backgroundImage: "url('/CTA-about.jpg')",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="relative max-w-5xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-4 flex items-center justify-center gap-2">
             <FaHandsHelping className="text-yellow-400" /> Join Our Journey
           </h2>
@@ -150,7 +165,7 @@ const AboutPage = () => {
             with AmarShop.
           </p>
           <Link to="/products">
-            <button className="px-8 py-3 bg-white text-indigo-600 font-semibold rounded-lg shadow-md hover:bg-gray-100 transition">
+            <button className="px-8 py-3 bg-[#A66B55] text-white hover:bg-[#8d5947] font-semibold rounded-3xl shadow-md  transition">
               Start Shopping
             </button>
           </Link>

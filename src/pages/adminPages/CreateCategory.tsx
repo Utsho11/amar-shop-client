@@ -6,6 +6,7 @@ import ASTextarea from "../../components/form/ASTextarea";
 import { toast } from "sonner";
 import { useAddCategoryMutation } from "../../redux/services/categoryApi";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
 
 export interface CategoryFormValue {
   name: string;
@@ -45,12 +46,30 @@ const CreateCategory = () => {
       toast.error("Failed to add category.");
     }
   };
+
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div className="my-10 sm:w-1/2 flex flex-col justify-center mx-auto">
-      <div className="text-center text-3xl font-semibold font-serif my-5">
-        <h1>Add Category</h1>
+      <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          Category
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          Add Category
+        </h1>
       </div>
-      <div className="">
+      <div className="border-2 rounded-3xl p-4 lg:p-8">
         <ASForm onSubmit={onSubmit} label="Add Category">
           <ASInput name="name" label="Category Name" />
           <ASTextarea name="description" label="Category Description" />

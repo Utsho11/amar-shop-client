@@ -24,7 +24,7 @@ interface OrderData {
 }
 
 const CheckoutPage = () => {
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder,{isLoading}] = useCreateOrderMutation();
   const user = useAppSelector(selectCurrentUser);
   const cartItems = useAppSelector((state) => state.cart.items);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
@@ -40,7 +40,7 @@ const CheckoutPage = () => {
     // Calculate the total amount before discount
     const totalAmount = cartItems.reduce(
       (total, product) => total + parseFloat(product.price) * product.quantity,
-      0
+      0,
     );
 
     // Apply discount if any
@@ -65,8 +65,12 @@ const CheckoutPage = () => {
 
     const res = await createOrder(order).unwrap();
 
+    console.log({res});
+    
+    
+
     if (res) {
-      window.location.href = res.data.payment_url;
+      window.location.href = res.data.GatewayPageURL;
     } else {
       toast.error("Payment Failed");
     }
@@ -84,7 +88,7 @@ const CheckoutPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">Checkout</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Checkout</h1>
       <div className="divider"></div>
 
       {cartItems.length === 0 ? (
@@ -121,7 +125,7 @@ const CheckoutPage = () => {
                   .reduce(
                     (total, product) =>
                       total + parseFloat(product.price) * product.quantity,
-                    0
+                    0,
                   )
                   .toFixed(2)}
             </p>
@@ -138,7 +142,7 @@ const CheckoutPage = () => {
                   cartItems.reduce(
                     (total, product) =>
                       total + parseFloat(product.price) * product.quantity,
-                    0
+                    0,
                   )
                 ).toFixed(2)}
               </p>
@@ -152,12 +156,15 @@ const CheckoutPage = () => {
             </ASForm>
           </div>
 
-          <button
-            onClick={handleCheckout}
-            className="mt-6 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
-          >
-            Confirm & Place Order
-          </button>
+          <div className="flex justify-end">
+            <button
+            disabled={isLoading}
+              onClick={handleCheckout}
+              className="mt-6  text-white px-6 py-2 rounded-lg btn btn-success"
+            >
+              Confirm & Place Order
+            </button>
+          </div>
         </div>
       )}
     </div>

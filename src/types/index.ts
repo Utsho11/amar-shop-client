@@ -72,7 +72,7 @@ export interface TProduct {
   price: string;
   discount: number;
   inventoryCount: string;
-  imageUrl: string;
+  imageUrl: string[];
   shopName?: string;
   categoryName?: string;
   shop?: TProductShop;

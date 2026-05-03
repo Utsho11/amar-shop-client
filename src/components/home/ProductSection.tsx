@@ -4,6 +4,7 @@ import { useGetProductsQuery } from "../../redux/services/productApi";
 import { TProduct } from "../../types";
 import Loading from "../shared/Loading";
 import ProductCard from "../product/ProductCard";
+import { useTheme } from "../../context/ThemeContext";
 
 export type PaginatedProducts = {
   products: TProduct[];
@@ -18,6 +19,8 @@ const ProductSection: React.FC<ProductSectionProps> = () => {
   const [productList, setProductList] = useState<TProduct[]>([]);
   const [page, setPage] = useState<number>(1);
   const [hasMore, setHasMore] = useState<boolean>(true);
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const { data, isFetching } = useGetProductsQuery({
     page,
@@ -39,12 +42,18 @@ const ProductSection: React.FC<ProductSectionProps> = () => {
   };
 
   return (
-    <div className="my-10">
+    <div className="px-4 py-16 md:px-8">
       {(location.pathname === "/products" || location.pathname === "/") && (
-        <div className="">
-          <h1 className="text-start text-3xl font-semibold mb-8">
-            Products For You
-          </h1>
+        <div className="mx-auto max-w-5xl text-center">
+          <p
+            className={
+              isDark ? "text-sm text-[#777]" : "text-sm text-[#6B5E57]"
+            }
+          >
+            All Products
+          </p>
+
+          <div className="mx-auto mt-3 mb-10 h-[3px] w-12 rounded-full bg-[#6f7f3f]" />
         </div>
       )}
 

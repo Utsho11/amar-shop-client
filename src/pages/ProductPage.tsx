@@ -6,8 +6,10 @@ import Loading from "../components/shared/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProductCard from "../components/product/ProductCard";
 import ASForm from "../components/form/ASForm";
-import ASInput from "../components/form/ASInput";
 import { FieldValues } from "react-hook-form";
+import { useTheme } from "../context/ThemeContext";
+import { Search, SlidersHorizontal } from "lucide-react";
+import ASInput from "../components/form/ASInput";
 
 const ProductPage = () => {
   const [productList, setProductList] = useState<TProduct[]>([]);
@@ -19,6 +21,8 @@ const ProductPage = () => {
 
   const { data: categories } = useGetCategoriesQuery(null);
   const category = categories?.data || [];
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const { data, isFetching, isLoading } = useGetProductsQuery({
     page,
@@ -67,24 +71,78 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="my-4">
-      <div className="grid grid-cols-1 gap-5 my-8">
-        <div className="">
-          <h1 className="text-center text-3xl font-semibold mb-8">
+    <section
+      className={`min-h-screen px-4 py-10 md:px-8 ${
+        isDark ? "bg-[#1A1716]" : "bg-[#F9F5F0]"
+      }`}
+    >
+      <div className="mx-auto max-w-7xl">
+        {/* Header */}
+        <div className="mb-10 text-center">
+          <p
+            className={`text-xs font-medium uppercase tracking-[0.3em] ${
+              isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+            }`}
+          >
+            Products
+          </p>
+
+          <h1
+            className={`mt-3 text-3xl font-semibold md:text-4xl ${
+              isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+            }`}
+          >
             All Products
           </h1>
-          <div className="md:flex justify-center my-4 py-8 border-b-2">
-            <ASForm
-              label="Search"
-              onSubmit={onSubmit}
-              className="text-center md:w-1/2 flex gap-3"
-            >
-              <ASInput name="keyword" placeholder="Search Your Product" />
-            </ASForm>
-          </div>
-          <div className="sm:hidden">
+        </div>
+
+        {/* Search + Mobile Filters */}
+        <div
+          className={`mb-8 rounded-3xl border p-4 md:p-6 ${
+            isDark
+              ? "border-white/10 bg-[#211E1D]"
+              : "border-[#E8DED2] bg-white"
+          }`}
+        >
+          <div className="grid gap-4 md:grid-cols-3">
+            <div className="md:col-span-3 ">
+              <ASForm onSubmit={onSubmit} className="flex justify-center gap-3">
+                <ASInput name="keyword" placeholder="Search Your Product" />
+                <div className="">
+                  <button
+                    type="submit"
+                    className={`w-full rounded-full px-4 py-2 text-left text-sm transition ${
+                      isDark
+                        ? "bg-[#2D2927] text-[#B8AAA3] hover:text-white"
+                        : "bg-[#A66B55] text-white hover:text-[#3D352F]"
+                    }`}
+                  >
+                    <Search size={16} />
+                  </button>
+                </div>
+              </ASForm>
+            </div>
+
             <select
-              className="select select-bordered select-sm w-full max-w-sm"
+              aria-label="Category"
+              className={`select select-bordered w-full rounded-full md:hidden ${
+                isDark ? "bg-[#2D2927] text-[#F9F5F0]" : "bg-[#F9F5F0]"
+              }`}
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+            >
+              <option value="">All Categories</option>
+              {category.map((cat, index) => (
+                <option key={index} value={cat.name}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              className={`select select-bordered w-full rounded-full md:hidden ${
+                isDark ? "bg-[#2D2927] text-[#F9F5F0]" : "bg-[#F9F5F0]"
+              }`}
               value={priceSort}
               onChange={handlePriceSortChange2}
             >
@@ -95,114 +153,140 @@ const ProductPage = () => {
           </div>
         </div>
 
-        {/* Category Filter */}
-        <div className="sm:hidden">
-          <select
-            aria-label="Category"
-            className="select select-bordered select-sm w-full max-w-sm"
-            value={selectedCategory}
-            onChange={handleCategoryChange}
+        {/* Main Content */}
+        <div className="grid gap-8 md:grid-cols-[280px_1fr]">
+          {/* Desktop Filter */}
+          <aside
+            className={`sticky top-6 hidden h-fit rounded-3xl border p-5 md:block ${
+              isDark
+                ? "border-white/10 bg-[#211E1D]"
+                : "border-[#E8DED2] bg-white"
+            }`}
           >
-            <option value="">Filter by Categories</option>
-            {category.map((cat, index) => (
-              <option key={index} value={cat.name}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-      <div className="flex gap-10">
-        {/* Sidebar Filter */}
-        <div className="hidden w-[22rem] sm:flex sm:flex-col top-4 sticky z-10 border-2 border-gray-200 p-4 rounded-lg h-[37rem] overflow-y-auto">
-          <h2 className="text-2xl text-center font-semibold mb-4 border-b-2 py-2">
-            Filter by Categories
-          </h2>
-          <div className="flex flex-col mb-6">
-            <button
-              className={`px-4 py-2 text-center text-sm font-medium rounded-md ${
-                selectedCategory === ""
-                  ? "bg-gray-800 text-white"
-                  : "text-gray-500"
-              } hover:bg-gray-900 hover:text-white`}
-              onClick={() => setSelectedCategory("")}
-            >
-              All
-            </button>
-            {category.map((cat, index) => (
-              <button
-                key={index}
-                className={`px-4 py-2 text-center text-sm font-medium rounded-md ${
-                  selectedCategory === cat.name
-                    ? "bg-gray-800 text-white"
-                    : "text-gray-500"
-                } hover:bg-gray-900 hover:text-white`}
-                onClick={() => setSelectedCategory(cat.name)}
+            <div className="mb-6 flex items-center gap-2">
+              <SlidersHorizontal
+                size={18}
+                className={isDark ? "text-[#C9A68F]" : "text-[#A66B55]"}
+              />
+              <h2
+                className={`font-semibold ${
+                  isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+                }`}
               >
-                {cat.name}
-              </button>
-            ))}
-          </div>
-
-          <h2 className="text-2xl text-center font-semibold mb-4 border-b-2 py-2">
-            Sort by Price
-          </h2>
-          <div className="flex flex-col ">
-            <label className="flex items-center justify-center space-x-2 mb-2">
-              <input
-                type="checkbox"
-                className="checkbox"
-                checked={priceSort === "lowToHigh"}
-                onChange={() =>
-                  handlePriceSortChange(
-                    priceSort === "lowToHigh" ? "" : "lowToHigh"
-                  )
-                }
-              />
-              <span>Price: Low to High</span>
-            </label>
-            <label className="flex items-center space-x-2 justify-center">
-              <input
-                type="checkbox"
-                className="checkbox"
-                checked={priceSort === "highToLow"}
-                onChange={() =>
-                  handlePriceSortChange(
-                    priceSort === "highToLow" ? "" : "highToLow"
-                  )
-                }
-              />
-              <span>Price: High to Low</span>
-            </label>
-          </div>
-        </div>
-        <div>
-          {isFetching && productList.length === 0 ? (
-            <div className="w-[50rem]">
-              <Loading />
+                Filters
+              </h2>
             </div>
-          ) : (
-            <InfiniteScroll
-              dataLength={productList.length}
-              next={loadMoreProducts}
-              hasMore={hasMore}
-              loader={<Loading />}
-              endMessage={
-                <p className="text-center mt-4 text-gray-500">
-                  Nothing is available to display.
-                </p>
-              }
-            >
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {productList.map((product, index) => (
-                  <ProductCard product={product} key={index} />
-                ))}
+
+            <div className="space-y-6">
+              <div>
+                <h3
+                  className={`mb-3 text-sm font-medium ${
+                    isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
+                  }`}
+                >
+                  Categories
+                </h3>
+
+                <div className="space-y-2">
+                  <button
+                    className={`w-full rounded-full px-4 py-2 text-left text-sm transition ${
+                      selectedCategory === ""
+                        ? "bg-[#A66B55] text-white"
+                        : isDark
+                          ? "bg-[#2D2927] text-[#B8AAA3] hover:text-white"
+                          : "bg-[#F9F5F0] text-[#6B5E57] hover:text-[#3D352F]"
+                    }`}
+                    onClick={() => setSelectedCategory("")}
+                  >
+                    All
+                  </button>
+
+                  {category.map((cat, index) => (
+                    <button
+                      key={index}
+                      className={`w-full rounded-full px-4 py-2 text-left text-sm transition ${
+                        selectedCategory === cat.name
+                          ? "bg-[#A66B55] text-white"
+                          : isDark
+                            ? "bg-[#2D2927] text-[#B8AAA3] hover:text-white"
+                            : "bg-[#F9F5F0] text-[#6B5E57] hover:text-[#3D352F]"
+                      }`}
+                      onClick={() => setSelectedCategory(cat.name)}
+                    >
+                      {cat.name}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </InfiniteScroll>
-          )}
+
+              <div>
+                <h3
+                  className={`mb-3 text-sm font-medium ${
+                    isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
+                  }`}
+                >
+                  Sort by Price
+                </h3>
+
+                <div className="space-y-2">
+                  {[
+                    { label: "Low to High", value: "lowToHigh" },
+                    { label: "High to Low", value: "highToLow" },
+                  ].map((item) => (
+                    <button
+                      key={item.value}
+                      className={`w-full rounded-full px-4 py-2 text-left text-sm transition ${
+                        priceSort === item.value
+                          ? "bg-[#A66B55] text-white"
+                          : isDark
+                            ? "bg-[#2D2927] text-[#B8AAA3] hover:text-white"
+                            : "bg-[#F9F5F0] text-[#6B5E57] hover:text-[#3D352F]"
+                      }`}
+                      onClick={() =>
+                        handlePriceSortChange(
+                          priceSort === item.value ? "" : item.value,
+                        )
+                      }
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          {/* Product Grid */}
+          <div>
+            {isFetching && productList.length === 0 ? (
+              <Loading />
+            ) : (
+              <InfiniteScroll
+                dataLength={productList.length}
+                next={loadMoreProducts}
+                hasMore={hasMore}
+                loader={<Loading />}
+                endMessage={
+                  <p
+                    className={`mt-8 text-center text-sm ${
+                      isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
+                    }`}
+                  >
+                    Nothing is available to display.
+                  </p>
+                }
+              >
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                  {productList.map((product) => (
+                    <ProductCard product={product} key={product.id} />
+                  ))}
+                </div>
+              </InfiniteScroll>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

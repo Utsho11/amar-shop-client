@@ -7,8 +7,8 @@ const VendorProfile = () => {
   const { theme } = useTheme();
 
   return (
-    <div className="">
-      <div className="sm:ml-12 sm:flex">
+    <div className="p-4 sm:p-8">
+      <div className="flex flex-col sm:flex-row">
         <MyProfile theme={theme} />
         <VendorOverviewCard theme={theme} />
       </div>

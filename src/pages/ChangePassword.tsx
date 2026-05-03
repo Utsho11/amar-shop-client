@@ -20,9 +20,9 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="my-8">
+    <div className="p-4 lg:p-8 ">
+      <div className="max-w-96 mx-auto border-2 rounded-lg p-4 lg:p-8">
       <h1 className="text-center text-3xl font-semibold">Change Password</h1>
-      <div className="max-w-96 mx-auto">
         <ASForm label="Change Password" onSubmit={handleSubmit}>
           <ASInput name="oldPassword" label="Old Password" />
           <ASInput name="newPassword" label="New Password" />

@@ -1,5 +1,5 @@
 import { useGetMeQuery } from "../../redux/services/authApi";
-import { FaUser, FaEnvelope, FaPhone, FaUserShield } from "react-icons/fa";
+import { Mail, Phone, ShieldCheck, UserRound } from "lucide-react";
 import Loading from "../shared/Loading";
 
 interface MyProfileProps {
@@ -9,68 +9,110 @@ interface MyProfileProps {
 const MyProfile = ({ theme }: MyProfileProps) => {
   const { data, isLoading } = useGetMeQuery(null);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  if (isLoading) return <Loading />;
 
   const isDarkMode = theme === "dark";
+  const user = data?.data;
 
   return (
-    <div className="flex justify-center items-center sm:mr-6 my-16">
+    <section className="flex min-h-[70vh] items-center justify-center">
       <div
-        className={`w-full max-w-2xl shadow-lg rounded-lg border ${
+        className={`w-full max-w-3xl overflow-hidden rounded-3xl border shadow-xl ${
           isDarkMode
-            ? "bg-gray-800 text-gray-200 border-gray-700"
-            : "bg-white text-gray-800"
+            ? "border-white/10 bg-[#171a21] text-gray-100"
+            : "border-gray-200 bg-white text-gray-900"
         }`}
       >
-        {/* Card Header */}
+        {/* Top Banner */}
         <div
-          className={`rounded-t-lg px-6 py-4 flex items-center justify-between ${
+          className={`h-32 ${
             isDarkMode
-              ? "bg-gradient-to-r from-gray-700 to-gray-900 text-gray-200"
-              : "bg-gradient-to-r from-blue-500 to-indigo-900 text-white"
+              ? "bg-gradient-to-r from-[#1f2937] to-[#111827]"
+              : "bg-gradient-to-r from-[#f7d774] to-[#e9c46a]"
           }`}
-        >
-          <h1 className="text-2xl font-bold">My Profile</h1>
-          <FaUser size={28} />
-        </div>
+        />
 
-        {/* Card Content */}
-        <div className="flex flex-col md:flex-row items-center p-6 space-y-4 md:space-y-0 md:space-x-6">
-          {/* Profile Image */}
-          <div className="flex-shrink-0">
-            <img
-              className="w-40 h-40 rounded-full shadow-md border-2 border-blue-500"
-              src={data?.data?.image || "/default-profile.png"}
-              alt="Profile"
-            />
-          </div>
+        {/* Profile Header */}
+        <div className="relative px-6 pb-6">
+          <img
+            src={user?.image || "/default-profile.png"}
+            alt={user?.name || "Profile"}
+            className={`-mt-16 h-32 w-32 rounded-3xl border-4 object-cover shadow-lg ${
+              isDarkMode ? "border-[#171a21]" : "border-white"
+            }`}
+          />
 
-          {/* Profile Details */}
-          <div className="flex-1 space-y-4">
-            <p className="flex items-center text-lg">
-              <FaUserShield className="mr-2 text-blue-500" />
-              <span className="font-semibold">Name: </span>
-              <span className="ml-1">{data?.data?.name}</span>
-            </p>
-            <p className="flex items-center text-lg">
-              <FaEnvelope className="mr-2 text-blue-500" />
-              <span className="font-semibold">Email: </span>
-              <span className="ml-1">{data?.data?.email}</span>
-            </p>
-            <p className="flex items-center text-lg">
-              <FaUserShield className="mr-2 text-blue-500" />
-              <span className="font-semibold">Role: </span>
-              <span className="ml-1">{data?.data?.role}</span>
-            </p>
-            <p className="flex items-center text-lg">
-              <FaPhone className="mr-2 text-blue-500" />
-              <span className="font-semibold">Phone: </span>
-              <span className="ml-1">{data?.data?.phone}</span>
+          <div className="mt-4">
+            <h1 className="text-2xl font-bold">
+              {user?.name || "Unknown User"}
+            </h1>
+            <p className="mt-1 text-sm opacity-70">
+              {user?.email || "No email"}
             </p>
           </div>
         </div>
+
+        {/* Info */}
+        <div className="grid gap-4 px-6 pb-8 sm:grid-cols-2">
+          <InfoItem
+            icon={<UserRound size={20} />}
+            label="Name"
+            value={user?.name}
+            isDarkMode={isDarkMode}
+          />
+
+          <InfoItem
+            icon={<Mail size={20} />}
+            label="Email"
+            value={user?.email}
+            isDarkMode={isDarkMode}
+          />
+
+          <InfoItem
+            icon={<ShieldCheck size={20} />}
+            label="Role"
+            value={user?.role}
+            isDarkMode={isDarkMode}
+          />
+
+          <InfoItem
+            icon={<Phone size={20} />}
+            label="Phone"
+            value={user?.phone || "Not added"}
+            isDarkMode={isDarkMode}
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const InfoItem = ({
+  icon,
+  label,
+  value,
+  isDarkMode,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value?: string;
+  isDarkMode: boolean;
+}) => {
+  return (
+    <div
+      className={`flex items-center gap-4 rounded-2xl border p-4 ${
+        isDarkMode
+          ? "border-white/10 bg-white/5"
+          : "border-gray-100 bg-[#f8f5f0]"
+      }`}
+    >
+      <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#e9c46a]/20 text-[#d4a23a]">
+        {icon}
+      </div>
+
+      <div className="min-w-0">
+        <p className="text-sm opacity-60">{label}</p>
+        <p className="truncate font-medium">{value || "N/A"}</p>
       </div>
     </div>
   );

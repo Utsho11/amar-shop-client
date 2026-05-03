@@ -5,6 +5,7 @@ import Loading from "../../components/shared/Loading";
 import ASOrderTable from "../../components/table/ASOrderTable";
 import { useGetOrderHistoryForVendorQuery } from "../../redux/services/vendorApi";
 import { TOrderHistory } from "../../types";
+import { useTheme } from "../../context/ThemeContext";
 
 interface Column<T> {
   key: keyof T;
@@ -18,6 +19,7 @@ const ITEMS_PER_PAGE = 5;
 const OrderHistory = () => {
   const [currentPage, setCurrentPage] = useState(0); // Track current page
   const { data, isLoading } = useGetOrderHistoryForVendorQuery(null);
+  const { theme } = useTheme();
 
   if (isLoading) {
     return <Loading />;
@@ -30,7 +32,7 @@ const OrderHistory = () => {
   const paginatedOrderHistorys =
     data?.data?.slice(
       currentPage * ITEMS_PER_PAGE,
-      (currentPage + 1) * ITEMS_PER_PAGE
+      (currentPage + 1) * ITEMS_PER_PAGE,
     ) || [];
   const columns: Column<TOrderHistory>[] = [
     { key: "productImage", label: "Image" },
@@ -43,13 +45,25 @@ const OrderHistory = () => {
   const handlePageClick = ({ selected }: { selected: number }) => {
     setCurrentPage(selected);
   };
-
+  const isDark = theme === "dark";
   return (
-    <div className="sm:mx-12 my-16">
-      <div className="text-end my-8">
-        <h2 className="text-2xl text-center font-semibold mb-8">
-          View All Orders
-        </h2>
+    <div className="my-8">
+      <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          History
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          Orders History
+        </h1>
       </div>
       <ASOrderTable<TOrderHistory>
         columns={columns}
@@ -65,11 +79,11 @@ const OrderHistory = () => {
           onPageChange={handlePageClick}
           containerClassName="flex justify-center items-center gap-2 my-4"
           pageClassName="inline-block"
-          pageLinkClassName="px-4 py-2 border border-gray-300 rounded hover:bg-blue-500 hover:text-white transition"
-          previousClassName="px-4 py-2 border border-gray-300 rounded hover:bg-blue-500 hover:text-white transition"
-          nextClassName="px-4 py-2 border border-gray-300 rounded hover:bg-blue-500 hover:text-white transition"
+          pageLinkClassName="px-4 py-2 border border-gray-300 rounded hover:bg-[#A66B55] hover:text-white transition"
+          previousClassName="px-4 py-2 border border-gray-300 rounded hover:bg-[#A66B55] hover:text-white transition"
+          nextClassName="px-4 py-2 border border-gray-300 rounded hover:bg-[#A66B55] hover:text-white transition"
           disabledClassName="opacity-50 cursor-not-allowed"
-          activeClassName="text-blue-600"
+          activeClassName="bg-[#A66B55] hover:text-white"
         />
       </div>
     </div>

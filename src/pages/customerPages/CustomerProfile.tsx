@@ -6,7 +6,7 @@ const CustomerProfile = () => {
   const { theme } = useTheme();
   return (
     <div className="">
-      <div className="sm:ml-12 sm:flex gap-5">
+      <div className="">
         <MyProfile theme={theme} />
         <OrderViewCard theme={theme} />
       </div>

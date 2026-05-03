@@ -32,7 +32,7 @@ const FlashSalePage = () => {
             >
               <div className="w-full h-40 bg-gray-100 rounded-md overflow-hidden mb-3">
                 <img
-                  src={product.imageUrl}
+                  src={product.imageUrl[0]}
                   alt={product.name}
                   className="w-full h-full object-cover"
                 />

@@ -1,34 +1,34 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { customerSideLink } from "../../config/customer.site";
+import { customerSideLink } from "../../config/customer.site.tsx";
 import Navbar from "../../components/shared/Navbar";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { useTheme } from "../../context/ThemeContext.tsx";
 
 const CustomerDashboardLayout = () => {
+  const { theme } = useTheme();
   return (
-    <div className="">
-      <header className="sticky top-0 z-10 shadow-md bg-base-100">
+    <div className={`${theme === "dark" ? "bg-[#141312]" : "bg-[#F9F5F0]"}`}>
+      <header className="sticky top-0 z-20 shadow-md bg-base-100">
         <Navbar />
       </header>
       <div className="grid grid-cols-12">
-        <div className="hidden sm:block sm:col-span-1"></div>
-        <div className="hidden md:block md:col-span-2 lg:col-span-2 border sticky left-0">
-          <div className="">
-            <div className="flex-1 lg:flex-auto mt-4 ml-16">
-              <NavLink
-                to="/adminDashboard/profile"
-                className="flex border-none bg-transparent"
-              >
-                <p className="font-bold">Dashboard</p>
-              </NavLink>
-            </div>
+        <div className="hidden md:block md:col-span-3 lg:col-span-3 border sticky top-12 h-fit">
+          <div className="flex items-center gap-2 p-4 sm:p-8">
+            <MdOutlineSpaceDashboard size={18} />
+            <NavLink
+              to="/adminDashboard/profile"
+              className="flex border-none bg-transparent"
+            >
+              <p className="font-bold">Dashboard</p>
+            </NavLink>
           </div>
           <div className="divider m-0"></div>
           <div className="">
-            <ul className="menu text-end text-base-content min-h-[100vh] p-4 ml-8">
+            <ul className="menu text-base-content min-h-[100vh] p-4 sm:p-8 space-y-4">
               {customerSideLink.map((route, index) => (
                 <li key={index + 1}>
-                  <NavLink to={route.path} className="menu-link text-end">
-                    {route.label}
+                  <NavLink to={route.path} className="menu-link">
+                    {route.icon} {route.label}
                   </NavLink>
                 </li>
               ))}
@@ -60,7 +60,7 @@ const CustomerDashboardLayout = () => {
               {customerSideLink.map((route, index) => (
                 <li key={index + 1}>
                   <NavLink to={route.path} className="menu-link">
-                    {route.label}
+                    {route.icon} {route.label}
                   </NavLink>
                 </li>
               ))}
@@ -68,7 +68,7 @@ const CustomerDashboardLayout = () => {
           </div>
         </div>
 
-        <div className="col-span-10 md:col-span-8">
+        <div className="col-span-10 md:col-span-10 lg:col-span-9 p-4 md:p-8">
           <Outlet />
         </div>
         <div className="hidden sm:block sm:col-span-1"></div>

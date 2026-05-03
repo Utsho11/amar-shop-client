@@ -4,155 +4,128 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-import {
-  FiChevronRight,
-  FiPhone,
-  FiTruck,
-  FiShield,
-  FiFileText,
-} from "react-icons/fi";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
 
 const Footer = () => {
+  const quickLinks = [
+    { label: "About", href: "/about" },
+    { label: "Products", href: "/products" },
+    { label: "Contact", href: "/contact" },
+    { label: "FAQ", href: "/faq" },
+  ];
+
+  const supportLinks = [
+    { label: "Returns & Refunds", href: "/returns" },
+    { label: "Shipping Policy", href: "/shipping" },
+    { label: "Privacy Policy", href: "/privacy" },
+    { label: "Terms & Conditions", href: "/terms" },
+  ];
+
+  const socials = [
+    { icon: <FaFacebookF />, href: "/", label: "Facebook" },
+    { icon: <FaTwitter />, href: "/", label: "Twitter" },
+    { icon: <FaInstagram />, href: "/", label: "Instagram" },
+    { icon: <FaLinkedinIn />, href: "/", label: "LinkedIn" },
+  ];
+
   return (
-    <footer className="bg-gray-800 text-gray-300 py-8">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Shop Info */}
-          <div>
-            <h2 className="text-2xl font-semibold text-white">AmarShop</h2>
-            <p className="mt-4 text-sm">
-              Your one-stop shop for quality products at affordable prices.
-              Explore a wide range of items and enjoy seamless shopping!
+    <footer className="border-t border-white/10 bg-[#111315] text-gray-300">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-12">
+          {/* Brand */}
+          <div className="lg:col-span-4">
+            <h2 className="text-2xl font-bold text-white">AmarShop</h2>
+
+            <p className="mt-4 max-w-sm text-sm leading-6 text-gray-400">
+              A simple and reliable marketplace for quality products, trusted
+              shops, and smooth shopping experiences.
             </p>
-            <div className="flex mt-4 gap-4">
-              <a
-                href="/"
-                className="text-gray-300 hover:text-white"
-                aria-label="Facebook"
-              >
-                <FaFacebookF size={20} />
-              </a>
-              <a
-                href="/"
-                className="text-gray-300 hover:text-white"
-                aria-label="Twitter"
-              >
-                <FaTwitter size={20} />
-              </a>
-              <a
-                href="/"
-                className="text-gray-300 hover:text-white"
-                aria-label="Instagram"
-              >
-                <FaInstagram size={20} />
-              </a>
-              <a
-                href="/"
-                className="text-gray-300 hover:text-white"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedinIn size={20} />
-              </a>
+
+            <div className="mt-6 flex gap-3">
+              {socials.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  aria-label={item.label}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-300 transition hover:border-[#A66B55]/50 hover:bg-[#e9c46a]/10 hover:text-[#e9c46a]"
+                >
+                  {item.icon}
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-4">
-              Quick Links
-            </h3>
-            <ul className="space-y-2">
-              <li className="flex items-center">
-                <FiChevronRight className="mr-2" />
-                <a href="/about" className="hover:underline">
-                  About Us
-                </a>
-              </li>
-              <li className="flex items-center">
-                <FiChevronRight className="mr-2" />
-                <a href="/products" className="hover:underline">
-                  Shop Products
-                </a>
-              </li>
-              <li className="flex items-center">
-                <FiChevronRight className="mr-2" />
-                <a href="/" className="hover:underline">
-                  Contact Us
-                </a>
-              </li>
-              <li className="flex items-center">
-                <FiChevronRight className="mr-2" />
-                <a href="/" className="hover:underline">
-                  FAQ
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Customer Support */}
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-4">
-              Customer Support
-            </h3>
-            <ul className="space-y-2">
-              <li className="flex items-center">
-                <FiPhone className="mr-2" />
-                <a href="/" className="hover:underline">
-                  Returns & Refunds
-                </a>
-              </li>
-              <li className="flex items-center">
-                <FiTruck className="mr-2" />
-                <a href="/" className="hover:underline">
-                  Shipping Policy
-                </a>
-              </li>
-              <li className="flex items-center">
-                <FiShield className="mr-2" />
-                <a href="/" className="hover:underline">
-                  Privacy Policy
-                </a>
-              </li>
-              <li className="flex items-center">
-                <FiFileText className="mr-2" />
-                <a href="/" className="hover:underline">
-                  Terms & Conditions
-                </a>
-              </li>
-            </ul>
+          {/* Links */}
+          <div className="grid gap-8 sm:grid-cols-2 lg:col-span-4">
+            <FooterLinks title="Explore" links={quickLinks} />
+            <FooterLinks title="Support" links={supportLinks} />
           </div>
 
           {/* Newsletter */}
-          <div>
-            <h3 className="text-xl font-semibold text-white mb-4">
-              Stay Connected
+          <div className="lg:col-span-4">
+            <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-white">
+              Newsletter
             </h3>
-            <p className="text-sm mb-4">
-              Subscribe to our newsletter for the latest updates and offers.
+
+            <p className="mt-4 text-sm leading-6 text-gray-400">
+              Get updates about new products, offers, and shop announcements.
             </p>
-            <form className="flex items-center">
+
+            <form className="mt-5 flex overflow-hidden rounded-full border border-white/10 bg-white/5 p-1">
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="w-full p-2 rounded-l-lg focus:outline-none text-gray-800"
+                placeholder="Email address"
+                className="min-w-0 flex-1 bg-transparent px-4 text-sm text-white outline-none placeholder:text-gray-500"
               />
+
               <button
                 type="submit"
-                className="bg-[#ffb703] text-white px-4 py-2 rounded-r-lg hover:bg-[#e6a502]"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-[#A66B55] text-black transition hover:bg-[#d4a23a]"
+                aria-label="Subscribe"
               >
-                <HiOutlinePaperAirplane size={20} />
+                <HiOutlinePaperAirplane size={18} />
               </button>
             </form>
           </div>
         </div>
 
-        {/* Footer Bottom */}
-        <div className="mt-8 border-t border-gray-600 pt-4 text-center text-sm">
-          <p>&copy; 2025 AmarShop. All rights reserved.</p>
+        {/* Bottom */}
+        <div className="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-sm text-gray-500 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} AmarShop. All rights reserved.</p>
+
+          <p>Built for secure and seamless shopping.</p>
         </div>
       </div>
     </footer>
+  );
+};
+
+const FooterLinks = ({
+  title,
+  links,
+}: {
+  title: string;
+  links: { label: string; href: string }[];
+}) => {
+  return (
+    <div>
+      <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-white">
+        {title}
+      </h3>
+
+      <ul className="mt-4 space-y-3">
+        {links.map((link) => (
+          <li key={link.label}>
+            <a
+              href={link.href}
+              className="text-sm text-gray-400 transition hover:text-[#e9c46a]"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

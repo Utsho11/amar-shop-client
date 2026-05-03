@@ -11,6 +11,7 @@ import EditCategoryModal from "../../components/modals/EditCategory";
 import { toast } from "sonner";
 import { FieldValues } from "react-hook-form";
 import ReactPaginate from "react-paginate";
+import { useTheme } from "../../context/ThemeContext";
 
 interface Column<T> {
   key: keyof T;
@@ -73,13 +74,30 @@ const ManageCategory = () => {
     }
   };
 
+    const { theme } = useTheme();
+    const isDark = theme === "dark";
+
   return (
-    <div className="sm:mx-12 my-16">
+    <div className="p-4 sm:p-8">
       <div className="text-end my-8">
-        <h2 className="text-2xl text-center font-semibold mb-8">
-          Manage Categories
-        </h2>
-        <button className="btn btn-success btn-sm">
+        <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          Categories
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          Manage All Category
+        </h1>
+      </div>
+        <button className="btn bg-[#A66B55] text-white hover:bg-[#915944] btn-sm">
           <NavLink to="/adminDashboard/addCategory">+ADD CATEGORY</NavLink>
         </button>
       </div>
@@ -105,11 +123,11 @@ const ManageCategory = () => {
         onPageChange={handlePageClick}
         containerClassName="flex justify-center items-center gap-2 mt-4 my-4"
         pageClassName="px-4 py-2 border rounded hover:bg-gray-200"
-        activeClassName="bg-blue-500 text-white"
-        previousClassName={`px-4 py-2 border rounded ${
+        activeClassName="bg-[#A66B55] hover:text-white"
+        previousClassName={`px-4 py-2 border rounded hover:bg-[#A66B55] hover:text-white ${
           currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
         }`}
-        nextClassName={`px-4 py-2 border rounded ${
+        nextClassName={`px-4 py-2 border rounded hover:bg-[#A66B55] hover:text-white ${
           currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""
         }`}
         previousLabel="Previous"

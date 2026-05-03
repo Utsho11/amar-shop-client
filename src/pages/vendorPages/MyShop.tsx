@@ -48,13 +48,26 @@ const MyShop = () => {
     }
   };
 
+  const isDark = theme === "dark";
+
   return (
     <div className="max-w-3xl mx-auto my-16 px-6">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold">Manage Your Shop</h1>
-        <p className="text-gray-500">
-          View and update your shop details below.
+      <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          Shop
         </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          {shopData.name}
+        </h1>
       </div>
       <div
         className={`${
@@ -80,12 +93,12 @@ const MyShop = () => {
               theme === "dark" ? "text-gray-300" : "text-gray-700"
             }  `}
           >
-            <FaUsers className="text-blue-500" size={20} />
+            <FaUsers className="text-[#A66B55]" size={20} />
             <span>{followers?.data?.length || 0} Followers</span>
           </div>
           <button
             onClick={() => setEditModalOpen(true)}
-            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition-colors"
+            className="flex items-center gap-2  px-4 py-2 rounded-md shadow bg-[#A66B55] text-white hover:bg-[#8d5947] transition-colors"
           >
             <FaEdit size={16} />
             Edit Shop

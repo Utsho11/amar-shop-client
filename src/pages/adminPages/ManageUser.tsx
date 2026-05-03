@@ -7,6 +7,7 @@ import {
   useSuspendUserMutation,
 } from "../../redux/services/userApi";
 import { TUsers } from "../../types";
+import { useTheme } from "../../context/ThemeContext";
 
 interface Column<T> {
   key: keyof T;
@@ -35,7 +36,7 @@ const ManageUser = () => {
   // Paginated data
   const paginatedData = data?.data?.slice(
     currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
+    (currentPage + 1) * itemsPerPage,
   );
   const totalPages = Math.ceil((data?.data?.length || 0) / itemsPerPage);
 
@@ -51,10 +52,27 @@ const ManageUser = () => {
     deleteUser(id);
   };
 
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div className="sm:mx-12 my-16">
-      <div className="mb-4">
-        <h2 className="text-2xl text-center font-semibold">Manage Users</h2>
+      <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+          Users
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          Manage All Users
+        </h1>
       </div>
       <div>
         <ASUserTable
@@ -71,11 +89,11 @@ const ManageUser = () => {
         onPageChange={handlePageClick}
         containerClassName="flex justify-center items-center gap-2 mt-4"
         pageClassName="px-4 py-2 border rounded hover:bg-gray-200"
-        activeClassName="bg-blue-500 text-white"
-        previousClassName={`px-4 py-2 border rounded ${
+        activeClassName="bg-[#A66B55] hover:text-white"
+        previousClassName={`px-4 py-2 border rounded hover:bg-[#A66B55] hover:text-white ${
           currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
         }`}
-        nextClassName={`px-4 py-2 border rounded ${
+        nextClassName={`px-4 py-2 border rounded hover:bg-[#A66B55] hover:text-white ${
           currentPage === totalPages - 1 ? "opacity-50 cursor-not-allowed" : ""
         }`}
         previousLabel="Previous"

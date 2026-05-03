@@ -4,6 +4,7 @@ import ReactPaginate from "react-paginate";
 import ASOrderTable from "../../components/table/ASOrderTable";
 import { TOrderHistory } from "../../types";
 import { useGetOrderHistoryForCustomerQuery } from "../../redux/services/orderApi";
+import { useTheme } from "../../context/ThemeContext";
 
 interface Column<T> {
   key: keyof T;
@@ -25,7 +26,7 @@ const MyOrders = () => {
   const paginatedOrderHistorys =
     data?.data?.slice(
       currentPage * ITEMS_PER_PAGE,
-      (currentPage + 1) * ITEMS_PER_PAGE
+      (currentPage + 1) * ITEMS_PER_PAGE,
     ) || [];
   const columns: Column<TOrderHistory>[] = [
     { key: "productImage", label: "Image" },
@@ -39,10 +40,27 @@ const MyOrders = () => {
     setCurrentPage(selected);
   };
 
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
     <div className="sm:mx-12 my-16">
-      <div className="text-end my-8">
-        <h2 className="text-2xl text-center font-semibold mb-8">My Orders</h2>{" "}
+      <div className="mb-10 text-center">
+        <p
+          className={`text-xs font-medium uppercase tracking-[0.3em] ${
+            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+          }`}
+        >
+        Orders
+        </p>
+
+        <h1
+          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+          }`}
+        >
+          My Purchased Orders
+        </h1>
       </div>
       <ASOrderTable<TOrderHistory>
         columns={columns}
