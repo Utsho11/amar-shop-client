@@ -460,8 +460,14 @@ const ProductPage = () => {
 
           {/* Product Grid & Infinite Scroll */}
           <div>
-            {isLoading && productList.length === 0 ? (
-              <ProductGridSkeleton count={6} />
+            {(isLoading || isFetching) && productList.length === 0 ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-center gap-2 py-4 text-xs font-semibold text-primary animate-pulse">
+                  <span className="loading loading-spinner loading-xs"></span>
+                  <span>Filtering products...</span>
+                </div>
+                <ProductGridSkeleton count={6} />
+              </div>
             ) : productList.length === 0 ? (
               <EmptyState
                 icon={Search}

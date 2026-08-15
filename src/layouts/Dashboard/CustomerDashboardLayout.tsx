@@ -47,24 +47,24 @@ const CustomerDashboardLayout = () => {
           </div>
 
           {/* Navigation Links */}
-          <nav className="space-y-1.5 flex-1">
+          <nav className="space-y-2 flex-1">
             {customerSideLink.map((route, index) => (
               <NavLink
                 key={index}
                 to={route.path}
                 className={({ isActive }) =>
-                  `flex items-center justify-between px-4 py-3 rounded-2xl text-xs font-semibold transition-all duration-200 ${
+                  `flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold tracking-wide transition-all duration-200 ${
                     isActive
-                      ? "bg-primary text-white shadow-md shadow-primary/20 scale-[1.02]"
-                      : "text-gray-600 dark:text-zinc-300 hover:bg-base-200"
+                      ? "bg-primary text-white shadow-lg shadow-primary/30 scale-[1.02]"
+                      : "text-gray-700 dark:text-zinc-200 hover:bg-base-200 hover:text-primary"
                   }`
                 }
               >
-                <div className="flex items-center gap-3">
-                  <span className="text-base">{route.icon}</span>
-                  <span>{route.label}</span>
+                <div className="flex items-center gap-3.5">
+                  <span className="text-lg">{route.icon}</span>
+                  <span className="leading-none">{route.label}</span>
                 </div>
-                <ChevronRight size={14} className="opacity-60" />
+                <ChevronRight size={16} className="opacity-70" />
               </NavLink>
             ))}
           </nav>
@@ -85,7 +85,7 @@ const CustomerDashboardLayout = () => {
               <div className="flex items-center justify-between pb-4 mb-4 border-b border-base-200">
                 <div className="flex items-center gap-2">
                   <User size={20} className="text-primary" />
-                  <span className="font-bold text-sm">Customer Navigation</span>
+                  <span className="font-bold text-base">Customer Navigation</span>
                 </div>
                 <button
                   onClick={() => setIsMobileOpen(false)}
@@ -102,14 +102,14 @@ const CustomerDashboardLayout = () => {
                     to={route.path}
                     onClick={() => setIsMobileOpen(false)}
                     className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-3 rounded-2xl text-xs font-semibold transition ${
+                      `flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-sm font-bold transition ${
                         isActive
                           ? "bg-primary text-white shadow-md"
-                          : "hover:bg-base-200"
+                          : "text-gray-700 dark:text-zinc-200 hover:bg-base-200 hover:text-primary"
                       }`
                     }
                   >
-                    <span>{route.icon}</span>
+                    <span className="text-lg">{route.icon}</span>
                     <span>{route.label}</span>
                   </NavLink>
                 ))}

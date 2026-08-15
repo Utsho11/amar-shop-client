@@ -66,9 +66,18 @@ const ASTable = <T extends Record<string, any>>({
 
                     if (col.key === "imageUrl") {
                       if (Array.isArray(value)) {
-                        imageSrc = value[0]; // only first image
+                        imageSrc = value[0];
                       } else if (typeof value === "string") {
-                        imageSrc = value;
+                        if (value.startsWith("[")) {
+                          try {
+                            const parsed = JSON.parse(value);
+                            imageSrc = Array.isArray(parsed) ? parsed[0] : value;
+                          } catch {
+                            imageSrc = value;
+                          }
+                        } else {
+                          imageSrc = value;
+                        }
                       }
                     }
 
@@ -78,16 +87,11 @@ const ASTable = <T extends Record<string, any>>({
                           imageSrc ? (
                             <img
                               src={imageSrc}
-                              alt={`Image for ${id}`}
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                objectFit: "cover",
-                                borderRadius: "6px",
-                              }}
+                              alt={String(row.name || id)}
+                              className="w-12 h-12 object-cover rounded-xl border border-base-200 shadow-2xs"
                             />
                           ) : (
-                            <span>No Image</span>
+                            <span className="text-gray-400 text-xs">No Image</span>
                           )
                         ) : (
                           value
