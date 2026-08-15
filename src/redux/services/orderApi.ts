@@ -66,6 +66,19 @@ const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["wishlist"],
     }),
+    getCustomerDashboardStats: builder.query({
+      query: () => ({
+        url: "customer/dashboard-stats",
+        method: "GET",
+      }),
+      providesTags: ["order", "wishlist", "review"],
+      keepUnusedDataFor: 0,
+      transformResponse: (response: any) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
   }),
 });
 
@@ -76,4 +89,5 @@ export const {
   useGetOrderHistoryForCustomerQuery,
   useGetMyWishlistQuery,
   useToggleWishlistMutation,
+  useGetCustomerDashboardStatsQuery,
 } = orderApi;

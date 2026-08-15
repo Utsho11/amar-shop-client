@@ -70,8 +70,8 @@ const OrderHistory = () => {
   };
 
   return (
-    <div className="p-4 sm:p-8 max-w-7xl mx-auto">
-      <div className="mb-8 text-center sm:text-left">
+    <div className="w-full space-y-8 animate-in fade-in duration-300">
+      <div className="text-center sm:text-left">
         <p
           className={`text-xs font-semibold uppercase tracking-[0.3em] ${
             isDark ? "text-[#C9A68F]" : "text-[#A66B55]"

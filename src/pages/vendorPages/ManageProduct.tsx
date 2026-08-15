@@ -110,38 +110,47 @@ const ManageProduct = () => {
   // console.log(paginatedProducts);
 
   return (
-    <div className="my-8">
-      <div className="mb-10 text-center">
-        <p
-          className={`text-xs font-medium uppercase tracking-[0.3em] ${
-            isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
-          }`}
-        >
-          Products
-        </p>
+    <div className="w-full space-y-8 animate-in fade-in duration-300">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <p
+            className={`text-xs font-medium uppercase tracking-[0.3em] ${
+              isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
+            }`}
+          >
+            Catalog Inventory
+          </p>
 
-        <h1
-          className={`mt-3 text-3xl font-semibold md:text-4xl ${
-            isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
-          }`}
-        >
-          Manage Products
-        </h1>
+          <h1
+            className={`mt-2 text-2xl sm:text-3xl font-bold ${
+              isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
+            }`}
+          >
+            Manage Products
+          </h1>
+        </div>
+
+        <div>
+          <NavLink
+            to="/vendorDashboard/addProduct"
+            className="btn btn-primary btn-sm rounded-xl font-semibold shadow-sm gap-2"
+          >
+            <span>+ Add New Product</span>
+          </NavLink>
+        </div>
       </div>
-      <div className="sm:mx-12 my-16">
-        <button className="btn bg-[#A66B55] text-white btn-sm">
-          <NavLink to="/vendorDashboard/addProduct">+ADD YOUR PRODUCT</NavLink>
-        </button>
+
+      <div>
+        <ASTable<TProduct>
+          columns={columns}
+          data={paginatedProducts || []}
+          isLoading={false}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
+          onView={handleView}
+          onDuplicate={handleDuplicate}
+        />
       </div>
-      <ASTable<TProduct>
-        columns={columns}
-        data={paginatedProducts || []}
-        isLoading={false}
-        onDelete={handleDelete}
-        onEdit={handleEdit}
-        onView={handleView}
-        onDuplicate={handleDuplicate}
-      />
       <div className="mt-16">
         <ReactPaginate
           previousLabel={"← Prev"}

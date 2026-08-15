@@ -41,6 +41,20 @@ const userApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    getAdminDashboardStats: builder.query({
+      query: () => ({
+        url: "admin/dashboard-stats",
+        method: "GET",
+      }),
+      providesTags: ["order", "user", "shop"],
+      keepUnusedDataFor: 0,
+      transformResponse: (response: any) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
   }),
 });
 
@@ -49,4 +63,5 @@ export const {
   useSuspendUserMutation,
   useDeleteUserMutation,
   useGetTNXDetailsQuery,
+  useGetAdminDashboardStatsQuery,
 } = userApi;

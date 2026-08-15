@@ -60,8 +60,8 @@ const MyOrders = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-10">
-      <div className="mb-8 text-center">
+    <div className="w-full space-y-8 animate-in fade-in duration-300">
+      <div className="text-center sm:text-left">
         <p
           className={`text-xs font-semibold uppercase tracking-[0.3em] ${
             isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
@@ -71,13 +71,13 @@ const MyOrders = () => {
         </p>
 
         <h1
-          className={`mt-2 text-3xl font-bold md:text-4xl ${
+          className={`mt-2 text-2xl sm:text-3xl font-bold ${
             isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
           }`}
         >
           My Orders & Delivery Status
         </h1>
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-1 text-xs text-gray-500">
           Track the live delivery progress of all your purchases
         </p>
       </div>

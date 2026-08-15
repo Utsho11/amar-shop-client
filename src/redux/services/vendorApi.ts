@@ -38,6 +38,19 @@ const vendorApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["order"],
     }),
+    getVendorDashboardStats: builder.query({
+      query: () => ({
+        url: "vendor/dashboard-stats",
+        method: "GET",
+      }),
+      providesTags: ["order", "product"],
+      keepUnusedDataFor: 0,
+      transformResponse: (response: any) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
   }),
 });
 
@@ -45,4 +58,5 @@ export const {
   useGetProductsByVendorQuery,
   useGetOrderHistoryForVendorQuery,
   useUpdateOrderStatusMutation,
+  useGetVendorDashboardStatsQuery,
 } = vendorApi;

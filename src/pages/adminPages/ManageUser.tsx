@@ -56,22 +56,22 @@ const ManageUser = () => {
   const isDark = theme === "dark";
 
   return (
-    <div className="sm:mx-12 my-16">
-      <div className="mb-10 text-center">
+    <div className="w-full space-y-8 animate-in fade-in duration-300">
+      <div className="text-center sm:text-left">
         <p
           className={`text-xs font-medium uppercase tracking-[0.3em] ${
             isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
           }`}
         >
-          Users
+          Users Management
         </p>
 
         <h1
-          className={`mt-3 text-3xl font-semibold md:text-4xl ${
+          className={`mt-2 text-2xl sm:text-3xl font-bold ${
             isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
           }`}
         >
-          Manage All Users
+          Manage All Accounts
         </h1>
       </div>
       <div>
