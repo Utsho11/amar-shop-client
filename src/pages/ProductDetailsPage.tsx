@@ -28,6 +28,8 @@ import type { Swiper as SwiperType } from "swiper";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import RecentlyViewedSection from "../components/home/RecentlyViewedSection";
 import RecommendedProductsSection from "../components/product/RecommendedProductsSection";
+import EmptyState from "../components/shared/EmptyState";
+import { toast } from "sonner";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -88,12 +90,19 @@ const ProductDetailsPage = () => {
     prod?.data?.products?.filter((item: TProduct) => item.id !== product?.id) ||
     [];
 
+  const [zoomImage, setZoomImage] = useState<string | null>(null);
+
   if (isLoading) return <Loading />;
 
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Product not found.
+      <div className="min-h-[60vh] flex items-center justify-center p-6">
+        <EmptyState
+          title="Product Not Found"
+          description="The product you are looking for does not exist or has been removed."
+          actionText="Browse All Products"
+          actionLink="/products"
+        />
       </div>
     );
   }
@@ -109,7 +118,7 @@ const ProductDetailsPage = () => {
   const handleAddToCart = () => {
     try {
       dispatch(addProduct(product));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      toast.success(`"${product.name}" added to cart!`);
     } catch (error: any) {
       if (error.message === "DIFFERENT_VENDOR_DETECTED") {
         if (
@@ -119,9 +128,7 @@ const ProductDetailsPage = () => {
         ) {
           dispatch(clearCart());
           dispatch(addProduct(product));
-          alert("Cart replaced with the new product!");
-        } else {
-          alert("Product addition cancelled.");
+          toast.success("Cart replaced with the new product!");
         }
       }
     }
@@ -138,7 +145,7 @@ const ProductDetailsPage = () => {
           {/* Image Gallery */}
           <div className="lg:col-span-6">
             <div
-              className={`rounded-3xl border p-3 shadow-xl ${
+              className={`rounded-3xl border p-3 shadow-xl relative ${
                 isDark
                   ? "border-white/10 bg-[#171a21]"
                   : "border-gray-200 bg-white"
@@ -157,12 +164,18 @@ const ProductDetailsPage = () => {
               >
                 {images.map((img: string, index: number) => (
                   <SwiperSlide key={index}>
-                    <div className="h-[320px] sm:h-[430px] lg:h-[520px] overflow-hidden rounded-2xl">
+                    <div
+                      onClick={() => setZoomImage(img)}
+                      className="h-[320px] sm:h-[430px] lg:h-[520px] overflow-hidden rounded-2xl relative group cursor-zoom-in"
+                    >
                       <img
                         src={img}
                         alt={`${product.name}-${index + 1}`}
-                        className="h-full w-full object-cover transition duration-500 hover:scale-105"
+                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       />
+                      <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm pointer-events-none">
+                        <span>🔍 Tap to Zoom</span>
+                      </div>
                     </div>
                   </SwiperSlide>
                 ))}
@@ -220,41 +233,34 @@ const ProductDetailsPage = () => {
                 )}
               </div>
 
-              <h1 className="text-3xl font-bold leading-tight lg:text-5xl">
+              <h1 className="text-2xl font-bold sm:text-3xl lg:text-4xl">
                 {product.name}
               </h1>
 
               <div className="mt-4 flex items-center gap-3">
-                <StarRating rating={averageRating} />
-                <span className="text-sm opacity-70">
-                  {averageRating ? averageRating.toFixed(1) : "No rating"} / 5 ·{" "}
-                  {reviewData.length} reviews
-                </span>
-              </div>
-
-              <div className="mt-8 flex items-end gap-4">
-                <h2 className="text-4xl font-bold text-[#d4a23a]">
+                <span className="text-3xl font-extrabold text-primary">
                   ${finalPrice.toFixed(2)}
-                </h2>
+                </span>
 
                 {(product.discount ?? 0) > 0 && (
-                  <p className="pb-1 text-lg line-through opacity-50">
+                  <span className="text-lg text-gray-400 line-through">
                     ${Number(product.price).toFixed(2)}
-                  </p>
+                  </span>
                 )}
               </div>
 
-              <div className="mt-8 grid grid-cols-2 gap-4">
+              {/* Quick specs grid */}
+              <div className="mt-6 grid grid-cols-2 gap-4">
                 <InfoCard
-                  icon={<FaBoxOpen />}
-                  title="Stock"
-                  value={`${product.inventoryCount} available`}
+                  icon={<FaLayerGroup />}
+                  title="Inventory"
+                  value={`${product.inventoryCount ?? 0} In Stock`}
                   isDark={isDark}
                 />
                 <InfoCard
-                  icon={<FaLayerGroup />}
-                  title="Category"
-                  value={product.category?.name || "N/A"}
+                  icon={<FaBoxOpen />}
+                  title="Total Sold"
+                  value="Verified Item"
                   isDark={isDark}
                 />
                 <InfoCard
@@ -272,19 +278,43 @@ const ProductDetailsPage = () => {
                 />
               </div>
 
-              <button
-                onClick={handleAddToCart}
-                disabled={Number(product.inventoryCount) <= 0}
-                className="btn mt-5 w-full rounded-full border-none bg-[#A66B55] text-white hover:bg-[#8d5947]"
-              >
-                <FaShoppingCart />
-                {Number(product.inventoryCount) > 0
-                  ? "Add to Cart"
-                  : "Out of Stock"}
-              </button>
+              <div className="mt-6 flex flex-col gap-3">
+                <button
+                  onClick={handleAddToCart}
+                  disabled={Number(product.inventoryCount) <= 0}
+                  className="btn w-full rounded-full border-none bg-[#A66B55] text-white hover:bg-[#8d5947] text-base font-semibold shadow-md gap-2"
+                >
+                  <FaShoppingCart />
+                  {Number(product.inventoryCount) > 0
+                    ? "Add to Cart"
+                    : "Out of Stock"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Lightbox Zoom Modal */}
+        {zoomImage && (
+          <div
+            onClick={() => setZoomImage(null)}
+            className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in"
+          >
+            <div className="relative max-w-4xl max-h-[90vh]">
+              <img
+                src={zoomImage}
+                alt="Zoomed product"
+                className="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-2xl"
+              />
+              <button
+                onClick={() => setZoomImage(null)}
+                className="absolute top-2 right-2 btn btn-circle btn-sm bg-black/50 text-white border-none hover:bg-black"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Overview */}
         <section

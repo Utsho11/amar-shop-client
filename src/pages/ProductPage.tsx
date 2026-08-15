@@ -6,6 +6,8 @@ import { TProduct } from "../types";
 import Loading from "../components/shared/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ProductCard from "../components/product/ProductCard";
+import { ProductGridSkeleton } from "../components/shared/ProductCardSkeleton";
+import EmptyState from "../components/shared/EmptyState";
 import { useTheme } from "../context/ThemeContext";
 import {
   Search,
@@ -459,23 +461,15 @@ const ProductPage = () => {
           {/* Product Grid & Infinite Scroll */}
           <div>
             {isLoading && productList.length === 0 ? (
-              <div className="min-h-[40vh] flex items-center justify-center">
-                <Loading />
-              </div>
+              <ProductGridSkeleton count={6} />
             ) : productList.length === 0 ? (
-              <div className="text-center py-20 bg-base-100 rounded-3xl border border-base-200 p-8">
-                <Search size={40} className="mx-auto text-gray-400 mb-4" />
-                <h3 className="text-xl font-bold mb-2">No Matching Products Found</h3>
-                <p className="text-xs text-gray-500 max-w-sm mx-auto mb-6">
-                  We couldn't find any products matching your active filters. Try adjusting your search term, category, or price range.
-                </p>
-                <button
-                  onClick={clearAllFilters}
-                  className="btn btn-primary rounded-full px-6 btn-sm font-semibold"
-                >
-                  Clear All Filters
-                </button>
-              </div>
+              <EmptyState
+                icon={Search}
+                title="No Matching Products Found"
+                description="We couldn't find any products matching your active filters. Try adjusting your search term, category, or price range."
+                actionText="Clear All Filters"
+                onActionClick={clearAllFilters}
+              />
             ) : (
               <InfiniteScroll
                 dataLength={productList.length}
