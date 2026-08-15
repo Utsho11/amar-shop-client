@@ -1,10 +1,13 @@
-import { Star, Tag, Scale } from "lucide-react";
+import { Star, Tag, Scale, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useGetReviewsSingleProductQuery } from "../../redux/services/productApi";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCompare, removeFromCompare } from "../../redux/features/comparisonSlice";
 import { RootState } from "../../redux/store/store";
+import { useGetMyWishlistQuery, useToggleWishlistMutation } from "../../redux/services/orderApi";
+import { selectCurrentUser } from "../../redux/features/auth/authSlice";
+import { toast } from "sonner";
 import type { TProduct, TReview } from "../../types";
 
 const ProductCard = ({ product }: { product: TProduct }) => {
@@ -13,11 +16,40 @@ const ProductCard = ({ product }: { product: TProduct }) => {
   const dispatch = useDispatch();
   const isDark = theme === "dark";
 
+  const user = useSelector(selectCurrentUser);
   const compareItems = useSelector((state: RootState) => state.comparison.items);
   const isCompared = compareItems.some((item) => item.id === product.id);
 
+  const { data: wishlistData } = useGetMyWishlistQuery(undefined, {
+    skip: !user || user.role !== "CUSTOMER",
+  });
+  const [toggleWishlist] = useToggleWishlistMutation();
+
+  const isWishlisted = Array.isArray(wishlistData?.data)
+    ? wishlistData.data.some((item: any) => item.id === product.id)
+    : false;
+
   const handleProductClick = (id: string) => {
     navigate(`/products/${id}`);
+  };
+
+  const handleWishlistToggle = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!user) {
+      toast.info("Please log in to add items to your wishlist.");
+      navigate("/auth/login");
+      return;
+    }
+    if (user.role !== "CUSTOMER") {
+      toast.info("Only customers can maintain a wishlist.");
+      return;
+    }
+    try {
+      const res: any = await toggleWishlist({ productId: product.id }).unwrap();
+      toast.success(res.message || "Wishlist updated");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to update wishlist");
+    }
   };
 
   const { data: reviews } = useGetReviewsSingleProductQuery(product.id);
@@ -53,6 +85,20 @@ const ProductCard = ({ product }: { product: TProduct }) => {
           }`}
         />
 
+        {/* Wishlist Button */}
+        <button
+          onClick={handleWishlistToggle}
+          className={`absolute top-3 left-3 btn btn-circle btn-xs shadow-md transition-all ${
+            isWishlisted
+              ? "bg-rose-500 text-white border-none hover:bg-rose-600"
+              : "bg-white/90 dark:bg-zinc-800/90 text-gray-700 dark:text-zinc-200 hover:bg-white border-none"
+          }`}
+          title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart size={13} className={isWishlisted ? "fill-current" : ""} />
+        </button>
+
+        {/* Compare Button */}
         <button
           onClick={(e) => {
             e.stopPropagation();

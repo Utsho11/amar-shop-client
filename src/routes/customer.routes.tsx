@@ -2,6 +2,7 @@ import CartPage from "../pages/customerPages/CartPage";
 import CustomerProfile from "../pages/customerPages/CustomerProfile";
 import MyOrders from "../pages/customerPages/MyOrders";
 import ReviewPage from "../pages/customerPages/ReviewPage";
+import WishlistPage from "../pages/customerPages/WishlistPage";
 
 export const customerPaths = [
   {
@@ -19,5 +20,9 @@ export const customerPaths = [
   {
     path: "toReview",
     element: <ReviewPage />,
+  },
+  {
+    path: "wishlist",
+    element: <WishlistPage />,
   },
 ];

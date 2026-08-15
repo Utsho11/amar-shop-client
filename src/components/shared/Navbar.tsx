@@ -15,7 +15,8 @@ import { clearCart } from "../../redux/features/cartSlice";
 import Loading from "./Loading";
 import { useGetCategoriesQuery } from "../../redux/services/categoryApi";
 import { useGetAllShopQuery, type TShop } from "../../redux/services/shopApi";
-import { ChevronDown, ShoppingCart } from "lucide-react";
+import { useGetMyWishlistQuery } from "../../redux/services/orderApi";
+import { ChevronDown, ShoppingCart, Heart } from "lucide-react";
 import { iconMap } from "../home/CategorySection";
 
 const Navbar = () => {
@@ -29,12 +30,16 @@ const Navbar = () => {
 
   // Get user details (optional, to show updated avatar)
   const { data, isFetching, refetch } = useGetMeQuery(null, { skip: !token });
+  const { data: wishlistData } = useGetMyWishlistQuery(undefined, {
+    skip: !user || user.role !== "CUSTOMER",
+  });
 
   const { data: cate } = useGetCategoriesQuery(null);
   const { data: shopData } = useGetAllShopQuery(null);
 
   const categories = cate?.data || [];
   const shops = shopData?.data || [];
+  const wishlistCount = Array.isArray(wishlistData?.data) ? wishlistData.data.length : 0;
 
   // Trigger a refetch when the token changes
   useEffect(() => {
@@ -138,17 +143,34 @@ const Navbar = () => {
 
         {/* Theme Toggle and Profile Dropdown */}
         <div className="flex items-center gap-4">
-          <div className="space-x-3">
-            <button onClick={toggleTheme}>
+          <div className="flex items-center space-x-3">
+            <button onClick={toggleTheme} className="p-1 hover:opacity-80 transition" title="Toggle Theme">
               {theme === "light" ? (
                 <MoonIcon size={16} />
               ) : (
                 <SunIcon size={16} />
               )}
             </button>
+
+            {user?.role === "CUSTOMER" && (
+              <button
+                className="relative p-1 hover:opacity-80 transition text-rose-500"
+                onClick={() => navigate("/customerDashboard/wishlist")}
+                title="My Wishlist"
+              >
+                <Heart size={18} className={wishlistCount > 0 ? "fill-rose-500" : ""} />
+                {wishlistCount > 0 && (
+                  <span className="absolute top-0 right-0 -mt-2 -mr-2 bg-rose-500 text-xs font-bold text-white w-4 h-4 flex items-center justify-center rounded-full">
+                    {wishlistCount}
+                  </span>
+                )}
+              </button>
+            )}
+
             <button
-              className="relative"
+              className="relative p-1 hover:opacity-80 transition"
               onClick={() => navigate("/customerDashboard/cart")}
+              title="My Cart"
             >
               <CartIcon size={16} />
               <span

@@ -4,6 +4,7 @@ import {
   Package,
   Star,
   Home,
+  Heart,
 } from "lucide-react";
 
 export const customerSideLink = [
@@ -11,6 +12,11 @@ export const customerSideLink = [
     label: "My Profile",
     path: "profile",
     icon: <User size={18} />,
+  },
+  {
+    label: "My Wishlist",
+    path: "wishlist",
+    icon: <Heart size={18} />,
   },
   {
     label: "My Cart",

@@ -45,6 +45,27 @@ const orderApi = baseApi.injectEndpoints({
         };
       },
     }),
+    getMyWishlist: builder.query({
+      query: () => ({
+        url: "customer/wishlist",
+        method: "GET",
+      }),
+      providesTags: ["wishlist"],
+      keepUnusedDataFor: 0,
+      transformResponse: (response: any) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
+    toggleWishlist: builder.mutation({
+      query: (data: { productId: string }) => ({
+        url: "customer/wishlist/toggle",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["wishlist"],
+    }),
   }),
 });
 
@@ -53,4 +74,6 @@ export const {
   useGetOrderItemQuery,
   useAddReviewMutation,
   useGetOrderHistoryForCustomerQuery,
+  useGetMyWishlistQuery,
+  useToggleWishlistMutation,
 } = orderApi;
