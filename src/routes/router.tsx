@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import { routeGenerator } from "../utils/routeGenerator";
@@ -6,38 +6,40 @@ import { vendorPaths } from "./vendor.routes";
 import { adminPaths } from "./admin.routes";
 import { customerPaths } from "./customer.routes";
 import ProtectedRoute from "./ProtectedRoute";
+import { lazyWithRetry } from "../utils/lazyWithRetry";
+import ErrorPage from "../components/shared/ErrorPage";
 
-// Lazy-loaded pages
-const Homepage = lazy(() => import("../pages/Homepage"));
-const ShopPage = lazy(() => import("../pages/ShopPage"));
-const AboutPage = lazy(() => import("../pages/AboutPage"));
-const LoginPage = lazy(() => import("../pages/LoginPage"));
-const Auth = lazy(() => import("../Auth"));
-const RegistrationPage = lazy(() => import("../pages/RegistrationPage"));
-const ProductPage = lazy(() => import("../pages/ProductPage"));
-const ProductDetailsPage = lazy(() => import("../pages/ProductDetailsPage"));
-const ForgotPass = lazy(() => import("../pages/ForgotPass"));
-const ResetPass = lazy(() => import("../pages/ResetPass"));
-const CheckoutPage = lazy(() => import("../pages/customerPages/CheckoutPage"));
-const ChangePassword = lazy(() => import("../pages/ChangePassword"));
-const FlashSalePage = lazy(() => import("../pages/FlashSalePage"));
-const RecentProductPage = lazy(() => import("../pages/RecentProductPage"));
-const ComparisonPage = lazy(() => import("../pages/ComparisonPage"));
-const Contact = lazy(() => import("../pages/Contact"));
-const FAQ = lazy(() => import("../pages/FAQ"));
-const Returns = lazy(() => import("../pages/rules/Returns"));
-const Shipping = lazy(() => import("../pages/rules/Shipping"));
-const Privacy = lazy(() => import("../pages/rules/Privacy"));
-const Terms = lazy(() => import("../pages/rules/Terms"));
+// Lazy-loaded pages with auto-recovery on deploy
+const Homepage = lazyWithRetry(() => import("../pages/Homepage"));
+const ShopPage = lazyWithRetry(() => import("../pages/ShopPage"));
+const AboutPage = lazyWithRetry(() => import("../pages/AboutPage"));
+const LoginPage = lazyWithRetry(() => import("../pages/LoginPage"));
+const Auth = lazyWithRetry(() => import("../Auth"));
+const RegistrationPage = lazyWithRetry(() => import("../pages/RegistrationPage"));
+const ProductPage = lazyWithRetry(() => import("../pages/ProductPage"));
+const ProductDetailsPage = lazyWithRetry(() => import("../pages/ProductDetailsPage"));
+const ForgotPass = lazyWithRetry(() => import("../pages/ForgotPass"));
+const ResetPass = lazyWithRetry(() => import("../pages/ResetPass"));
+const CheckoutPage = lazyWithRetry(() => import("../pages/customerPages/CheckoutPage"));
+const ChangePassword = lazyWithRetry(() => import("../pages/ChangePassword"));
+const FlashSalePage = lazyWithRetry(() => import("../pages/FlashSalePage"));
+const RecentProductPage = lazyWithRetry(() => import("../pages/RecentProductPage"));
+const ComparisonPage = lazyWithRetry(() => import("../pages/ComparisonPage"));
+const Contact = lazyWithRetry(() => import("../pages/Contact"));
+const FAQ = lazyWithRetry(() => import("../pages/FAQ"));
+const Returns = lazyWithRetry(() => import("../pages/rules/Returns"));
+const Shipping = lazyWithRetry(() => import("../pages/rules/Shipping"));
+const Privacy = lazyWithRetry(() => import("../pages/rules/Privacy"));
+const Terms = lazyWithRetry(() => import("../pages/rules/Terms"));
 
 // Lazy-loaded dashboard layouts
-const AdminDashboardLayout = lazy(
+const AdminDashboardLayout = lazyWithRetry(
   () => import("../layouts/Dashboard/AdminDashboardLayout")
 );
-const CustomerDashboardLayout = lazy(
+const CustomerDashboardLayout = lazyWithRetry(
   () => import("../layouts/Dashboard/CustomerDashboardLayout")
 );
-const VendorDashboardLayout = lazy(
+const VendorDashboardLayout = lazyWithRetry(
   () => import("../layouts/Dashboard/VendorDashboardLayout")
 );
 
@@ -57,6 +59,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -135,6 +138,7 @@ const router = createBrowserRouter([
   {
     path: "/auth",
     element: withSuspense(Auth),
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "login",
@@ -148,6 +152,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/adminDashboard",
+    errorElement: <ErrorPage />,
     element: (
       <ProtectedRoute role="ADMIN">
         <Suspense fallback={<PageLoader />}>
@@ -159,6 +164,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/customerDashboard",
+    errorElement: <ErrorPage />,
     element: (
       <ProtectedRoute role="CUSTOMER">
         <Suspense fallback={<PageLoader />}>
@@ -170,6 +176,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/vendorDashboard",
+    errorElement: <ErrorPage />,
     element: (
       <ProtectedRoute role="VENDOR">
         <Suspense fallback={<PageLoader />}>
