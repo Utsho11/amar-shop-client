@@ -22,6 +22,7 @@ const CheckoutPage = lazy(() => import("../pages/customerPages/CheckoutPage"));
 const ChangePassword = lazy(() => import("../pages/ChangePassword"));
 const FlashSalePage = lazy(() => import("../pages/FlashSalePage"));
 const RecentProductPage = lazy(() => import("../pages/RecentProductPage"));
+const ComparisonPage = lazy(() => import("../pages/ComparisonPage"));
 const Contact = lazy(() => import("../pages/Contact"));
 const FAQ = lazy(() => import("../pages/FAQ"));
 const Returns = lazy(() => import("../pages/rules/Returns"));
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
       {
         path: "products/:id",
         element: withSuspense(ProductDetailsPage),
+      },
+      {
+        path: "/compare",
+        element: withSuspense(ComparisonPage),
       },
       {
         path: "/recent",

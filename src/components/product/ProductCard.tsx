@@ -1,13 +1,20 @@
-import { Star, Tag } from "lucide-react";
+import { Star, Tag, Scale } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/ThemeContext";
 import { useGetReviewsSingleProductQuery } from "../../redux/services/productApi";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCompare, removeFromCompare } from "../../redux/features/comparisonSlice";
+import { RootState } from "../../redux/store/store";
 import type { TProduct, TReview } from "../../types";
 
 const ProductCard = ({ product }: { product: TProduct }) => {
   const { theme } = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isDark = theme === "dark";
+
+  const compareItems = useSelector((state: RootState) => state.comparison.items);
+  const isCompared = compareItems.some((item) => item.id === product.id);
 
   const handleProductClick = (id: string) => {
     navigate(`/products/${id}`);
@@ -32,11 +39,11 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
   return (
     <article
-      className={`group flex h-full min-h-[430px] w-full flex-col overflow-hidden rounded-3xl border transition-all duration-300 hover:-translate-y-1 ${
+      className={`group flex h-full min-h-[430px] w-full flex-col overflow-hidden rounded-3xl border transition-all duration-300 hover:-translate-y-1 relative ${
         isDark ? "border-white/10 bg-[#211E1D]" : "border-[#E8DED2] bg-white"
       }`}
     >
-      <div className="h-52 w-full overflow-hidden">
+      <div className="h-52 w-full overflow-hidden relative">
         <img
           src={product.imageUrl[0] || "/placeholder.png"}
           alt={product.name || "Product"}
@@ -45,6 +52,25 @@ const ProductCard = ({ product }: { product: TProduct }) => {
             isDark ? "brightness-90" : ""
           }`}
         />
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            if (isCompared) {
+              dispatch(removeFromCompare(product.id));
+            } else {
+              dispatch(addToCompare(product));
+            }
+          }}
+          className={`absolute top-3 right-3 btn btn-circle btn-xs shadow-md transition-all ${
+            isCompared
+              ? "bg-[#A66B55] text-white border-none"
+              : "bg-white/90 dark:bg-zinc-800/90 text-gray-700 dark:text-zinc-200 hover:bg-white border-none"
+          }`}
+          title={isCompared ? "Remove from comparison" : "Add to comparison"}
+        >
+          <Scale size={13} />
+        </button>
       </div>
 
       <div className="flex flex-1 flex-col p-2 lg:p-5">

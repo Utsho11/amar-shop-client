@@ -27,6 +27,7 @@ import { Navigation, Pagination, Thumbs, FreeMode } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import RecentlyViewedSection from "../components/home/RecentlyViewedSection";
+import RecommendedProductsSection from "../components/product/RecommendedProductsSection";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -333,6 +334,9 @@ const ProductDetailsPage = () => {
             <p className="opacity-70">No related products found.</p>
           )}
         </section>
+
+        {/* AI & Smart Recommendations */}
+        {id && <RecommendedProductsSection productId={id} />}
 
         {/* Recently Viewed Products */}
         <RecentlyViewedSection currentProductId={id} />

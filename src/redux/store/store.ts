@@ -14,6 +14,7 @@ import storage from "redux-persist/lib/storage";
 import { baseApi } from "../api/baseApi";
 import cartReducer from "../features/cartSlice";
 import recentProductsReducer from "../features/recentProductsSlice";
+import comparisonReducer from "../features/comparisonSlice";
 
 const persistConfig = {
   key: "auth",
@@ -34,6 +35,7 @@ export const store = configureStore({
     auth: persistedAuthReducer,
     cart: persistedCartReducer,
     recentProducts: recentProductsReducer,
+    comparison: comparisonReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -112,6 +112,19 @@ const extendedProduct = baseApi.injectEndpoints({
         };
       },
     }),
+
+    getRecommendedProducts: builder.query({
+      query: (productId: string) => ({
+        url: `product/recommendations/${productId}`,
+        method: "GET",
+      }),
+      providesTags: ["product"],
+      transformResponse: (response: TResponseRedux<TProduct[]>) => {
+        return {
+          data: response.data,
+        };
+      },
+    }),
   }),
 });
 
@@ -124,4 +137,5 @@ export const {
   useGetSingleProductQuery,
   useGetFlashSaleProductsQuery,
   useGetReviewsSingleProductQuery,
+  useGetRecommendedProductsQuery,
 } = extendedProduct;
