@@ -35,6 +35,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
         <img
           src={product.imageUrl[0] || "/placeholder.png"}
           alt={product.name || "Product"}
+          loading="lazy"
           className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
             isDark ? "brightness-90" : ""
           }`}

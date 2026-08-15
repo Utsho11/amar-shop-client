@@ -1,33 +1,56 @@
+import React, { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Homepage from "../pages/Homepage";
-import ShopPage from "../pages/ShopPage";
-import AboutPage from "../pages/AboutPage";
-import LoginPage from "../pages/LoginPage";
-import Auth from "../Auth";
-import RegistrationPage from "../pages/RegistrationPage";
-import AdminDashboardLayout from "../layouts/Dashboard/AdminDashboardLayout";
-import CustomerDashboardLayout from "../layouts/Dashboard/CustomerDashboardLayout";
-import VendorDashboardLayout from "../layouts/Dashboard/VendorDashboardLayout";
 import { routeGenerator } from "../utils/routeGenerator";
 import { vendorPaths } from "./vendor.routes";
 import { adminPaths } from "./admin.routes";
 import { customerPaths } from "./customer.routes";
 import ProtectedRoute from "./ProtectedRoute";
-import ProductPage from "../pages/ProductPage";
-import ProductDetailsPage from "../pages/ProductDetailsPage";
-import ForgotPass from "../pages/ForgotPass";
-import ResetPass from "../pages/ResetPass";
-import CheckoutPage from "../pages/customerPages/CheckoutPage";
-import ChangePassword from "../pages/ChangePassword";
-import FlashSalePage from "../pages/FlashSalePage";
-import RecentProductPage from "../pages/RecentProductPage";
-import Contact from "../pages/Contact";
-import FAQ from "../pages/FAQ";
-import Returns from "../pages/rules/Returns";
-import Shipping from "../pages/rules/Shipping";
-import Privacy from "../pages/rules/Privacy";
-import Terms from "../pages/rules/Terms";
+
+// Lazy-loaded pages
+const Homepage = lazy(() => import("../pages/Homepage"));
+const ShopPage = lazy(() => import("../pages/ShopPage"));
+const AboutPage = lazy(() => import("../pages/AboutPage"));
+const LoginPage = lazy(() => import("../pages/LoginPage"));
+const Auth = lazy(() => import("../Auth"));
+const RegistrationPage = lazy(() => import("../pages/RegistrationPage"));
+const ProductPage = lazy(() => import("../pages/ProductPage"));
+const ProductDetailsPage = lazy(() => import("../pages/ProductDetailsPage"));
+const ForgotPass = lazy(() => import("../pages/ForgotPass"));
+const ResetPass = lazy(() => import("../pages/ResetPass"));
+const CheckoutPage = lazy(() => import("../pages/customerPages/CheckoutPage"));
+const ChangePassword = lazy(() => import("../pages/ChangePassword"));
+const FlashSalePage = lazy(() => import("../pages/FlashSalePage"));
+const RecentProductPage = lazy(() => import("../pages/RecentProductPage"));
+const Contact = lazy(() => import("../pages/Contact"));
+const FAQ = lazy(() => import("../pages/FAQ"));
+const Returns = lazy(() => import("../pages/rules/Returns"));
+const Shipping = lazy(() => import("../pages/rules/Shipping"));
+const Privacy = lazy(() => import("../pages/rules/Privacy"));
+const Terms = lazy(() => import("../pages/rules/Terms"));
+
+// Lazy-loaded dashboard layouts
+const AdminDashboardLayout = lazy(
+  () => import("../layouts/Dashboard/AdminDashboardLayout")
+);
+const CustomerDashboardLayout = lazy(
+  () => import("../layouts/Dashboard/CustomerDashboardLayout")
+);
+const VendorDashboardLayout = lazy(
+  () => import("../layouts/Dashboard/VendorDashboardLayout")
+);
+
+const PageLoader = () => (
+  <div className="min-h-[60vh] flex items-center justify-center">
+    <span className="loading loading-spinner loading-lg text-primary"></span>
+  </div>
+);
+
+const withSuspense = (Component: React.ComponentType) => (
+  <Suspense fallback={<PageLoader />}>
+    <Component />
+  </Suspense>
+);
 
 const router = createBrowserRouter([
   {
@@ -36,85 +59,85 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Homepage />,
+        element: withSuspense(Homepage),
       },
       {
         path: "/shop/:id",
-        element: <ShopPage />,
+        element: withSuspense(ShopPage),
       },
       {
         path: "/products",
-        element: <ProductPage />,
+        element: withSuspense(ProductPage),
       },
       {
         path: "products/:id",
-        element: <ProductDetailsPage />,
+        element: withSuspense(ProductDetailsPage),
       },
       {
         path: "/recent",
-        element: <RecentProductPage />,
+        element: withSuspense(RecentProductPage),
       },
       {
         path: "about",
-        element: <AboutPage />,
+        element: withSuspense(AboutPage),
       },
       {
         path: "/contact",
-        element: <Contact />,
+        element: withSuspense(Contact),
       },
       {
         path: "/faq",
-        element: <FAQ />,
+        element: withSuspense(FAQ),
       },
       {
         path: "checkout",
-        element: <CheckoutPage />,
+        element: withSuspense(CheckoutPage),
       },
       {
         path: "forgot-password",
-        element: <ForgotPass />,
+        element: withSuspense(ForgotPass),
       },
       {
         path: "reset-password",
-        element: <ResetPass />,
+        element: withSuspense(ResetPass),
       },
       {
         path: "change-password",
-        element: <ChangePassword />,
+        element: withSuspense(ChangePassword),
       },
       {
         path: "flash-sale",
-        element: <FlashSalePage />,
+        element: withSuspense(FlashSalePage),
       },
       {
         path: "returns",
-        element: <Returns />,
+        element: withSuspense(Returns),
       },
       {
         path: "shipping",
-        element: <Shipping />,
+        element: withSuspense(Shipping),
       },
       {
         path: "privacy",
-        element: <Privacy />,
+        element: withSuspense(Privacy),
       },
       {
         path: "terms",
-        element: <Terms />,
+        element: withSuspense(Terms),
       },
     ],
   },
   {
     path: "/auth",
-    element: <Auth />,
+    element: withSuspense(Auth),
     children: [
       {
         path: "login",
-        element: <LoginPage />,
+        element: withSuspense(LoginPage),
       },
       {
         path: "register",
-        element: <RegistrationPage />,
+        element: withSuspense(RegistrationPage),
       },
     ],
   },
@@ -122,7 +145,9 @@ const router = createBrowserRouter([
     path: "/adminDashboard",
     element: (
       <ProtectedRoute role="ADMIN">
-        <AdminDashboardLayout />
+        <Suspense fallback={<PageLoader />}>
+          <AdminDashboardLayout />
+        </Suspense>
       </ProtectedRoute>
     ),
     children: routeGenerator(adminPaths),
@@ -131,7 +156,9 @@ const router = createBrowserRouter([
     path: "/customerDashboard",
     element: (
       <ProtectedRoute role="CUSTOMER">
-        <CustomerDashboardLayout />
+        <Suspense fallback={<PageLoader />}>
+          <CustomerDashboardLayout />
+        </Suspense>
       </ProtectedRoute>
     ),
     children: routeGenerator(customerPaths),
@@ -140,7 +167,9 @@ const router = createBrowserRouter([
     path: "/vendorDashboard",
     element: (
       <ProtectedRoute role="VENDOR">
-        <VendorDashboardLayout />
+        <Suspense fallback={<PageLoader />}>
+          <VendorDashboardLayout />
+        </Suspense>
       </ProtectedRoute>
     ),
     children: routeGenerator(vendorPaths),
