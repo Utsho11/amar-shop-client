@@ -15,10 +15,15 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
   const { data: reviews } = useGetReviewsSingleProductQuery(product.id);
 
-  const reviewData: TReview[] = (reviews?.data || []) as TReview[];
+  const rawReviews = reviews?.data;
+  const reviewData: TReview[] = Array.isArray(rawReviews)
+    ? (rawReviews as TReview[])
+    : Array.isArray((rawReviews as any)?.reviews)
+    ? ((rawReviews as any).reviews as TReview[])
+    : [];
 
   const totalRating = reviewData.reduce(
-    (acc, review) => acc + review.rating,
+    (acc, review) => acc + (review.rating || 0),
     0,
   );
 

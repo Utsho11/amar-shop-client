@@ -52,16 +52,22 @@ const ProductDetailsPage = () => {
     }
   }, [product, dispatch]);
 
-  const reviewData: TReview[] = useMemo(
-    () => (reviews?.data || []) as TReview[],
-    [reviews?.data],
-  );
+  const reviewData: TReview[] = useMemo(() => {
+    const rawReviews = reviews?.data;
+    if (Array.isArray(rawReviews)) {
+      return rawReviews as TReview[];
+    }
+    if (Array.isArray((rawReviews as any)?.reviews)) {
+      return (rawReviews as any).reviews as TReview[];
+    }
+    return [];
+  }, [reviews?.data]);
 
   const averageRating = useMemo(() => {
     if (!reviewData.length) return 0;
 
     const totalRating = reviewData.reduce(
-      (acc, review) => acc + review.rating,
+      (acc, review) => acc + (review.rating || 0),
       0,
     );
 
