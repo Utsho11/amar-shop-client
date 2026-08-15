@@ -67,7 +67,7 @@ const ManageShop = () => {
             isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
           }`}
         >
-          Recent Products
+          Shops
         </p>
 
         <h1
@@ -75,7 +75,7 @@ const ManageShop = () => {
             isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
           }`}
         >
-          Recent Viewed Products
+          Manage All Shops
         </h1>
       </div>
       <div className="my-8">

@@ -51,7 +51,7 @@ const CheckoutPage = () => {
     const order = {
       customerEmail: user.email,
       totalAmount: finalAmount,
-      paymentMethod: "AmarPay",
+      paymentMethod: "SSLCommerz",
       OrderItem: {
         data: cartItems.map((product) => ({
           productId: product.id,
@@ -63,16 +63,27 @@ const CheckoutPage = () => {
 
     setOrderData(order);
 
-    const res = await createOrder(order).unwrap();
+    try {
+      const res = await createOrder(order).unwrap();
+      console.log({ res });
 
-    console.log({res});
-    
-    
+      const gatewayUrl =
+        res?.data?.GatewayPageURL || res?.data?.redirectGatewayURL;
 
-    if (res) {
-      window.location.href = res.data.GatewayPageURL;
-    } else {
-      toast.error("Payment Failed");
+      if (gatewayUrl) {
+        window.location.href = gatewayUrl;
+      } else {
+        const errorMsg =
+          res?.data?.failedreason ||
+          res?.message ||
+          "Failed to initiate payment gateway. Please check your connection.";
+        toast.error(errorMsg);
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(
+        err?.data?.message || err?.message || "Failed to create order."
+      );
     }
   };
 

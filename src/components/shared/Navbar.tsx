@@ -101,7 +101,7 @@ const Navbar = () => {
                       className="font-semibold"
                     >
                       <Icon size={16} />
-                      {category.name ? category.name : "No Categry"}
+                      {category.name ? category.name : "No Category"}
                     </Link>
                   </li>
                 );

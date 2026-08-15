@@ -51,17 +51,17 @@ const EditCategoryModal = ({
         <ASForm<TCategory> onSubmit={handleSubmit} defaultValues={category}>
           <ASInput
             name="name"
-            label="Product Name"
+            label="Category Name"
             placeholder="Enter product name"
           />
           <ASTextarea
             name="description"
             label="Description"
-            placeholder="Enter discount percentage"
+            placeholder="Enter category description"
           />
           <ASFileInput
             name="file"
-            label="Update Product Photo/Logo"
+            label="Update Category Photo/Logo"
             accept="image/*"
             onFileChange={handleFileChange}
           />

@@ -38,7 +38,7 @@ const VendorRevenueChart = () => {
   return (
     <div className="">
       <div className="text-2xl font-bold text-center my-8">
-        <h1>Revenue Summery Per Year</h1>
+        <h1>Revenue Summary Per Year</h1>
       </div>
       <div className="overflow-x-auto">
         {isLoading ? (
@@ -67,7 +67,7 @@ const VendorRevenueChart = () => {
               label={{ position: "top" }}
             >
               {totalAmountByYear.map((_, index) => (
-                <Cell key={`cell-${index}`} fill={colors[index % 20]} />
+                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
               ))}
             </Bar>
           </BarChart>

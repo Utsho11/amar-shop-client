@@ -16,7 +16,7 @@ const AdminDashboardLayout = () => {
           <div className="flex gap-1 items-center p-4 sm:p-8">
             <MdOutlineSpaceDashboard size={24} />
             <NavLink
-              to="/vendorDashboard/profile"
+              to="/adminDashboard/profile"
               className="flex border-none bg-transparent"
             >
               <p className="font-bold">Dashboard</p>

@@ -26,8 +26,7 @@ interface ErrorData {
 }
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: "https://amar-shop-server-gules.vercel.app/api",
-  baseUrl: "http://localhost:5000/api",
+  baseUrl: import.meta.env.VITE_API_URL || "https://amar-shop-server-gules.vercel.app/api",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
@@ -64,8 +63,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
       // console.log("Sending refresh token");
 
       const res = await fetch(
-        // "https://amar-shop-server-gules.vercel.app/api/auth/refresh-token",
-        "http://localhost:5000/api/auth/refresh-token",
+        `${import.meta.env.VITE_API_URL || "https://amar-shop-server-gules.vercel.app/api"}/auth/refresh-token`,
         {
           method: "POST",
           credentials: "include",

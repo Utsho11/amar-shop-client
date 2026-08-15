@@ -32,11 +32,16 @@ const ShopPage = () => {
   const handleFollowShop = () => {
     if (!user) {
       navigate("/auth/login");
+      return;
     }
     followShop(id as string);
   };
 
   const handleUnfollowShop = () => {
+    if (!user) {
+      navigate("/auth/login");
+      return;
+    }
     unfollowShop(id as string);
   };
 
@@ -92,7 +97,7 @@ const ShopPage = () => {
               onClick={handleUnfollowShop}
               className="btn btn-sm btn-primary"
             >
-              Unfllow
+              Unfollow
             </button>
           ) : (
             <button

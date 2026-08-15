@@ -46,7 +46,7 @@ const ReviewPage = () => {
     };
 
     try {
-      const toastId = toast.loading("Reviw Posting...");
+      const toastId = toast.loading("Review Posting...");
       await addReview(reviewData);
       toast.success("Review added successfully!", {
         id: toastId,

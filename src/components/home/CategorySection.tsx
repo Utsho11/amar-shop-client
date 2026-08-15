@@ -59,8 +59,9 @@ export default function CategorySection() {
               (iconMap[name.toLowerCase()] as unknown as string) || ShoppingCart;
 
             return (
-              <button
+              <Link
                 key={category?.id || name}
+                to={`/products?category=${encodeURIComponent(category.name)}`}
                 className="group flex flex-col items-center gap-3"
               >
                 <div
@@ -80,13 +81,9 @@ export default function CategorySection() {
                       : "text-[#6B5E57] group-hover:text-[#A66B55]"
                   }`}
                 >
-                  <Link
-                    to={`/products?category=${encodeURIComponent(category.name)}`}
-                  >
-                    {name}
-                  </Link>
+                  {name}
                 </span>
-              </button>
+              </Link>
             );
           })}
         </div>

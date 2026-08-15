@@ -43,15 +43,15 @@ const VendorOverviewCard = ({ theme }: VendorOverviewCardProps) => {
           >
             <div className="flex items-center gap-4">
               <img
-                src={shopData.logoUrl || "/placeholder.png"}
-                alt={shopData.name}
+                src={shopData?.logoUrl || "/placeholder.png"}
+                alt={shopData?.name}
                 className="h-16 w-16 rounded-2xl object-cover"
               />
 
               <div className="min-w-0">
                 <p className="text-sm opacity-60">Shop Name</p>
                 <h3 className="truncate text-2xl font-bold">
-                  {shopData.name || "My Shop"}
+                  {shopData?.name || "My Shop"}
                 </h3>
               </div>
             </div>

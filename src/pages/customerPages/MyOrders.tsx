@@ -1,10 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import ASOrderTable from "../../components/table/ASOrderTable";
 import { TOrderHistory } from "../../types";
 import { useGetOrderHistoryForCustomerQuery } from "../../redux/services/orderApi";
 import { useTheme } from "../../context/ThemeContext";
+import { useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../../redux/features/cartSlice";
+import { toast } from "sonner";
 
 interface Column<T> {
   key: keyof T;
@@ -18,8 +21,18 @@ const ITEMS_PER_PAGE = 5;
 const MyOrders = () => {
   const [currentPage, setCurrentPage] = useState(0); // Track current page
   const { data, isLoading } = useGetOrderHistoryForCustomerQuery(null);
+  const [searchParams] = useSearchParams();
+  const dispatch = useDispatch();
 
-  // console.log(data?.data);
+  useEffect(() => {
+    if (searchParams.get("payment") === "success") {
+      dispatch(clearCart());
+      toast.success("Payment completed successfully! Your order has been placed.", {
+        duration: 4000,
+      });
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [searchParams, dispatch]);
 
   // Paginated Data
   const pageCount = Math.ceil((data?.data?.length || 0) / ITEMS_PER_PAGE);

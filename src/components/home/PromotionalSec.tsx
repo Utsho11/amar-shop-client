@@ -2,19 +2,19 @@ import { Link } from "react-router-dom";
 
 const promoCards = [
   {
-    id: "d3d0cc6c-11e0-4ed6-b374-6ece5f14e2c2",
+    id: "f3b336e2-a471-4f90-a7ef-ac4dbef2ebc7",
     title: "Immersive Audio",
     description:
       "Experience sound like never before with our premium headset collection.",
     button: "Shop Now",
-    image: "/Headphone.webp",
+    image: "https://res.cloudinary.com/dedov7ch9/image/upload/v1777821979/AmarShop/k5t56zo7s9-1777821978960-files-headphone.jpg",
   },
   {
-    id: "e6c024db-dc6e-49a8-ba82-de1144388415",
+    id: "df64b5e5-439e-4853-aebc-9d2c578afca1",
     title: "New Collection",
-    description: "Step into the new season with our latest footwear drop.",
+    description: "Soft cotton oversized t-shirt offering ultimate comfort and a trendy street-style look.",
     button: "Explore More",
-    image: "/shoe.png",
+    image: "https://res.cloudinary.com/dedov7ch9/image/upload/v1777818988/AmarShop/e9zc7uau2wp-1777818988410-files-Casual%20Oversized%20T-Shirt.jpg",
   },
 ];
 

@@ -117,7 +117,7 @@ const ManageProduct = () => {
             isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
           }`}
         >
-          Recent Products
+          Products
         </p>
 
         <h1
@@ -125,7 +125,7 @@ const ManageProduct = () => {
             isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
           }`}
         >
-          Recent Viewed Products
+          Manage Products
         </h1>
       </div>
       <div className="sm:mx-12 my-16">

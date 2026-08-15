@@ -79,7 +79,7 @@ const EditProductModal = ({
           <ASTextarea
             name="description"
             label="Description"
-            placeholder="Enter discount percentage"
+            placeholder="Enter product description"
           />
           <ASFileInput
             name="file"

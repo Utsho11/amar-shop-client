@@ -41,7 +41,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
         />
       </div>
 
-      <div className="flex flex-1 flex-col p-5">
+      <div className="flex flex-1 flex-col p-2 lg:p-5">
         <div className="flex-1">
           <h3
             className={`line-clamp-1 text-lg font-semibold ${
@@ -60,7 +60,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
           </p>
 
           <div className="mt-4 grid gap-3 text-sm">
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center lg:justify-between gap-3">
               <span className={isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"}>
                 Price
               </span>
@@ -75,7 +75,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
             <div className="flex items-center justify-between gap-3">
               <span
-                className={`flex items-center gap-2 ${
+                className={`hidden lg:flex items-center gap-2 ${
                   isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
                 }`}
               >
@@ -93,7 +93,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
               </span>
             </div>
 
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center lg:justify-between gap-3">
               <span
                 className={`flex items-center gap-2 ${
                   isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
@@ -111,7 +111,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
         <button
           onClick={() => handleProductClick(product.id)}
-          className="btn mt-5 w-full rounded-full border-none bg-[#A66B55] text-white hover:bg-[#8d5947]"
+          className="btn btn-sm lg:btn-md mt-5 w-full rounded-full border-none bg-[#A66B55] text-white hover:bg-[#8d5947]"
         >
           View Details
         </button>

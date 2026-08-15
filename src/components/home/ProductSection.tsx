@@ -73,7 +73,7 @@ const ProductSection: React.FC<ProductSectionProps> = () => {
             </p>
           }
         >
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
             {productList.map((product, index) => (
               <ProductCard key={index} product={product} />
             ))}

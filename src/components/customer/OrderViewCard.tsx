@@ -128,7 +128,7 @@ const OrderViewCard = ({ theme }: OrderViewProps) => {
           }`}
         >
           <MdReviews />
-          Product to be Revieweed: {reviewCount || 0}
+          Product to be Reviewed: {reviewCount || 0}
         </h1>
       </div>
     </div>
