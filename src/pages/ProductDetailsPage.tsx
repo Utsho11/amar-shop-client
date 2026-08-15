@@ -25,6 +25,8 @@ import {
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Thumbs, FreeMode } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
+import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
+import RecentlyViewedSection from "../components/home/RecentlyViewedSection";
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -43,14 +45,16 @@ const ProductDetailsPage = () => {
   const isDark = theme === "dark";
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { addProduct: addToRecentlyViewed } = useRecentlyViewed();
 
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
 
   useEffect(() => {
     if (product) {
       dispatch(addRecentProduct(product));
+      addToRecentlyViewed(product);
     }
-  }, [product, dispatch]);
+  }, [product, dispatch, addToRecentlyViewed]);
 
   const reviewData: TReview[] = useMemo(() => {
     const rawReviews = reviews?.data;
@@ -329,6 +333,9 @@ const ProductDetailsPage = () => {
             <p className="opacity-70">No related products found.</p>
           )}
         </section>
+
+        {/* Recently Viewed Products */}
+        <RecentlyViewedSection currentProductId={id} />
       </section>
     </main>
   );

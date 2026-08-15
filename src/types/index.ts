@@ -113,12 +113,27 @@ export interface IProduct {
   imageUrl: string;
 }
 
+export type TOrderStatus =
+  | "PENDING"
+  | "PROCESSING"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "COMPLETED"
+  | "CANCELLED";
+
 export interface TOrderHistory {
+  id?: string;
+  orderId?: string;
   quantity: number;
   productName: string;
   productImage: string;
   productPrice: string;
   transactionId: string;
+  orderStatus?: TOrderStatus;
+  customerEmail?: string;
+  shippingAddress?: string;
+  shippingCity?: string;
+  shippingPhone?: string;
   createdAt: string;
 }
 

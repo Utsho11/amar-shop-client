@@ -30,8 +30,19 @@ const vendorApi = baseApi.injectEndpoints({
         };
       },
     }),
+    updateOrderStatus: builder.mutation({
+      query: ({ orderId, status }: { orderId: string; status: string }) => ({
+        url: `vendor/update-order-status/${orderId}`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: ["order"],
+    }),
   }),
 });
 
-export const { useGetProductsByVendorQuery, useGetOrderHistoryForVendorQuery } =
-  vendorApi;
+export const {
+  useGetProductsByVendorQuery,
+  useGetOrderHistoryForVendorQuery,
+  useUpdateOrderStatusMutation,
+} = vendorApi;

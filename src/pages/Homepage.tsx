@@ -8,6 +8,7 @@ import ProductSection from "../components/home/ProductSection";
 import ShopSection from "../components/home/ShopSection";
 import PromotionalSec from "../components/home/PromotionalSec";
 import CTASection from "../components/home/CTAsection";
+import RecentlyViewedSection from "../components/home/RecentlyViewedSection";
 import { useTheme } from "../context/ThemeContext";
 
 const Homepage = () => {
@@ -44,6 +45,9 @@ const Homepage = () => {
       <FlashSaleSection />
       <PromotionalSec />
       <ProductSection />
+      <div className="container mx-auto px-4">
+        <RecentlyViewedSection />
+      </div>
 
       <CTASection theme={theme} />
 
