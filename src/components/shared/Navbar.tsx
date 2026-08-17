@@ -16,7 +16,19 @@ import Loading from "./Loading";
 import { useGetCategoriesQuery } from "../../redux/services/categoryApi";
 import { useGetAllShopQuery, type TShop } from "../../redux/services/shopApi";
 import { useGetMyWishlistQuery } from "../../redux/services/orderApi";
-import { ChevronDown, ShoppingCart, Heart } from "lucide-react";
+import {
+  ChevronDown,
+  ShoppingCart,
+  Heart,
+  LayoutDashboard,
+  Package,
+  Store,
+  KeyRound,
+  LogOut,
+  ShieldCheck,
+  User,
+  ShoppingBag,
+} from "lucide-react";
 import { iconMap } from "../home/CategorySection";
 
 const Navbar = () => {
@@ -187,61 +199,194 @@ const Navbar = () => {
               <div
                 tabIndex={0}
                 role="button"
-                className="btn btn-ghost btn-circle avatar"
+                className="btn btn-ghost btn-circle avatar ring-2 ring-primary/40 hover:ring-primary transition-all"
               >
                 {isFetching ? (
                   <Loading />
                 ) : (
-                  <div className="w-10 rounded-full ring ring-offset-2">
+                  <div className="w-10 rounded-full">
                     <img
-                      alt="User Avatar"
-                      src={data?.data?.image || "https://tinyurl.com/cwrva2uh"}
+                      alt={user.email || "User Avatar"}
+                      src={
+                        data?.data?.image ||
+                        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                      }
+                      className="object-cover"
                     />
                   </div>
                 )}
               </div>
-              <ul
+              <div
                 tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+                className="dropdown-content z-50 mt-3 w-72 rounded-3xl bg-base-100 p-4 shadow-2xl border border-base-200 animate-in fade-in slide-in-from-top-2"
               >
-                {user.role === "ADMIN" ? (
+                {/* User Header Profile Card */}
+                <div className="flex items-center gap-3 pb-3 mb-2 border-b border-base-200">
+                  <div className="w-11 h-11 rounded-2xl overflow-hidden bg-primary/10 border border-primary/20 shrink-0">
+                    <img
+                      src={
+                        data?.data?.image ||
+                        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                      }
+                      alt="User"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="overflow-hidden">
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-bold text-xs truncate">
+                        {data?.data?.name || user.email?.split("@")[0]}
+                      </span>
+                      <ShieldCheck size={13} className="text-primary shrink-0" />
+                    </div>
+                    <p className="text-[11px] text-gray-400 truncate font-mono">
+                      {user.email}
+                    </p>
+                    <span className="badge badge-primary badge-xs font-bold uppercase mt-1">
+                      {user.role}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Role-Specific Navigation Links */}
+                <ul className="space-y-1 text-xs font-bold text-base-content">
+                  {user.role === "ADMIN" && (
+                    <>
+                      <li>
+                        <NavLink
+                          to="/adminDashboard/profile"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <LayoutDashboard size={16} className="text-primary" />
+                          <span>Admin Control Center</span>
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/adminDashboard/manage-users"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <User size={16} className="text-primary" />
+                          <span>Manage Users</span>
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/adminDashboard/manage-shops"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <Store size={16} className="text-primary" />
+                          <span>Manage Shops</span>
+                        </NavLink>
+                      </li>
+                    </>
+                  )}
+
+                  {user.role === "VENDOR" && (
+                    <>
+                      <li>
+                        <NavLink
+                          to="/vendorDashboard/profile"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <LayoutDashboard size={16} className="text-primary" />
+                          <span>Vendor Dashboard</span>
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/vendorDashboard/my-shop"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <Store size={16} className="text-primary" />
+                          <span>My Shop Hub</span>
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/vendorDashboard/manage-products"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <Package size={16} className="text-primary" />
+                          <span>Manage Products</span>
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/vendorDashboard/order-history"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <ShoppingBag size={16} className="text-primary" />
+                          <span>Fulfillment Orders</span>
+                        </NavLink>
+                      </li>
+                    </>
+                  )}
+
+                  {user.role === "CUSTOMER" && (
+                    <>
+                      <li>
+                        <NavLink
+                          to="/customerDashboard/profile"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <LayoutDashboard size={16} className="text-primary" />
+                          <span>Customer Dashboard</span>
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/customerDashboard/my-orders"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <Package size={16} className="text-primary" />
+                          <span>My Purchases</span>
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/customerDashboard/wishlist"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <Heart size={16} className="text-rose-500" />
+                          <span>My Wishlist ({wishlistCount})</span>
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/customerDashboard/review"
+                          className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
+                        >
+                          <ShoppingBag size={16} className="text-amber-500" />
+                          <span>Review Products</span>
+                        </NavLink>
+                      </li>
+                    </>
+                  )}
+
+                  <div className="my-1.5 border-t border-base-200" />
+
                   <li>
                     <NavLink
-                      to="/adminDashboard/profile"
-                      className="justify-between"
+                      to="/change-password"
+                      className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
                     >
-                      My dashboard
-                      <span className="badge">New</span>
+                      <KeyRound size={16} className="text-gray-400" />
+                      <span>Security & Password</span>
                     </NavLink>
                   </li>
-                ) : user.role === "VENDOR" ? (
+
                   <li>
-                    <NavLink
-                      to="/vendorDashboard/profile"
-                      className="justify-between"
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-2.5 p-2.5 rounded-xl text-error hover:bg-error/10 w-full transition"
                     >
-                      My dashboard
-                      <span className="badge">New</span>
-                    </NavLink>
+                      <LogOut size={16} />
+                      <span>Log Out</span>
+                    </button>
                   </li>
-                ) : (
-                  <li>
-                    <NavLink
-                      to="/customerDashboard/profile"
-                      className="justify-between"
-                    >
-                      My dashboard
-                      <span className="badge">New</span>
-                    </NavLink>
-                  </li>
-                )}
-                <li>
-                  <NavLink to="/change-password">Change Password</NavLink>
-                </li>
-                <li>
-                  <button onClick={handleLogout}>Logout</button>
-                </li>
-              </ul>
+                </ul>
+              </div>
             </div>
           ) : (
             <div>
