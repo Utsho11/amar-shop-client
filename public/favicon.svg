@@ -10,10 +10,19 @@
     </linearGradient>
   </defs>
   
+  <!-- Rounded Base Badge -->
   <rect width="128" height="128" rx="32" fill="url(#terracottaGrad)"/>
+  
+  <!-- Subtle Inner Ring -->
   <rect x="6" y="6" width="116" height="116" rx="26" fill="none" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="3"/>
+  
+  <!-- Shopping Bag Handle -->
   <path d="M48 48 C48 34, 80 34, 80 48" fill="none" stroke="url(#goldGrad)" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Modern Geometric 'A' / Shopping Bag Silhouette -->
   <path d="M34 50 L94 50 L84 100 L44 100 Z" fill="#FFFFFF" fill-opacity="0.95"/>
+  
+  <!-- Cutout Accent -->
   <polygon points="64,58 78,92 50,92" fill="#A66B55"/>
   <polygon points="64,68 71,85 57,85" fill="#FFFFFF"/>
 </svg>

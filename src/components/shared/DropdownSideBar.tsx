@@ -1,12 +1,18 @@
-// DropdownSideBar.tsx
-
+import React from "react";
 import { NavLink } from "react-router-dom";
-import { AboutIcon, ContactIcon, ShopIcon } from "../icons/icon";
+import {
+  ShoppingBag,
+  Info,
+  Mail,
+  Scale,
+  History,
+  Menu,
+  X,
+} from "lucide-react";
 
-// Define types for the props
 interface DropdownSideBarProps {
-  toggleMenu: () => void; // Function that toggles the menu
-  isMenuOpen: boolean; // Boolean indicating if the menu is open
+  toggleMenu: () => void;
+  isMenuOpen: boolean;
 }
 
 const DropdownSideBar: React.FC<DropdownSideBarProps> = ({
@@ -15,50 +21,71 @@ const DropdownSideBar: React.FC<DropdownSideBarProps> = ({
 }) => {
   return (
     <div className="dropdown">
-      {/* Hamburger Menu (for small screens) */}
-      <div tabIndex={0} role="button" className="m-1 flex items-center">
-        <label className="swap">
-          {/* This hidden checkbox controls the state */}
-          <input
-            type="checkbox"
-            onChange={toggleMenu} // Toggle menu visibility when clicked
-            checked={isMenuOpen} // Bind state to the checkbox
-          />
-
-          {/* Hamburger Icon (visible when menu is closed) */}
-          <svg
-            className="fill-current"
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 512 512"
-          >
-            <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
-          </svg>
-        </label>
-      </div>
-      {/* Menu (Dropdown) */}
-      <ul
-        tabIndex={0}
-        className={`dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow ${
-          isMenuOpen ? "block" : "hidden"
-        }`}
+      <button
+        onClick={toggleMenu}
+        className="btn btn-ghost btn-circle btn-sm"
+        aria-label="Toggle navigation menu"
       >
-        <div className="flex flex-col z-20">
-          <NavLink to="/products" className="p-2 flex items-center gap-3">
-            <ShopIcon size={16} />
-            All Products
-          </NavLink>
-          <NavLink to="/about" className="p-2 flex items-center gap-3">
-            <AboutIcon size={16} />
-            About us
-          </NavLink>
-          <NavLink to="/contact" className="p-2 flex items-center gap-3">
-            <ContactIcon size={16} />
-            Contact us
-          </NavLink>
-        </div>
-      </ul>
+        {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+      </button>
+
+      {isMenuOpen && (
+        <ul
+          tabIndex={0}
+          className="dropdown-content menu bg-base-100 rounded-3xl z-50 w-56 p-3 shadow-2xl border border-base-200 mt-2 space-y-1 animate-in fade-in"
+        >
+          <li>
+            <NavLink
+              to="/products"
+              onClick={toggleMenu}
+              className="flex items-center gap-2.5 p-2.5 rounded-xl font-semibold text-xs"
+            >
+              <ShoppingBag size={16} className="text-primary" />
+              <span>All Products</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/compare"
+              onClick={toggleMenu}
+              className="flex items-center gap-2.5 p-2.5 rounded-xl font-semibold text-xs"
+            >
+              <Scale size={16} className="text-primary" />
+              <span>Compare Items</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/recent"
+              onClick={toggleMenu}
+              className="flex items-center gap-2.5 p-2.5 rounded-xl font-semibold text-xs"
+            >
+              <History size={16} className="text-primary" />
+              <span>Recently Viewed</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/about"
+              onClick={toggleMenu}
+              className="flex items-center gap-2.5 p-2.5 rounded-xl font-semibold text-xs"
+            >
+              <Info size={16} className="text-primary" />
+              <span>About Us</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/contact"
+              onClick={toggleMenu}
+              className="flex items-center gap-2.5 p-2.5 rounded-xl font-semibold text-xs"
+            >
+              <Mail size={16} className="text-primary" />
+              <span>Contact Us</span>
+            </NavLink>
+          </li>
+        </ul>
+      )}
     </div>
   );
 };

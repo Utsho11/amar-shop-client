@@ -28,6 +28,10 @@ import {
   ShieldCheck,
   User,
   ShoppingBag,
+  Layers,
+  History,
+  Info,
+  Scale,
 } from "lucide-react";
 import { iconMap } from "../home/CategorySection";
 
@@ -89,19 +93,34 @@ const Navbar = () => {
         </div>
 
         {/* Links (visible on medium screens and above) */}
-        <div className="hidden lg:flex lg:flex-auto gap-4">
-          <NavLink to="/products" className="font-semibold">
-            All Products
+        <div className="hidden lg:flex lg:flex-auto items-center gap-1.5 xl:gap-3 text-xs sm:text-sm">
+          <NavLink
+            to="/products"
+            className={({ isActive }) =>
+              `flex items-center gap-1.5 px-3 py-2 rounded-full font-semibold transition ${
+                isActive
+                  ? "bg-primary text-white"
+                  : "hover:bg-base-200 hover:text-primary"
+              }`
+            }
+          >
+            <ShoppingBag size={15} />
+            <span>All Products</span>
           </NavLink>
+
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="font-semibold">
-              <p className="font-semibold flex items-center">
-                Category <ChevronDown size={18} />
-              </p>
+            <div
+              tabIndex={0}
+              role="button"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-full font-semibold hover:bg-base-200 hover:text-primary cursor-pointer transition"
+            >
+              <Layers size={15} />
+              <span>Categories</span>
+              <ChevronDown size={14} className="opacity-70" />
             </div>
             <ul
               tabIndex={-1}
-              className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm top-10"
+              className="dropdown-content menu bg-base-100 rounded-2xl z-50 w-56 p-2 shadow-xl border border-base-200 top-11"
             >
               {categories?.map((category, idx) => {
                 const name = category?.name || "Category";
@@ -115,41 +134,86 @@ const Navbar = () => {
                       to={`/products?category=${encodeURIComponent(
                         category.name,
                       )}`}
-                      className="font-semibold"
+                      className="font-semibold text-xs py-2 gap-2.5"
                     >
-                      <Icon size={16} />
-                      {category.name ? category.name : "No Category"}
+                      <Icon size={15} className="text-primary" />
+                      <span>{category.name ? category.name : "No Category"}</span>
                     </Link>
                   </li>
                 );
               })}
             </ul>
           </div>
+
           <div className="dropdown">
-            <div tabIndex={0} role="button" className="font-semibold">
-              <p className="font-semibold flex items-center">
-                Shops <ChevronDown size={18} />
-              </p>
+            <div
+              tabIndex={0}
+              role="button"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-full font-semibold hover:bg-base-200 hover:text-primary cursor-pointer transition"
+            >
+              <Store size={15} />
+              <span>Shops</span>
+              <ChevronDown size={14} className="opacity-70" />
             </div>
             <ul
               tabIndex={-1}
-              className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm top-10"
+              className="dropdown-content menu bg-base-100 rounded-2xl z-50 w-56 p-2 shadow-xl border border-base-200 top-11"
             >
               {shops?.map((shop: TShop, idx: number) => (
-                <li key={idx} className="">
-                  <Link to={`/shop/${shop.id}`} className="font-semibold">
-                    <img src={shop.logoUrl} width={30} height={10} />
-                    {shop.name}
+                <li key={idx}>
+                  <Link to={`/shop/${shop.id}`} className="font-semibold text-xs py-2 gap-2.5">
+                    <img
+                      src={shop.logoUrl || "https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=60&q=80"}
+                      className="w-5 h-5 rounded-md object-cover"
+                      alt={shop.name}
+                    />
+                    <span>{shop.name}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-          <NavLink to="/recent" className="font-semibold">
-            Recently Viewed
+
+          <NavLink
+            to="/compare"
+            className={({ isActive }) =>
+              `flex items-center gap-1.5 px-3 py-2 rounded-full font-semibold transition ${
+                isActive
+                  ? "bg-primary text-white"
+                  : "hover:bg-base-200 hover:text-primary"
+              }`
+            }
+          >
+            <Scale size={15} />
+            <span>Compare</span>
           </NavLink>
-          <NavLink to="/about" className="font-semibold">
-            About us
+
+          <NavLink
+            to="/recent"
+            className={({ isActive }) =>
+              `flex items-center gap-1.5 px-3 py-2 rounded-full font-semibold transition ${
+                isActive
+                  ? "bg-primary text-white"
+                  : "hover:bg-base-200 hover:text-primary"
+              }`
+            }
+          >
+            <History size={15} />
+            <span>Recent</span>
+          </NavLink>
+
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `flex items-center gap-1.5 px-3 py-2 rounded-full font-semibold transition ${
+                isActive
+                  ? "bg-primary text-white"
+                  : "hover:bg-base-200 hover:text-primary"
+              }`
+            }
+          >
+            <Info size={15} />
+            <span>About</span>
           </NavLink>
         </div>
 
