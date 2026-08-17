@@ -263,7 +263,7 @@ const Navbar = () => {
                       </li>
                       <li>
                         <NavLink
-                          to="/adminDashboard/manage-users"
+                          to="/adminDashboard/manageUser"
                           className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
                         >
                           <User size={16} className="text-primary" />
@@ -272,7 +272,7 @@ const Navbar = () => {
                       </li>
                       <li>
                         <NavLink
-                          to="/adminDashboard/manage-shops"
+                          to="/adminDashboard/manageShop"
                           className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
                         >
                           <Store size={16} className="text-primary" />
@@ -295,7 +295,7 @@ const Navbar = () => {
                       </li>
                       <li>
                         <NavLink
-                          to="/vendorDashboard/my-shop"
+                          to="/vendorDashboard/myShop"
                           className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
                         >
                           <Store size={16} className="text-primary" />
@@ -304,7 +304,7 @@ const Navbar = () => {
                       </li>
                       <li>
                         <NavLink
-                          to="/vendorDashboard/manage-products"
+                          to="/vendorDashboard/manageProducts"
                           className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
                         >
                           <Package size={16} className="text-primary" />
@@ -313,7 +313,7 @@ const Navbar = () => {
                       </li>
                       <li>
                         <NavLink
-                          to="/vendorDashboard/order-history"
+                          to="/vendorDashboard/orderHistory"
                           className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
                         >
                           <ShoppingBag size={16} className="text-primary" />
@@ -336,7 +336,7 @@ const Navbar = () => {
                       </li>
                       <li>
                         <NavLink
-                          to="/customerDashboard/my-orders"
+                          to="/customerDashboard/myOrder"
                           className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
                         >
                           <Package size={16} className="text-primary" />
@@ -354,7 +354,7 @@ const Navbar = () => {
                       </li>
                       <li>
                         <NavLink
-                          to="/customerDashboard/review"
+                          to="/customerDashboard/toReview"
                           className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-base-200 hover:text-primary transition"
                         >
                           <ShoppingBag size={16} className="text-amber-500" />
