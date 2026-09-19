@@ -71,8 +71,8 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
   return (
     <article
-      className={`group flex h-full min-h-[430px] w-full flex-col overflow-hidden rounded-3xl border transition-all duration-300 hover:-translate-y-1 relative ${
-        isDark ? "border-white/10 bg-[#211E1D]" : "border-[#E8DED2] bg-white"
+      className={`group flex h-full min-h-[430px] w-full flex-col overflow-hidden rounded-3xl border border-base-200 bg-base-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-primary/30 relative ${
+        isDark ? "shadow-black/40" : "shadow-sm"
       }`}
     >
       <div className="h-52 w-full overflow-hidden relative">
@@ -85,20 +85,21 @@ const ProductCard = ({ product }: { product: TProduct }) => {
           }`}
         />
 
-        {/* Wishlist Button */}
+        {/* Wishlist Button - Fitts's Law 40px touch target */}
         <button
           onClick={handleWishlistToggle}
-          className={`absolute top-3 left-3 btn btn-circle btn-xs shadow-md transition-all ${
+          aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          className={`absolute top-3 left-3 btn btn-circle btn-sm shadow-md transition-all duration-200 hover:scale-110 active:scale-95 ${
             isWishlisted
               ? "bg-rose-500 text-white border-none hover:bg-rose-600"
-              : "bg-white/90 dark:bg-zinc-800/90 text-gray-700 dark:text-zinc-200 hover:bg-white border-none"
+              : "bg-base-100/90 backdrop-blur-xs text-base-content hover:bg-base-100 border border-base-200"
           }`}
           title={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
         >
-          <Heart size={13} className={isWishlisted ? "fill-current" : ""} />
+          <Heart size={15} className={isWishlisted ? "fill-current" : ""} />
         </button>
 
-        {/* Compare Button */}
+        {/* Compare Button - Fitts's Law 40px touch target */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -108,79 +109,52 @@ const ProductCard = ({ product }: { product: TProduct }) => {
               dispatch(addToCompare(product));
             }
           }}
-          className={`absolute top-3 right-3 btn btn-circle btn-xs shadow-md transition-all ${
+          aria-label={isCompared ? "Remove from comparison" : "Add to comparison"}
+          className={`absolute top-3 right-3 btn btn-circle btn-sm shadow-md transition-all duration-200 hover:scale-110 active:scale-95 ${
             isCompared
-              ? "bg-[#A66B55] text-white border-none"
-              : "bg-white/90 dark:bg-zinc-800/90 text-gray-700 dark:text-zinc-200 hover:bg-white border-none"
+              ? "bg-primary text-white border-none"
+              : "bg-base-100/90 backdrop-blur-xs text-base-content hover:bg-base-100 border border-base-200"
           }`}
           title={isCompared ? "Remove from comparison" : "Add to comparison"}
         >
-          <Scale size={13} />
+          <Scale size={15} />
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col p-2 lg:p-5">
+      <div className="flex flex-1 flex-col p-4 lg:p-5">
         <div className="flex-1">
-          <h3
-            className={`line-clamp-1 text-lg font-semibold ${
-              isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
-            }`}
-          >
+          <h3 className="line-clamp-1 text-base lg:text-lg font-bold text-base-content group-hover:text-primary transition-colors">
             {product.name}
           </h3>
 
-          <p
-            className={`mt-2 line-clamp-2 text-sm leading-6 ${
-              isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
-            }`}
-          >
+          <p className="mt-1.5 line-clamp-2 text-xs sm:text-sm leading-relaxed text-gray-500">
             {product.description || "No description available."}
           </p>
 
-          <div className="mt-4 grid gap-3 text-sm">
-            <div className="flex items-center lg:justify-between gap-3">
-              <span className={isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"}>
-                Price
-              </span>
-              <span
-                className={`font-semibold ${
-                  isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
-                }`}
-              >
+          <div className="mt-4 grid gap-2.5 text-xs sm:text-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-gray-400 font-medium">Price</span>
+              <span className="font-extrabold text-base text-primary">
                 ${product.price ?? 0}
               </span>
             </div>
 
-            <div className="flex items-center justify-between gap-3">
-              <span
-                className={`hidden lg:flex items-center gap-2 ${
-                  isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
-                }`}
-              >
-                <Tag size={15} />
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-gray-400 font-medium">
+                <Tag size={13} />
                 Category
               </span>
-              <span
-                className={`line-clamp-1 rounded-full px-3 py-1 text-xs ${
-                  isDark
-                    ? "bg-[#2D2927] text-[#F9F5F0]"
-                    : "bg-[#F1EAE0] text-[#3D352F]"
-                }`}
-              >
-                {product.category?.name}
+              <span className="line-clamp-1 rounded-full px-2.5 py-0.5 text-[11px] font-semibold bg-secondary/15 text-secondary-focus dark:text-secondary">
+                {product.category?.name || "General"}
               </span>
             </div>
 
-            <div className="flex items-center lg:justify-between gap-3">
-              <span
-                className={`flex items-center gap-2 ${
-                  isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
-                }`}
-              >
-                <Star size={15} className="fill-[#A66B55] text-[#A66B55]" />
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-gray-400 font-medium">
+                <Star size={13} className="fill-amber-500 text-amber-500" />
                 Rating
               </span>
-              <span className={isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"}>
+              <span className="text-base-content font-bold text-xs">
                 {averageRating.toFixed(1)} / 5 ({reviewData.length})
               </span>
             </div>
@@ -189,7 +163,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
 
         <button
           onClick={() => handleProductClick(product.id)}
-          className="btn btn-sm lg:btn-md mt-5 w-full rounded-full border-none bg-[#A66B55] text-white hover:bg-[#8d5947]"
+          className="btn btn-sm lg:btn-md mt-5 w-full rounded-full btn-primary text-white font-semibold shadow-md shadow-primary/25 hover:scale-[1.02] active:scale-[0.98] transition-transform"
         >
           View Details
         </button>

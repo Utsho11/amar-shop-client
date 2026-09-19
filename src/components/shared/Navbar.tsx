@@ -32,17 +32,27 @@ import {
   History,
   Info,
   Scale,
+  Search,
 } from "lucide-react";
 import { iconMap } from "../home/CategorySection";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [navSearch, setNavSearch] = useState("");
   const dispatch = useAppDispatch();
   const token = useAppSelector(useCurrentToken);
   const user = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   const cartItems = useAppSelector((state) => state.cart.items);
+
+  const handleNavSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (navSearch.trim()) {
+      navigate(`/products?keyword=${encodeURIComponent(navSearch.trim())}`);
+      setNavSearch("");
+    }
+  };
 
   // Get user details (optional, to show updated avatar)
   const { data, isFetching, refetch } = useGetMeQuery(null, { skip: !token });
@@ -84,12 +94,29 @@ const Navbar = () => {
           <DropdownSideBar toggleMenu={toggleMenu} isMenuOpen={isMenuOpen} />
         </div>
 
-        {/* Logo and Shop Section */}
-        <div className="flex-auto sm:flex">
-          <Link to="/" className="flex border-none bg-transparent">
+        {/* Logo and Brand */}
+        <div className="flex-none flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-2 border-none bg-transparent">
             <Logo />
-            <p className="font-bold text-inherit">AmarShop</p>
+            <p className="font-extrabold text-base sm:text-lg text-inherit tracking-tight">AmarShop</p>
           </Link>
+        </div>
+
+        {/* Global Search Bar (Desktop & Tablet) */}
+        <div className="hidden md:flex flex-1 max-w-xs xl:max-w-sm mx-3">
+          <form onSubmit={handleNavSearch} className="relative w-full">
+            <input
+              type="text"
+              placeholder="Search products by keyword..."
+              value={navSearch}
+              onChange={(e) => setNavSearch(e.target.value)}
+              className="input input-sm rounded-full pl-9 pr-3 w-full bg-base-100 border border-base-200 text-xs focus:border-primary focus:outline-none transition-all shadow-2xs"
+            />
+            <Search
+              size={14}
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+            />
+          </form>
         </div>
 
         {/* Links (visible on medium screens and above) */}
@@ -217,46 +244,51 @@ const Navbar = () => {
           </NavLink>
         </div>
 
-        {/* Theme Toggle and Profile Dropdown */}
-        <div className="flex items-center gap-4">
-          <div className="flex items-center space-x-3">
-            <button onClick={toggleTheme} className="p-1 hover:opacity-80 transition" title="Toggle Theme">
+        {/* Theme Toggle and Actions */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center space-x-1.5 sm:space-x-2">
+            <button
+              onClick={toggleTheme}
+              className="btn btn-ghost btn-circle btn-sm text-base-content hover:bg-base-200"
+              title="Toggle Theme"
+              aria-label="Toggle Theme"
+            >
               {theme === "light" ? (
-                <MoonIcon size={16} />
+                <MoonIcon size={18} />
               ) : (
-                <SunIcon size={16} />
+                <SunIcon size={18} />
               )}
             </button>
 
             {user?.role === "CUSTOMER" && (
               <button
-                className="relative p-1 hover:opacity-80 transition text-rose-500"
+                className="btn btn-ghost btn-circle btn-sm relative text-rose-500 hover:bg-rose-500/10"
                 onClick={() => navigate("/customerDashboard/wishlist")}
                 title="My Wishlist"
+                aria-label="View Wishlist"
               >
                 <Heart size={18} className={wishlistCount > 0 ? "fill-rose-500" : ""} />
                 {wishlistCount > 0 && (
-                  <span className="absolute top-0 right-0 -mt-2 -mr-2 bg-rose-500 text-xs font-bold text-white w-4 h-4 flex items-center justify-center rounded-full">
+                  <span className="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-xs">
                     {wishlistCount}
                   </span>
                 )}
               </button>
             )}
 
-            <button
-              className="relative p-1 hover:opacity-80 transition"
-              onClick={() => navigate("/customerDashboard/cart")}
-              title="My Cart"
+            <Link
+              to="/cart"
+              className="btn btn-ghost btn-circle btn-sm relative text-base-content hover:bg-base-200"
+              title="Shopping Bag"
+              aria-label="View Shopping Bag"
             >
-              <CartIcon size={16} />
-              <span
-                className={`${
-                  cartItems.length > 0 ? "" : "hidden"
-                } absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-xs font-bold text-white w-4 h-4 flex items-center justify-center rounded-full`}
-              >
-                {cartItems.length}
-              </span>
-            </button>
+              <CartIcon size={18} />
+              {cartItems.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-xs">
+                  {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+                </span>
+              )}
+            </Link>
           </div>
           {user ? (
             <div className="dropdown dropdown-end">

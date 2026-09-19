@@ -20,6 +20,7 @@ const ProductPage = lazyWithRetry(() => import("../pages/ProductPage"));
 const ProductDetailsPage = lazyWithRetry(() => import("../pages/ProductDetailsPage"));
 const ForgotPass = lazyWithRetry(() => import("../pages/ForgotPass"));
 const ResetPass = lazyWithRetry(() => import("../pages/ResetPass"));
+const CartPage = lazyWithRetry(() => import("../pages/customerPages/CartPage"));
 const CheckoutPage = lazyWithRetry(() => import("../pages/customerPages/CheckoutPage"));
 const ChangePassword = lazyWithRetry(() => import("../pages/ChangePassword"));
 const FlashSalePage = lazyWithRetry(() => import("../pages/FlashSalePage"));
@@ -96,6 +97,10 @@ const router = createBrowserRouter([
       {
         path: "/faq",
         element: withSuspense(FAQ),
+      },
+      {
+        path: "cart",
+        element: withSuspense(CartPage),
       },
       {
         path: "checkout",
