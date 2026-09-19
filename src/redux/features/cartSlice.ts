@@ -5,14 +5,21 @@ export interface CartItem extends TProduct {
   quantity: number;
 }
 
+export interface AppliedCoupon {
+  code: string;
+  discountPercent: number;
+}
+
 interface CartState {
   items: CartItem[];
   vendorId: string | null;
+  appliedCoupon: AppliedCoupon | null;
 }
 
 const initialState: CartState = {
   items: [],
   vendorId: null,
+  appliedCoupon: null,
 };
 
 const cartSlice = createSlice({
@@ -53,11 +60,19 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
       state.vendorId = null;
+      state.appliedCoupon = null;
+    },
+    setAppliedCoupon: (state, action: PayloadAction<AppliedCoupon | null>) => {
+      state.appliedCoupon = action.payload;
+    },
+    removeCoupon: (state) => {
+      state.appliedCoupon = null;
     },
     replaceCart: (state, action: PayloadAction<TProduct[]>) => {
       const products = action.payload;
       state.items = products.map((product) => ({ ...product, quantity: 1 }));
       state.vendorId = products[0]?.shop?.id || null;
+      state.appliedCoupon = null;
     },
     addWithQuantity: (
       state,
@@ -83,6 +98,7 @@ const cartSlice = createSlice({
       const { product, quantity = 1 } = action.payload;
       state.items = [{ ...product, quantity }];
       state.vendorId = product?.shop?.id || null;
+      state.appliedCoupon = null;
     },
   },
 });
@@ -95,6 +111,8 @@ export const {
   replaceCart,
   addWithQuantity,
   replaceCartWithProduct,
+  setAppliedCoupon,
+  removeCoupon,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;
