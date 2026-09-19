@@ -36,8 +36,9 @@ import {
 } from "lucide-react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Thumbs, FreeMode } from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
+import "swiper/swiper-bundle.css";
 import { useRecentlyViewed } from "../hooks/useRecentlyViewed";
 import RecentlyViewedSection from "../components/home/RecentlyViewedSection";
 import RecommendedProductsSection from "../components/product/RecommendedProductsSection";
@@ -63,7 +64,8 @@ const ProductDetailsPage = () => {
   const navigate = useNavigate();
   const { addProduct: addToRecentlyViewed } = useRecentlyViewed();
 
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [activeImageIndex, setActiveImageIndex] = useState<number>(0);
+  const [mainSwiper, setMainSwiper] = useState<SwiperType | null>(null);
   const [zoomImage, setZoomImage] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [isConflictModalOpen, setIsConflictModalOpen] = useState<boolean>(false);
@@ -75,8 +77,12 @@ const ProductDetailsPage = () => {
     if (product) {
       dispatch(addRecentProduct(product));
       addToRecentlyViewed(product);
+      setActiveImageIndex(0);
+      if (mainSwiper && !mainSwiper.destroyed) {
+        mainSwiper.slideTo(0);
+      }
     }
-  }, [product, dispatch, addToRecentlyViewed]);
+  }, [product, dispatch, addToRecentlyViewed, mainSwiper]);
 
   const reviewData: TReview[] = useMemo(() => {
     const rawReviews = reviews?.data;
@@ -100,10 +106,16 @@ const ProductDetailsPage = () => {
     return totalRating / reviewData.length;
   }, [reviewData]);
 
-  const images =
-    Array.isArray(product?.imageUrl) && product?.imageUrl.length
-      ? product.imageUrl
-      : ["/placeholder.png"];
+  const images: string[] = useMemo(() => {
+    const rawUrl = product?.imageUrl as unknown;
+    if (Array.isArray(rawUrl) && rawUrl.length > 0) {
+      return rawUrl.filter((img): img is string => typeof img === "string" && img.trim() !== "");
+    }
+    if (typeof rawUrl === "string" && rawUrl.trim() !== "") {
+      return [rawUrl];
+    }
+    return ["/placeholder.png"];
+  }, [product?.imageUrl]);
 
   const relatedProducts =
     prod?.data?.products?.filter((item: TProduct) => item.id !== product?.id) ||
@@ -201,64 +213,109 @@ const ProductDetailsPage = () => {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           {/* Image Gallery */}
           <div className="lg:col-span-6">
-            <div className="rounded-3xl border border-base-200 bg-base-100 p-3 shadow-sm relative">
-              <Swiper
-                modules={[Navigation, Pagination, Thumbs]}
-                navigation
-                thumbs={{
-                  swiper:
-                    thumbsSwiper && !thumbsSwiper.destroyed
-                      ? thumbsSwiper
-                      : null,
-                }}
-                className="rounded-2xl"
-              >
-                {images.map((img: string, index: number) => (
-                  <SwiperSlide key={index}>
-                    <div
-                      onClick={() => setZoomImage(img)}
-                      className="h-[320px] sm:h-[430px] lg:h-[500px] overflow-hidden rounded-2xl relative group cursor-zoom-in bg-base-200"
-                    >
-                      <img
-                        src={img}
-                        alt={`${product.name} view ${index + 1}`}
-                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                      />
-                      <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm pointer-events-none">
-                        <span>🔍 Tap to Zoom</span>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-
-              {images.length > 1 && (
+            <div className="rounded-3xl border border-base-200 bg-base-100 p-3 sm:p-4 shadow-sm">
+              {/* Main Image Slider */}
+              <div className="relative rounded-2xl overflow-hidden bg-base-200/40">
                 <Swiper
-                  modules={[FreeMode, Thumbs]}
-                  onSwiper={setThumbsSwiper}
-                  spaceBetween={12}
-                  slidesPerView={4}
-                  freeMode
-                  watchSlidesProgress
-                  className="mt-4"
-                  breakpoints={{
-                    320: { slidesPerView: 3 },
-                    640: { slidesPerView: 4 },
-                    1024: { slidesPerView: 5 },
-                  }}
+                  modules={[Navigation, Pagination]}
+                  onSwiper={setMainSwiper}
+                  onSlideChange={(swiper) => setActiveImageIndex(swiper.activeIndex)}
+                  className="rounded-2xl"
                 >
                   {images.map((img: string, index: number) => (
                     <SwiperSlide key={index}>
-                      <div className="h-20 cursor-pointer overflow-hidden rounded-xl border border-base-300 hover:border-primary transition">
+                      <div
+                        onClick={() => setZoomImage(img)}
+                        className="h-[320px] sm:h-[420px] lg:h-[480px] w-full flex items-center justify-center p-4 relative group cursor-zoom-in select-none"
+                      >
                         <img
                           src={img}
-                          alt={`Thumbnail ${index + 1}`}
-                          className="h-full w-full object-cover"
+                          alt={`${product.name} - view ${index + 1}`}
+                          className="max-h-full max-w-full object-contain transition duration-300 group-hover:scale-105"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "/placeholder.png";
+                          }}
                         />
+                        <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm pointer-events-none">
+                          <span>🔍 Tap to Zoom</span>
+                        </div>
                       </div>
                     </SwiperSlide>
                   ))}
                 </Swiper>
+
+                {/* Custom Previous / Next Arrows */}
+                {images.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (mainSwiper && !mainSwiper.destroyed) {
+                          mainSwiper.slidePrev();
+                        }
+                      }}
+                      disabled={activeImageIndex === 0}
+                      aria-label="Previous image"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-base-100/90 hover:bg-base-100 text-base-content disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center shadow-md backdrop-blur-sm transition-transform active:scale-95"
+                    >
+                      <ChevronRight size={20} className="rotate-180" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (mainSwiper && !mainSwiper.destroyed) {
+                          mainSwiper.slideNext();
+                        }
+                      }}
+                      disabled={activeImageIndex === images.length - 1}
+                      aria-label="Next image"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-base-100/90 hover:bg-base-100 text-base-content disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center shadow-md backdrop-blur-sm transition-transform active:scale-95"
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+
+                    {/* Counter Pill */}
+                    <div className="absolute top-3 right-3 z-10 bg-black/60 text-white text-xs font-semibold px-2.5 py-1 rounded-full backdrop-blur-sm">
+                      {activeImageIndex + 1} / {images.length}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Thumbnails strip */}
+              {images.length > 1 && (
+                <div className="mt-3 flex items-center gap-3 overflow-x-auto pb-1 pt-1 px-1 scrollbar-thin">
+                  {images.map((img: string, index: number) => {
+                    const isActive = activeImageIndex === index;
+                    return (
+                      <button
+                        key={index}
+                        type="button"
+                        onClick={() => {
+                          setActiveImageIndex(index);
+                          if (mainSwiper && !mainSwiper.destroyed) {
+                            mainSwiper.slideTo(index);
+                          }
+                        }}
+                        aria-label={`Select photo ${index + 1} of ${images.length}`}
+                        className={`relative h-18 w-18 sm:h-20 sm:w-20 shrink-0 rounded-xl overflow-hidden border-2 bg-base-200/60 p-1 transition-all duration-200 focus:outline-none ${
+                          isActive
+                            ? "border-primary ring-2 ring-primary/40 scale-105 shadow-sm"
+                            : "border-base-300 hover:border-primary/50 opacity-70 hover:opacity-100"
+                        }`}
+                      >
+                        <img
+                          src={img}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="h-full w-full object-contain"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = "/placeholder.png";
+                          }}
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
               )}
             </div>
           </div>
@@ -446,7 +503,10 @@ const ProductDetailsPage = () => {
             onClick={() => setZoomImage(null)}
             className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 cursor-zoom-out animate-in fade-in"
           >
-            <div className="relative max-w-4xl max-h-[90vh]">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl max-h-[90vh]"
+            >
               <img
                 src={zoomImage}
                 alt="Zoomed product"
