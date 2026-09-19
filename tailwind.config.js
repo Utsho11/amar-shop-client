@@ -13,6 +13,10 @@ export default {
           sand: "#C9A68F",
         },
       },
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
+        heading: ["Outfit", "ui-sans-serif", "system-ui", "sans-serif"],
+      },
     },
   },
   plugins: [daisyui],
