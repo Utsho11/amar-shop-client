@@ -1,44 +1,56 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, HelpCircle, MessageSquare } from "lucide-react";
 
 const CTASection = ({ theme }: { theme: string }) => {
   const isDark = theme === "dark";
 
   return (
-    <section className="px-4 py-20">
+    <section className="container mx-auto px-4 py-16">
       <div
-        className="relative mx-auto max-w-6xl rounded-[2.5rem] overflow-hidden shadow-xl"
+        className="relative mx-auto max-w-6xl rounded-[2.5rem] overflow-hidden shadow-xl bg-neutral"
         style={{
           backgroundImage: "url('/CTA-banner.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
-        {/* Overlay */}
+        {/* High-contrast accessible overlay */}
         <div
           className={`absolute inset-0 ${
-            isDark ? "bg-black/70" : "bg-black/50"
+            isDark ? "bg-black/80 backdrop-blur-xs" : "bg-black/65 backdrop-blur-xs"
           }`}
         />
 
         {/* Content */}
-        <div className="relative z-10 px-8 py-16 text-center text-white">
-          <h2 className="text-3xl md:text-5xl font-bold leading-tight">
-            Need Help or Have Questions?
+        <div className="relative z-10 px-6 sm:px-12 py-16 text-center text-white space-y-4">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md text-xs font-bold uppercase tracking-widest text-amber-200">
+            <HelpCircle size={14} />
+            <span>Dedicated Shopper & Merchant Support</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight">
+            Need Help or Have Inquiries?
           </h2>
 
-          <p className="mt-4 max-w-2xl mx-auto text-white/80 text-lg">
-            Our team is here to assist you. Reach out anytime and we’ll get back
-            to you as soon as possible.
+          <p className="max-w-xl mx-auto text-xs sm:text-base leading-relaxed text-white/85">
+            Our multi-vendor marketplace team is here to assist with order tracking, vendor conflicts, returns, or seller onboarding.
           </p>
 
-          <div className="mt-8 flex justify-center">
+          <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/contact"
-              className="flex items-center gap-2 rounded-full bg-[#A66B55] px-8 py-3 text-sm font-semibold text-white shadow-lg transition hover:scale-105 hover:bg-[#8b5846]"
+              className="btn btn-primary rounded-full px-8 btn-md text-sm font-semibold shadow-xl shadow-primary/30 inline-flex items-center gap-2 hover:scale-[1.03] transition-transform"
             >
-              Contact Us
-              <ArrowRight size={18} />
+              <MessageSquare size={16} />
+              <span>Contact Support</span>
+              <ArrowRight size={16} />
+            </Link>
+
+            <Link
+              to="/faq"
+              className="btn btn-outline rounded-full px-7 btn-md text-sm font-semibold text-white border-white/40 hover:bg-white/20 hover:border-white transition"
+            >
+              Browse FAQs
             </Link>
           </div>
         </div>

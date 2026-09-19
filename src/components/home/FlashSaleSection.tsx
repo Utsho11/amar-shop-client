@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { Flame } from "lucide-react";
-import { useTheme } from "../../context/ThemeContext";
+import { Flame, ArrowRight, Clock } from "lucide-react";
 import Timer from "./Timer";
 
 const getSeason = () => {
@@ -9,125 +8,79 @@ const getSeason = () => {
   if (month >= 4 && month <= 10) {
     return {
       name: "Summer",
-      title: "Summer Flash Sale",
-      subtitle: "Hot deals for your summer essentials.",
+      title: "Summer Flash Deals",
+      subtitle: "Hot seasonal savings across electronics, apparel, and lifestyle.",
       discount: "Up to 50% OFF",
     };
   }
 
   return {
     name: "Winter",
-    title: "Winter Flash Sale",
-    subtitle: "Cozy picks and warm deals for winter.",
+    title: "Winter Flash Deals",
+    subtitle: "Cozy artisan picks and verified essentials at exclusive discounts.",
     discount: "Up to 60% OFF",
   };
 };
 
 const FlashSaleSection = () => {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
   const season = getSeason();
 
   return (
-    <section
-      className={`px-4 py-16 md:px-8 ${
-        isDark ? "bg-[#1A1716]" : "bg-[#F9F5F0]"
-      }`}
-    >
-      <div
-        className={`mx-auto max-w-7xl overflow-hidden rounded-[2rem] border ${
-          isDark ? "border-white/10 bg-[#211E1D]" : "border-[#E8DED2] bg-white"
-        }`}
-      >
-        <div className="grid items-center gap-8 p-6 md:grid-cols-2 md:p-10 lg:p-14">
+    <section className="container mx-auto px-4 py-14">
+      <div className="overflow-hidden rounded-[2.5rem] border border-base-200 bg-base-100 shadow-md">
+        <div className="grid items-center gap-8 p-6 sm:p-10 lg:p-14 md:grid-cols-2">
           {/* Left Content */}
           <div className="order-2 lg:order-1 space-y-5 text-center md:text-left">
-            <div
-              className={`mx-auto flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-medium md:mx-0 ${
-                isDark
-                  ? "bg-[#2D2927] text-[#C9A68F]"
-                  : "bg-[#F1EAE0] text-[#A66B55]"
-              }`}
-            >
+            <div className="inline-flex items-center gap-2 rounded-full bg-rose-500/10 text-rose-600 dark:text-rose-400 px-4 py-1.5 text-xs font-bold uppercase tracking-wider">
               <Flame size={15} />
-              {season.name} Deal
+              <span>{season.name} Limited Event</span>
             </div>
 
-            <h2
-              className={`text-3xl font-semibold tracking-tight md:text-5xl ${
-                isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
-              }`}
-            >
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-base-content leading-tight">
               {season.title}
             </h2>
 
-            <p
-              className={`mx-auto max-w-md text-sm md:mx-0 md:text-base ${
-                isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
-              }`}
-            >
+            <p className="max-w-md text-xs sm:text-sm text-gray-500 dark:text-zinc-400 leading-relaxed mx-auto md:mx-0">
               {season.subtitle}
             </p>
 
-            <h3
-              className={`text-2xl font-bold ${
-                isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
-              }`}
-            >
+            <div className="text-3xl sm:text-4xl font-black text-primary">
               {season.discount}
-            </h3>
+            </div>
 
-            <div className="flex-row md:justify-start">
-              <div
-                className={`flex items-center gap-2 text-sm mb-4 ${
-                  isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
-                }`}
-              >
+            <div className="pt-2">
+              <div className="flex items-center justify-center md:justify-start gap-2 text-xs font-semibold text-gray-500 mb-4">
+                <Clock size={16} className="text-primary" />
+                <span>Offers Refresh Every 24 Hours:</span>
                 <Timer />
-                Limited time offer
               </div>
+
               <Link
-                to="/products"
-                className="btn rounded-full border-none bg-[#A66B55] px-8 text-white hover:bg-[#8d5947]"
+                to="/flash-sale"
+                className="btn btn-primary rounded-full px-8 shadow-lg shadow-primary/25 inline-flex items-center gap-2 hover:scale-[1.03] transition-transform"
               >
-                Shop Now
+                <span>Browse Flash Sale</span>
+                <ArrowRight size={16} />
               </Link>
             </div>
           </div>
 
-          {/* Right Visual */}
-          <div
-            className={`relative flex min-h-[260px] items-center justify-center rounded-[1.5rem] ${
-              isDark ? "bg-[#2D2927]" : "bg-[#F1EAE0]"
-            }`}
-          >
-            <div className="absolute left-6 top-6 h-16 w-16 rounded-full bg-[#A66B55]/20" />
-            <div className="absolute bottom-8 right-8 h-24 w-24 rounded-full bg-[#A66B55]/20" />
+          {/* Right Visual Banner */}
+          <div className="relative flex min-h-[260px] sm:min-h-[300px] items-center justify-center rounded-3xl bg-gradient-to-br from-primary/15 via-base-200 to-primary/5 p-8 border border-base-200/60 overflow-hidden">
+            <div className="absolute -left-10 -top-10 h-36 w-36 rounded-full bg-primary/20 blur-2xl" />
+            <div className="absolute -right-10 -bottom-10 h-44 w-44 rounded-full bg-amber-500/15 blur-3xl" />
 
-            <div className="relative text-center">
-              <p
-                className={`text-sm uppercase tracking-[0.3em] ${
-                  isDark ? "text-[#C9A68F]" : "text-[#A66B55]"
-                }`}
-              >
-                Flash Sale
-              </p>
+            <div className="relative text-center z-10">
+              <span className="text-xs uppercase font-extrabold tracking-[0.3em] text-primary">
+                Flash Deals Live
+              </span>
 
-              <h4
-                className={`mt-3 text-6xl font-black ${
-                  isDark ? "text-[#F9F5F0]" : "text-[#3D352F]"
-                }`}
-              >
+              <h3 className="mt-3 text-6xl sm:text-7xl font-black tracking-tight text-base-content/90">
                 SALE
-              </h4>
+              </h3>
 
-              <p
-                className={`mt-3 text-sm ${
-                  isDark ? "text-[#B8AAA3]" : "text-[#6B5E57]"
-                }`}
-              >
-                {season.name} Collection
+              <p className="mt-3 text-xs sm:text-sm font-semibold text-base-content/70">
+                {season.name} Exclusive Verified Catalog
               </p>
             </div>
           </div>

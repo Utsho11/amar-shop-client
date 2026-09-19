@@ -40,19 +40,21 @@ const Homepage = () => {
   const { theme } = useTheme();
 
   return (
-    <div className="space-y-4 sm:space-y-8">
+    <div className="space-y-6 sm:space-y-10 pb-12">
       <Banner1 />
       <LiveMarketMetrics />
       <CategorySection />
-      <MarketplaceFeatures />
-      <ShopSection />
       <FlashSaleSection />
-      <PromotionalSec />
       <ProductSection />
+      <PromotionalSec />
+      <ShopSection />
+      <MarketplaceFeatures />
+      <CustomerTestimonials />
+
       <div className="container mx-auto px-4">
         <RecentlyViewedSection />
       </div>
-      <CustomerTestimonials />
+
       <CTASection theme={theme} />
 
       {isVisible && (

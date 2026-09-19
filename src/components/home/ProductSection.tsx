@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import React from "react";
+import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../../redux/services/productApi";
 import { TProduct } from "../../types";
-import Loading from "../shared/Loading";
 import ProductCard from "../product/ProductCard";
-import { useTheme } from "../../context/ThemeContext";
+import { ProductGridSkeleton } from "../shared/ProductCardSkeleton";
+import { Sparkles, ArrowRight } from "lucide-react";
 
 export type PaginatedProducts = {
   products: TProduct[];
@@ -16,71 +16,54 @@ type ProductSectionProps = {
 };
 
 const ProductSection: React.FC<ProductSectionProps> = () => {
-  const [productList, setProductList] = useState<TProduct[]>([]);
-  const [page, setPage] = useState<number>(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
-  const { data, isFetching } = useGetProductsQuery({
-    page,
-    limit: 12,
+  const { data, isLoading } = useGetProductsQuery({
+    page: 1,
+    limit: 8,
   });
 
-  // console.log(data?.data);
-
-  useEffect(() => {
-    if (data?.data) {
-      setProductList((prev = []) => [...prev, ...(data?.data?.products || [])]);
-      setHasMore(data?.data?.hasMore);
-    }
-  }, [data]);
-
-  const loadMoreProducts = () => {
-    if (!hasMore || isFetching) return;
-    setPage((prevPage) => prevPage + 1);
-  };
+  const products: TProduct[] = data?.data?.products?.slice(0, 8) || [];
 
   return (
-    <div className="px-4 py-16 md:px-8">
-      {(location.pathname === "/products" || location.pathname === "/") && (
-        <div className="mx-auto max-w-5xl text-center">
-          <p
-            className={
-              isDark ? "text-sm text-[#777]" : "text-sm text-[#6B5E57]"
-            }
-          >
-            All Products
-          </p>
-
-          <div className="mx-auto mt-3 mb-10 h-[3px] w-12 rounded-full bg-[#6f7f3f]" />
+    <section className="container mx-auto px-4 py-16">
+      {/* Section Header */}
+      <div className="text-center max-w-2xl mx-auto mb-10">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-3">
+          <Sparkles size={14} />
+          <span>Curated Selection</span>
         </div>
-      )}
+        <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-base-content">
+          Featured Marketplace Products
+        </h2>
+        <p className="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 mt-3">
+          Handpicked top-rated products from verified independent boutique merchants.
+        </p>
+      </div>
 
-      {isFetching && productList.length === 0 ? (
-        <div className="text-center">
-          <Loading />
+      {isLoading ? (
+        <ProductGridSkeleton count={8} />
+      ) : products.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       ) : (
-        <InfiniteScroll
-          dataLength={productList.length}
-          next={loadMoreProducts}
-          hasMore={hasMore}
-          loader={<Loading />}
-          endMessage={
-            <p className="text-center mt-4 text-gray-500">
-              Nothing is available to display.
-            </p>
-          }
-        >
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
-            {productList.map((product, index) => (
-              <ProductCard key={index} product={product} />
-            ))}
-          </div>
-        </InfiniteScroll>
+        <div className="text-center py-12 text-gray-500">
+          <p>No featured products available at this moment.</p>
+        </div>
       )}
-    </div>
+
+      {/* Prominent Hick's Law CTA */}
+      <div className="mt-12 text-center">
+        <Link
+          to="/products"
+          className="btn btn-primary rounded-full px-8 btn-md text-sm font-semibold shadow-lg shadow-primary/25 inline-flex items-center gap-2 hover:scale-[1.03] transition-transform"
+        >
+          <span>Explore All Products</span>
+          <ArrowRight size={16} />
+        </Link>
+      </div>
+    </section>
   );
 };
 
