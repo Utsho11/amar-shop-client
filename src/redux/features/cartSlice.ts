@@ -59,6 +59,31 @@ const cartSlice = createSlice({
       state.items = products.map((product) => ({ ...product, quantity: 1 }));
       state.vendorId = products[0]?.shop?.id || null;
     },
+    addWithQuantity: (
+      state,
+      action: PayloadAction<{ product: TProduct; quantity: number }>
+    ) => {
+      const { product, quantity } = action.payload;
+      if (state.vendorId && state.vendorId !== product?.shop?.id) {
+        throw new Error("DIFFERENT_VENDOR_DETECTED");
+      }
+      if (!state.vendorId) state.vendorId = product?.shop?.id ?? null;
+
+      const existingItem = state.items.find((item) => item.id === product.id);
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        state.items.push({ ...product, quantity });
+      }
+    },
+    replaceCartWithProduct: (
+      state,
+      action: PayloadAction<{ product: TProduct; quantity?: number }>
+    ) => {
+      const { product, quantity = 1 } = action.payload;
+      state.items = [{ ...product, quantity }];
+      state.vendorId = product?.shop?.id || null;
+    },
   },
 });
 
@@ -68,6 +93,8 @@ export const {
   updateQuantity,
   clearCart,
   replaceCart,
+  addWithQuantity,
+  replaceCartWithProduct,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

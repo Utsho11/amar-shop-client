@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store/store";
 import { removeFromCompare, clearCompare } from "../redux/features/comparisonSlice";
@@ -17,11 +18,17 @@ import {
 import { toast } from "sonner";
 import { TProduct } from "../types";
 
+import VendorConflictModal from "../components/modals/VendorConflictModal";
+
 const ComparisonPage = () => {
   const compareItems = useSelector((state: RootState) => state.comparison.items);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch();
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  const [conflictProduct, setConflictProduct] = useState<TProduct | null>(null);
+  const currentVendorName = cartItems[0]?.shop?.name || "Another Boutique";
 
   const handleAddToCart = (product: TProduct) => {
     try {
@@ -29,16 +36,18 @@ const ComparisonPage = () => {
       toast.success(`"${product.name}" added to your cart!`);
     } catch (err: any) {
       if (err?.message?.includes("VENDOR") || err?.message?.includes("vendor")) {
-        const replace = window.confirm(
-          "Your cart contains items from a different shop. Would you like to clear your cart and add this product?"
-        );
-        if (replace) {
-          dispatch(replaceCart([product]));
-          toast.success(`Cart updated with "${product.name}"!`);
-        }
+        setConflictProduct(product);
       } else {
         toast.error("Failed to add to cart.");
       }
+    }
+  };
+
+  const handleConfirmReplace = () => {
+    if (conflictProduct) {
+      dispatch(replaceCart([conflictProduct]));
+      toast.success(`Cart updated with "${conflictProduct.name}"!`);
+      setConflictProduct(null);
     }
   };
 
@@ -237,6 +246,15 @@ const ComparisonPage = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Vendor Conflict Modal */}
+      <VendorConflictModal
+        isOpen={Boolean(conflictProduct)}
+        onClose={() => setConflictProduct(null)}
+        onConfirmReplace={handleConfirmReplace}
+        currentVendorName={currentVendorName}
+        newProduct={conflictProduct}
+      />
     </div>
   );
 };

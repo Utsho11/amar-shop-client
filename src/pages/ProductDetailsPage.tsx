@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   useGetProductsQuery,
   useGetReviewsSingleProductQuery,
@@ -7,20 +7,33 @@ import {
 } from "../redux/services/productApi";
 import Loading from "../components/shared/Loading";
 import { useTheme } from "../context/ThemeContext";
-import { useDispatch } from "react-redux";
-import { addProduct, clearCart } from "../redux/features/cartSlice";
+import {
+  addWithQuantity,
+  replaceCartWithProduct,
+} from "../redux/features/cartSlice";
+import { useAppDispatch, useAppSelector } from "../hooks/hook";
 import ReviewSection from "../components/home/ReviewSection";
 import { TReview, type TProduct } from "../types";
 import { addRecentProduct } from "../redux/features/recentProductsSlice";
 import StarRating from "../components/StarRating";
 import ProductCard from "../components/product/ProductCard";
+import VendorConflictModal from "../components/modals/VendorConflictModal";
 import {
   FaShoppingCart,
   FaTags,
   FaStore,
   FaBoxOpen,
   FaLayerGroup,
+  FaBolt,
 } from "react-icons/fa";
+import {
+  ChevronRight,
+  Plus,
+  Minus,
+  ShieldCheck,
+  Truck,
+  RotateCcw,
+} from "lucide-react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Thumbs, FreeMode } from "swiper/modules";
@@ -46,11 +59,17 @@ const ProductDetailsPage = () => {
 
   const { theme } = useTheme();
   const isDark = theme === "dark";
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { addProduct: addToRecentlyViewed } = useRecentlyViewed();
 
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
+  const [zoomImage, setZoomImage] = useState<string | null>(null);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [isConflictModalOpen, setIsConflictModalOpen] = useState<boolean>(false);
+
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const currentVendorName = cartItems[0]?.shop?.name || "Another Boutique";
 
   useEffect(() => {
     if (product) {
@@ -90,8 +109,6 @@ const ProductDetailsPage = () => {
     prod?.data?.products?.filter((item: TProduct) => item.id !== product?.id) ||
     [];
 
-  const [zoomImage, setZoomImage] = useState<string | null>(null);
-
   if (isLoading) return <Loading />;
 
   if (!product) {
@@ -117,40 +134,74 @@ const ProductDetailsPage = () => {
 
   const handleAddToCart = () => {
     try {
-      dispatch(addProduct(product));
-      toast.success(`"${product.name}" added to cart!`);
+      dispatch(addWithQuantity({ product, quantity }));
+      toast.success(
+        quantity > 1
+          ? `${quantity} × "${product.name}" added to cart!`
+          : `"${product.name}" added to cart!`
+      );
     } catch (error: any) {
       if (error.message === "DIFFERENT_VENDOR_DETECTED") {
-        if (
-          window.confirm(
-            "Your cart contains items from a different vendor. Do you want to replace the cart with this product?",
-          )
-        ) {
-          dispatch(clearCart());
-          dispatch(addProduct(product));
-          toast.success("Cart replaced with the new product!");
-        }
+        setIsConflictModalOpen(true);
       }
     }
   };
 
+  const handleBuyNow = () => {
+    try {
+      dispatch(addWithQuantity({ product, quantity }));
+      navigate("/checkout");
+    } catch (error: any) {
+      if (error.message === "DIFFERENT_VENDOR_DETECTED") {
+        setIsConflictModalOpen(true);
+      }
+    }
+  };
+
+  const handleConfirmVendorReplace = () => {
+    dispatch(replaceCartWithProduct({ product, quantity }));
+    toast.success(`Cart updated with "${product.name}"!`);
+  };
+
   return (
-    <main
-      className={`min-h-screen ${
-        isDark ? "bg-[#0f1115] text-gray-100" : "bg-[#f8f5f0] text-gray-900"
-      }`}
-    >
-      <section className="container mx-auto px-4 py-8 lg:py-12">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
+    <main className="min-h-screen bg-base-200/40 text-base-content pb-24 lg:pb-16">
+      <section className="container mx-auto px-4 py-6 lg:py-10 max-w-7xl">
+        {/* Breadcrumb Navigation (WCAG & Information Architecture) */}
+        <nav
+          className="mb-6 flex items-center gap-2 text-xs text-gray-500 flex-wrap"
+          aria-label="Breadcrumb"
+        >
+          <Link to="/" className="hover:text-primary transition-colors font-medium">
+            Home
+          </Link>
+          <ChevronRight size={13} className="text-gray-400" />
+          <Link
+            to="/products"
+            className="hover:text-primary transition-colors font-medium"
+          >
+            All Products
+          </Link>
+          {product.category?.name && (
+            <>
+              <ChevronRight size={13} className="text-gray-400" />
+              <Link
+                to={`/products?category=${encodeURIComponent(product.category.name)}`}
+                className="hover:text-primary transition-colors font-medium"
+              >
+                {product.category.name}
+              </Link>
+            </>
+          )}
+          <ChevronRight size={13} className="text-gray-400" />
+          <span className="font-semibold text-base-content line-clamp-1 max-w-[240px]">
+            {product.name}
+          </span>
+        </nav>
+
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 items-start">
           {/* Image Gallery */}
           <div className="lg:col-span-6">
-            <div
-              className={`rounded-3xl border p-3 shadow-xl relative ${
-                isDark
-                  ? "border-white/10 bg-[#171a21]"
-                  : "border-gray-200 bg-white"
-              }`}
-            >
+            <div className="rounded-3xl border border-base-200 bg-base-100 p-3 shadow-sm relative">
               <Swiper
                 modules={[Navigation, Pagination, Thumbs]}
                 navigation
@@ -166,11 +217,11 @@ const ProductDetailsPage = () => {
                   <SwiperSlide key={index}>
                     <div
                       onClick={() => setZoomImage(img)}
-                      className="h-[320px] sm:h-[430px] lg:h-[520px] overflow-hidden rounded-2xl relative group cursor-zoom-in"
+                      className="h-[320px] sm:h-[430px] lg:h-[500px] overflow-hidden rounded-2xl relative group cursor-zoom-in bg-base-200"
                     >
                       <img
                         src={img}
-                        alt={`${product.name}-${index + 1}`}
+                        alt={`${product.name} view ${index + 1}`}
                         className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                       />
                       <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1.5 rounded-full text-xs flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm pointer-events-none">
@@ -198,10 +249,10 @@ const ProductDetailsPage = () => {
                 >
                   {images.map((img: string, index: number) => (
                     <SwiperSlide key={index}>
-                      <div className="h-20 cursor-pointer overflow-hidden rounded-xl border border-gray-300/40">
+                      <div className="h-20 cursor-pointer overflow-hidden rounded-xl border border-base-300 hover:border-primary transition">
                         <img
                           src={img}
-                          alt={`thumbnail-${index + 1}`}
+                          alt={`Thumbnail ${index + 1}`}
                           className="h-full w-full object-cover"
                         />
                       </div>
@@ -212,45 +263,51 @@ const ProductDetailsPage = () => {
             </div>
           </div>
 
-          {/* Product Info */}
+          {/* Product Info Card */}
           <div className="lg:col-span-6">
-            <div
-              className={`h-full rounded-3xl border p-6 shadow-xl lg:p-8 ${
-                isDark
-                  ? "border-white/10 bg-[#171a21]"
-                  : "border-gray-200 bg-white"
-              }`}
-            >
-              <div className="mb-4 flex flex-wrap gap-3">
-                <span className="rounded-full bg-[#e9c46a]/20 px-4 py-1 text-sm font-medium text-[#c28b20]">
-                  {product.category?.name}
+            <div className="rounded-3xl border border-base-200 bg-base-100 p-6 shadow-sm lg:p-8 space-y-6">
+              {/* Badges */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="rounded-full bg-secondary/15 px-3.5 py-1 text-xs font-bold text-secondary-content">
+                  {product.category?.name || "General"}
                 </span>
 
                 {(product.discount ?? 0) > 0 && (
-                  <span className="rounded-full bg-red-500/10 px-4 py-1 text-sm font-medium text-red-500">
+                  <span className="rounded-full bg-rose-500/10 px-3.5 py-1 text-xs font-bold text-rose-500">
                     {product.discount}% OFF
                   </span>
                 )}
+
+                <div className="ml-auto flex items-center gap-1.5 text-xs text-amber-500">
+                  <StarRating rating={averageRating} />
+                  <span className="font-bold text-base-content">
+                    {averageRating.toFixed(1)}
+                  </span>
+                  <span className="text-gray-400">({reviewData.length})</span>
+                </div>
               </div>
 
-              <h1 className="text-2xl font-bold sm:text-3xl lg:text-4xl">
-                {product.name}
-              </h1>
+              {/* Title & Price */}
+              <div>
+                <h1 className="text-2xl font-extrabold sm:text-3xl lg:text-4xl text-base-content leading-tight">
+                  {product.name}
+                </h1>
 
-              <div className="mt-4 flex items-center gap-3">
-                <span className="text-3xl font-extrabold text-primary">
-                  ${finalPrice.toFixed(2)}
-                </span>
-
-                {(product.discount ?? 0) > 0 && (
-                  <span className="text-lg text-gray-400 line-through">
-                    ${Number(product.price).toFixed(2)}
+                <div className="mt-4 flex items-baseline gap-3">
+                  <span className="text-3xl sm:text-4xl font-black text-primary">
+                    ${finalPrice.toFixed(2)}
                   </span>
-                )}
+
+                  {(product.discount ?? 0) > 0 && (
+                    <span className="text-base sm:text-lg text-gray-400 line-through">
+                      ${Number(product.price).toFixed(2)}
+                    </span>
+                  )}
+                </div>
               </div>
 
               {/* Quick specs grid */}
-              <div className="mt-6 grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <InfoCard
                   icon={<FaLayerGroup />}
                   title="Inventory"
@@ -259,36 +316,125 @@ const ProductDetailsPage = () => {
                 />
                 <InfoCard
                   icon={<FaBoxOpen />}
-                  title="Total Sold"
-                  value="Verified Item"
+                  title="Authenticity"
+                  value="100% Genuine"
                   isDark={isDark}
                 />
                 <InfoCard
                   icon={<FaStore />}
-                  title="Shop"
-                  value={product.shop?.name || "N/A"}
+                  title="Boutique"
+                  value={product.shop?.name || "Verified Store"}
                   isDark={isDark}
                   onClick={handleShop}
                 />
                 <InfoCard
                   icon={<FaTags />}
-                  title="Discount"
-                  value={`${product.discount || 0}%`}
+                  title="Discount Tag"
+                  value={`${product.discount || 0}% Savings`}
                   isDark={isDark}
                 />
               </div>
 
-              <div className="mt-6 flex flex-col gap-3">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={Number(product.inventoryCount) <= 0}
-                  className="btn w-full rounded-full border-none bg-[#A66B55] text-white hover:bg-[#8d5947] text-base font-semibold shadow-md gap-2"
-                >
-                  <FaShoppingCart />
-                  {Number(product.inventoryCount) > 0
-                    ? "Add to Cart"
-                    : "Out of Stock"}
-                </button>
+              {/* Quantity Stepper & Stock Check (Hick's & Fitts's Law) */}
+              <div className="pt-4 border-t border-base-200 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+                    Quantity
+                  </span>
+                  {Number(product.inventoryCount) > 0 ? (
+                    <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                      Available ({product.inventoryCount} in stock)
+                    </span>
+                  ) : (
+                    <span className="text-xs font-bold text-error">
+                      Currently Out of Stock
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex items-center border border-base-300 rounded-2xl p-1 bg-base-100 shadow-xs">
+                    <button
+                      type="button"
+                      onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                      disabled={quantity <= 1 || Number(product.inventoryCount) <= 0}
+                      className="btn btn-ghost btn-circle btn-sm text-base-content hover:bg-base-200"
+                      aria-label="Decrease quantity"
+                    >
+                      <Minus size={14} />
+                    </button>
+                    <span className="w-10 text-center font-bold text-sm">
+                      {quantity}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const maxStock = Number(product.inventoryCount ?? 99);
+                        if (quantity < maxStock) {
+                          setQuantity((prev) => prev + 1);
+                        } else {
+                          toast.error(`Only ${maxStock} items available in stock.`);
+                        }
+                      }}
+                      disabled={quantity >= Number(product.inventoryCount) || Number(product.inventoryCount) <= 0}
+                      className="btn btn-ghost btn-circle btn-sm text-base-content hover:bg-base-200"
+                      aria-label="Increase quantity"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
+
+                  <div className="text-xs text-gray-500">
+                    Subtotal:{" "}
+                    <strong className="text-sm font-extrabold text-primary">
+                      ${(finalPrice * quantity).toFixed(2)}
+                    </strong>
+                  </div>
+                </div>
+
+                {/* Primary Actions: Isolation Effect (Clear distinction between Add to Cart and Buy Now) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={handleAddToCart}
+                    disabled={Number(product.inventoryCount) <= 0}
+                    className="btn btn-primary rounded-full w-full shadow-lg shadow-primary/25 text-sm font-semibold gap-2 hover:scale-[1.02] transition-transform"
+                  >
+                    <FaShoppingCart />
+                    <span>
+                      {Number(product.inventoryCount) > 0
+                        ? "Add to Cart"
+                        : "Out of Stock"}
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleBuyNow}
+                    disabled={Number(product.inventoryCount) <= 0}
+                    className="btn btn-outline rounded-full w-full border-primary text-primary hover:bg-primary hover:text-white text-sm font-semibold gap-2 transition"
+                  >
+                    <FaBolt />
+                    <span>Buy Now</span>
+                  </button>
+                </div>
+
+                {/* Trust Badges */}
+                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-base-200 text-[11px] text-gray-500">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck size={15} className="text-emerald-500 shrink-0" />
+                    <span>Verified Store</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Truck size={15} className="text-primary shrink-0" />
+                    <span>Direct Dispatch</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <RotateCcw size={15} className="text-amber-500 shrink-0" />
+                    <span>7-Day Return</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -309,6 +455,7 @@ const ProductDetailsPage = () => {
               <button
                 onClick={() => setZoomImage(null)}
                 className="absolute top-2 right-2 btn btn-circle btn-sm bg-black/50 text-white border-none hover:bg-black"
+                aria-label="Close zoom modal"
               >
                 ✕
               </button>
@@ -316,29 +463,22 @@ const ProductDetailsPage = () => {
           </div>
         )}
 
-        {/* Overview */}
-        <section
-          className={`mt-8 rounded-3xl border p-6 shadow-lg lg:p-8 ${
-            isDark ? "border-white/10 bg-[#171a21]" : "border-gray-200 bg-white"
-          }`}
-        >
-          <h2 className="text-2xl font-bold">Description / Overview</h2>
-          <p className="mt-4 leading-8 opacity-80">
+        {/* Overview / Description */}
+        <section className="mt-10 rounded-3xl border border-base-200 bg-base-100 p-6 shadow-sm lg:p-8">
+          <h2 className="text-xl sm:text-2xl font-bold">Product Description</h2>
+          <div className="divider my-3"></div>
+          <p className="mt-3 leading-relaxed text-sm sm:text-base opacity-85">
             {product.description || "No overview available for this product."}
           </p>
         </section>
 
-        {/* Reviews */}
-        <section
-          className={`mt-8 rounded-3xl border p-6 shadow-lg lg:p-8 ${
-            isDark ? "border-white/10 bg-[#171a21]" : "border-gray-200 bg-white"
-          }`}
-        >
+        {/* Reviews Section */}
+        <section className="mt-10 rounded-3xl border border-base-200 bg-base-100 p-6 shadow-sm lg:p-8">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-bold">Reviews & Ratings</h2>
-              <p className="mt-1 text-sm opacity-70">
-                Average rating: {averageRating ? averageRating.toFixed(1) : 0}/5
+              <h2 className="text-xl sm:text-2xl font-bold">Customer Reviews & Ratings</h2>
+              <p className="mt-1 text-xs sm:text-sm opacity-70">
+                Average score: {averageRating ? averageRating.toFixed(1) : 0} out of 5 ({reviewData.length} verified ratings)
               </p>
             </div>
 
@@ -349,27 +489,73 @@ const ProductDetailsPage = () => {
         </section>
 
         {/* Related Products */}
-        <section className="mt-10">
-          <h2 className="mb-6 text-2xl font-bold">Related Products</h2>
+        <section className="mt-12">
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-xl sm:text-2xl font-bold">Related In This Category</h2>
+            {category && (
+              <Link
+                to={`/products?category=${encodeURIComponent(category)}`}
+                className="text-xs font-bold text-primary hover:underline"
+              >
+                View More →
+              </Link>
+            )}
+          </div>
 
           {isFetching ? (
             <Loading />
           ) : relatedProducts.length ? (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-              {relatedProducts.map((item: TProduct) => (
+              {relatedProducts.slice(0, 4).map((item: TProduct) => (
                 <ProductCard key={item.id} product={item} />
               ))}
             </div>
           ) : (
-            <p className="opacity-70">No related products found.</p>
+            <p className="text-sm opacity-60">No related products found in this category.</p>
           )}
         </section>
 
-        {/* AI & Smart Recommendations */}
+        {/* AI & Proximity Recommendations */}
         {id && <RecommendedProductsSection productId={id} />}
 
         {/* Recently Viewed Products */}
         <RecentlyViewedSection currentProductId={id} />
+
+        {/* Mobile Sticky Thumb-Zone Action Bar (Fitts's Law) */}
+        <div className="fixed bottom-0 left-0 right-0 z-30 lg:hidden p-3 bg-base-100/95 backdrop-blur-md border-t border-base-200 shadow-2xl flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <img
+              src={images[0]}
+              alt={product.name}
+              className="w-12 h-12 rounded-xl object-cover border border-base-200 shrink-0"
+            />
+            <div className="min-w-0">
+              <div className="text-xs font-bold truncate">{product.name}</div>
+              <div className="text-sm font-extrabold text-primary">
+                ${finalPrice.toFixed(2)}
+              </div>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleAddToCart}
+            disabled={Number(product.inventoryCount) <= 0}
+            className="btn btn-primary btn-sm rounded-full px-5 text-xs font-bold shadow-lg shadow-primary/25 shrink-0 gap-1.5"
+          >
+            <FaShoppingCart size={13} />
+            <span>{Number(product.inventoryCount) > 0 ? "Add to Cart" : "Sold Out"}</span>
+          </button>
+        </div>
+
+        {/* Vendor Conflict Modal */}
+        <VendorConflictModal
+          isOpen={isConflictModalOpen}
+          onClose={() => setIsConflictModalOpen(false)}
+          onConfirmReplace={handleConfirmVendorReplace}
+          currentVendorName={currentVendorName}
+          newProduct={product}
+          quantity={quantity}
+        />
       </section>
     </main>
   );
@@ -392,16 +578,16 @@ const InfoCard = ({
     <div
       onClick={onClick}
       className={`rounded-2xl border p-4 transition ${
-        onClick ? "cursor-pointer hover:-translate-y-1" : ""
+        onClick ? "cursor-pointer hover:-translate-y-0.5" : ""
       } ${
         isDark
           ? "border-white/10 bg-white/5 hover:bg-white/10"
-          : "border-gray-200 bg-[#f8f5f0] hover:bg-[#f2eadf]"
+          : "border-base-200 bg-base-100 hover:bg-base-200/50"
       }`}
     >
-      <div className="mb-3 text-xl text-[#d4a23a]">{icon}</div>
-      <p className="text-sm opacity-60">{title}</p>
-      <h4 className="mt-1 font-semibold">{value}</h4>
+      <div className="mb-2 text-lg text-primary">{icon}</div>
+      <p className="text-xs text-gray-400">{title}</p>
+      <h4 className="mt-1 text-xs sm:text-sm font-bold truncate">{value}</h4>
     </div>
   );
 };
