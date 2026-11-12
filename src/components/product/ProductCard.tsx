@@ -52,7 +52,11 @@ const ProductCard = ({ product }: { product: TProduct }) => {
     }
   };
 
-  const { data: reviews } = useGetReviewsSingleProductQuery(product.id);
+  // Skip redundant review fetching if server already computed averageRating
+  const hasServerRating = (product as any)?.averageRating !== undefined;
+  const { data: reviews } = useGetReviewsSingleProductQuery(product.id, {
+    skip: hasServerRating,
+  });
 
   const rawReviews = reviews?.data;
   const reviewData: TReview[] = Array.isArray(rawReviews)
@@ -61,13 +65,16 @@ const ProductCard = ({ product }: { product: TProduct }) => {
     ? ((rawReviews as any).reviews as TReview[])
     : [];
 
-  const totalRating = reviewData.reduce(
-    (acc, review) => acc + (review.rating || 0),
-    0,
-  );
+  const reviewCount = hasServerRating
+    ? Number((product as any)?.reviewCount || 0)
+    : reviewData.length;
 
-  const averageRating =
-    reviewData.length > 0 ? totalRating / reviewData.length : 0;
+  const averageRating = hasServerRating
+    ? Number((product as any).averageRating)
+    : reviewData.length > 0
+    ? reviewData.reduce((acc, review) => acc + (review.rating || 0), 0) /
+      reviewData.length
+    : 0;
 
   return (
     <article
@@ -155,7 +162,7 @@ const ProductCard = ({ product }: { product: TProduct }) => {
                 Rating
               </span>
               <span className="text-base-content font-bold text-xs">
-                {averageRating.toFixed(1)} / 5 ({reviewData.length})
+                {averageRating.toFixed(1)} / 5 ({reviewCount})
               </span>
             </div>
           </div>
