@@ -9,7 +9,6 @@ const userApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["user"],
-      keepUnusedDataFor: 0,
     }),
 
     suspendUser: builder.mutation({
@@ -34,7 +33,6 @@ const userApi = baseApi.injectEndpoints({
         url: "admin/all-transactions",
         method: "GET",
       }),
-      keepUnusedDataFor: 0,
       transformResponse: (response: TResponseRedux<TTNXHistory[]>) => {
         return {
           data: response.data,
@@ -48,7 +46,6 @@ const userApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["order", "user", "shop"],
-      keepUnusedDataFor: 0,
       transformResponse: (response: any) => {
         return {
           data: response.data,

@@ -10,7 +10,6 @@ const vendorApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["product"],
-      keepUnusedDataFor: 0,
       transformResponse: (response: TResponseRedux<TProduct[]>) => {
         return {
           data: response.data,
@@ -23,7 +22,6 @@ const vendorApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["order"],
-      keepUnusedDataFor: 0,
       transformResponse: (response: TResponseRedux<TOrderHistory[]>) => {
         return {
           data: response.data,
@@ -44,7 +42,6 @@ const vendorApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["order", "product"],
-      keepUnusedDataFor: 0,
       transformResponse: (response: any) => {
         return {
           data: response.data,

@@ -22,7 +22,6 @@ const authApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["user"],
-      keepUnusedDataFor: 0,
     }),
 
     changePassword: builder.mutation({

@@ -17,7 +17,6 @@ const extendedShop = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["shop"],
-      keepUnusedDataFor: 0,
     }),
     getAllShop: builder.query({
       query: () => ({
@@ -25,7 +24,6 @@ const extendedShop = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["shop"],
-      keepUnusedDataFor: 0,
     }),
     createShop: builder.mutation({
       query: (data) => ({
@@ -57,7 +55,6 @@ const extendedShop = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["shop"],
-      keepUnusedDataFor: 0,
     }),
 
     getProductsBySingleShop: builder.query({
@@ -66,7 +63,6 @@ const extendedShop = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["shop"],
-      keepUnusedDataFor: 0,
     }),
 
     getFollowers: builder.query({
@@ -75,7 +71,6 @@ const extendedShop = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["follow"],
-      keepUnusedDataFor: 0,
     }),
 
     followShop: builder.mutation({

@@ -25,7 +25,6 @@ const orderApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["review"],
-      keepUnusedDataFor: 0,
       transformResponse: (response: TResponseRedux<TOrderItem[]>) => {
         return {
           data: response.data,
@@ -38,7 +37,6 @@ const orderApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["order"],
-      keepUnusedDataFor: 0,
       transformResponse: (response: TResponseRedux<TOrderHistory[]>) => {
         return {
           data: response.data,
@@ -51,7 +49,6 @@ const orderApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["wishlist"],
-      keepUnusedDataFor: 0,
       transformResponse: (response: any) => {
         return {
           data: response.data,
@@ -72,7 +69,6 @@ const orderApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: ["order", "wishlist", "review"],
-      keepUnusedDataFor: 0,
       transformResponse: (response: any) => {
         return {
           data: response.data,
