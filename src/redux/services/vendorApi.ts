@@ -48,6 +48,16 @@ const vendorApi = baseApi.injectEndpoints({
         };
       },
     }),
+    generateAiProduct: builder.mutation<
+      any,
+      { titleHint: string; categoryName?: string }
+    >({
+      query: (body) => ({
+        url: "vendor/ai-generate-product",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -56,4 +66,5 @@ export const {
   useGetOrderHistoryForVendorQuery,
   useUpdateOrderStatusMutation,
   useGetVendorDashboardStatsQuery,
+  useGenerateAiProductMutation,
 } = vendorApi;
