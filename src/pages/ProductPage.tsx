@@ -133,7 +133,7 @@ const ProductPage = () => {
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-base-content">
             Explore All Products
           </h1>
-          <p className="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 mt-2">
+          <p className="text-xs sm:text-sm text-base-content/75 mt-2">
             Discover verified products from top vendor shops with instant search, category filtering, and side-by-side comparison.
           </p>
         </div>
@@ -149,11 +149,11 @@ const ProductPage = () => {
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search products by title, tag, or description..."
-                className="input input-bordered w-full rounded-full pl-11 pr-24 text-sm bg-base-100 border-base-300 focus:border-primary"
+                className="input input-bordered w-full rounded-full pl-11 pr-24 text-sm bg-base-100 border-base-300 focus:border-primary text-base-content placeholder:text-base-content/50"
               />
               <Search
                 size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-base-content/50 pointer-events-none"
               />
               {searchInput && (
                 <button
@@ -163,7 +163,7 @@ const ProductPage = () => {
                     updateFilters({ keyword: null });
                   }}
                   aria-label="Clear search query"
-                  className="absolute right-16 top-1/2 -translate-y-1/2 text-gray-400 hover:text-base-content transition p-1"
+                  className="absolute right-16 top-1/2 -translate-y-1/2 text-base-content/60 hover:text-base-content transition p-1"
                 >
                   <X size={15} />
                 </button>
@@ -180,12 +180,12 @@ const ProductPage = () => {
             {/* Quick Sort & Mobile Filter Toggle */}
             <div className="flex items-center gap-3 w-full md:w-auto justify-end">
               <div className="flex items-center gap-2">
-                <ArrowUpDown size={15} className="text-gray-400 hidden sm:block" />
+                <ArrowUpDown size={15} className="text-base-content/60 hidden sm:block" />
                 <select
                   value={querySort}
                   onChange={(e) => updateFilters({ sortBy: e.target.value })}
                   aria-label="Sort catalog by"
-                  className="select select-bordered select-sm rounded-full text-xs bg-base-100"
+                  className="select select-bordered select-sm rounded-full text-xs bg-base-100 text-base-content border-base-300 font-medium"
                 >
                   <option value="newest">Newest Arrivals</option>
                   <option value="lowToHigh">Price: Low to High</option>

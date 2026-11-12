@@ -90,7 +90,7 @@ const AboutPage = () => {
             <span className="text-primary">Integrity, Precision & Choice</span>
           </h1>
 
-          <p className="max-w-2xl mx-auto text-sm sm:text-base text-gray-600 dark:text-zinc-300 leading-relaxed">
+          <p className="max-w-2xl mx-auto text-sm sm:text-base text-base-content/80 leading-relaxed">
             Amar Shop is an engineered marketplace that connects discerning shoppers with vetted merchant stores through transparent comparison tools, smart recommendations, and end-to-end order telemetry.
           </p>
 
@@ -153,11 +153,11 @@ const AboutPage = () => {
               Bridging Authentic Merchants with Conscious Shoppers
             </h2>
 
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-zinc-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-base-content/85 leading-relaxed">
               Traditional e-commerce platforms often flood consumers with duplicate listings, hidden fees, and unreliable delivery dates. We built Amar Shop to eliminate that friction.
             </p>
 
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-zinc-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-base-content/85 leading-relaxed">
               By enforcing single-vendor cart clarity, verifying store identities, and giving shoppers interactive comparison matrices, we put total purchasing confidence back in the buyer's hands.
             </p>
 
@@ -200,7 +200,7 @@ const AboutPage = () => {
               <span className="badge badge-primary badge-sm font-semibold">Verified</span>
             </div>
 
-            <p className="text-xs text-gray-500 dark:text-zinc-400 leading-relaxed italic">
+            <p className="text-xs text-base-content/75 leading-relaxed italic">
               "We believe that a great marketplace isn't just about the volume of items listed — it's about the trust earned through every single fulfilled order."
             </p>
 
@@ -250,7 +250,7 @@ const AboutPage = () => {
                 </div>
 
                 <h3 className="text-lg font-bold mb-2">{item.title}</h3>
-                <p className="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-base-content/80 leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -281,7 +281,7 @@ const AboutPage = () => {
             {techHighlights.map((tech, i) => (
               <div key={i} className="p-5 rounded-2xl bg-base-200 border border-base-300/40">
                 <h4 className="font-bold text-sm mb-1">{tech.title}</h4>
-                <p className="text-xs text-gray-500 dark:text-zinc-400">{tech.desc}</p>
+                <p className="text-xs text-base-content/75">{tech.desc}</p>
               </div>
             ))}
           </div>
@@ -300,7 +300,7 @@ const AboutPage = () => {
           <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
             Ready to Experience Better Shopping?
           </h2>
-          <p className="max-w-xl mx-auto text-xs sm:text-sm text-gray-600 dark:text-zinc-300 leading-relaxed">
+          <p className="max-w-xl mx-auto text-xs sm:text-sm text-base-content/85 leading-relaxed">
             Join thousands of satisfied customers and verified vendors in Bangladesh's most innovative multi-vendor marketplace today.
           </p>
 

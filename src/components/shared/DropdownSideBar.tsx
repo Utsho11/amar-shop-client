@@ -111,7 +111,7 @@ const DropdownSideBar: React.FC<DropdownSideBarProps> = ({
                       key={idx}
                       to={`/products?category=${encodeURIComponent(cat.name)}`}
                       onClick={toggleMenu}
-                      className="block p-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-primary hover:bg-base-200 transition-colors truncate"
+                      className="block p-1.5 rounded-lg text-xs font-medium text-base-content/75 hover:text-primary hover:bg-base-200 transition-colors truncate"
                     >
                       {cat.name}
                     </NavLink>
@@ -145,7 +145,7 @@ const DropdownSideBar: React.FC<DropdownSideBarProps> = ({
                       key={idx}
                       to={`/shop/${shop.id}`}
                       onClick={toggleMenu}
-                      className="flex items-center gap-2 p-1.5 rounded-lg text-xs font-medium text-gray-500 hover:text-primary hover:bg-base-200 transition-colors truncate"
+                      className="flex items-center gap-2 p-1.5 rounded-lg text-xs font-medium text-base-content/75 hover:text-primary hover:bg-base-200 transition-colors truncate"
                     >
                       <img
                         src={

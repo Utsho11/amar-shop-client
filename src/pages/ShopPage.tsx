@@ -199,7 +199,7 @@ const ShopPage = () => {
                       <ShieldCheck size={12} /> Verified Merchant
                     </span>
                   </div>
-                  <p className="text-xs text-gray-500 dark:text-zinc-400 font-mono">
+                  <p className="text-xs text-base-content/70 font-mono">
                     {shop.vendorEmail}
                   </p>
                 </div>
@@ -230,7 +230,7 @@ const ShopPage = () => {
             </div>
 
             {/* Description */}
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-zinc-300 max-w-3xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-base-content/85 max-w-3xl leading-relaxed">
               {shop.description || "Welcome to our verified merchant boutique on Amar Shop. Browse through our handpicked quality catalog."}
             </p>
 

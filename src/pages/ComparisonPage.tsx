@@ -221,7 +221,7 @@ const ComparisonPage = () => {
               <td className="font-semibold bg-base-200/40 text-sm p-6 align-top">Description</td>
               {compareItems.map((product) => (
                 <td key={product.id} className="p-6 align-top">
-                  <p className="text-xs text-gray-600 dark:text-zinc-400 leading-relaxed max-h-40 overflow-y-auto">
+                  <p className="text-xs text-base-content/80 leading-relaxed max-h-40 overflow-y-auto">
                     {product.description || "No description provided for this product."}
                   </p>
                 </td>

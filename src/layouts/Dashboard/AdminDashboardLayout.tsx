@@ -56,7 +56,7 @@ const AdminDashboardLayout = () => {
                   `flex items-center justify-between px-4 py-3.5 rounded-2xl text-sm font-bold tracking-wide transition-all duration-200 ${
                     isActive
                       ? "bg-primary text-white shadow-lg shadow-primary/30 scale-[1.02]"
-                      : "text-gray-700 dark:text-zinc-200 hover:bg-base-200 hover:text-primary"
+                      : "text-base-content/85 hover:bg-base-200 hover:text-primary"
                   }`
                 }
               >
@@ -105,7 +105,7 @@ const AdminDashboardLayout = () => {
                       `flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-sm font-bold transition ${
                         isActive
                           ? "bg-primary text-white shadow-md"
-                          : "text-gray-700 dark:text-zinc-200 hover:bg-base-200 hover:text-primary"
+                          : "text-base-content/85 hover:bg-base-200 hover:text-primary"
                       }`
                     }
                   >
