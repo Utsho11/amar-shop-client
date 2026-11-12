@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useCreateOrderMutation } from "../../redux/services/orderApi";
-import { useAppSelector } from "../../hooks/hook";
+import { useAppSelector, useAppDispatch } from "../../hooks/hook";
 import { selectCurrentUser } from "../../redux/features/auth/authSlice";
 import { useCheckCouponMutation } from "../../redux/services/authApi";
+import { clearCart } from "../../redux/features/cartSlice";
 import CheckoutFunnelSteps from "../../components/customer/CheckoutFunnelSteps";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   MapPin,
   Phone,
@@ -19,6 +20,8 @@ import {
 } from "lucide-react";
 
 const CheckoutPage = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const user = useAppSelector(selectCurrentUser);
   const cartItems = useAppSelector((state) => state.cart.items);
@@ -37,6 +40,7 @@ const CheckoutPage = () => {
   const [shippingCity, setShippingCity] = useState("");
   const [shippingZipCode, setShippingZipCode] = useState("");
   const [shippingPhone, setShippingPhone] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<"SSLCommerz" | "COD">("SSLCommerz");
 
   const subtotal = cartItems.reduce(
     (total, product) => total + parseFloat(product.price) * product.quantity,
@@ -104,7 +108,7 @@ const CheckoutPage = () => {
       customerEmail: user.email,
       totalAmount: finalTotal,
       couponCode: appliedCoupon || undefined,
-      paymentMethod: "SSLCommerz",
+      paymentMethod: paymentMethod,
       shippingAddress: shippingAddress.trim(),
       shippingCity: shippingCity.trim(),
       shippingZipCode: shippingZipCode.trim() || undefined,
@@ -120,6 +124,16 @@ const CheckoutPage = () => {
 
     try {
       const res = await createOrder(orderPayload).unwrap();
+
+      if (res?.data?.isCOD) {
+        dispatch(clearCart());
+        toast.success("Cash on Delivery order placed successfully!");
+        if (res.data.whatsappConfirmationUrl) {
+          window.open(res.data.whatsappConfirmationUrl, "_blank");
+        }
+        navigate(`/customerDashboard/myOrder?cod=success&orderId=${res.data.orderId}`);
+        return;
+      }
 
       const gatewayUrl =
         res?.data?.GatewayPageURL || res?.data?.redirectGatewayURL;
@@ -377,18 +391,76 @@ const CheckoutPage = () => {
                 </div>
               </div>
 
-              {/* Primary Payment CTA: Branded with SSLCommerz trust badge */}
+              {/* Payment Method Selector */}
+              <div className="space-y-2 pt-2">
+                <label className="text-xs font-bold text-base-content block">
+                  Select Payment Method
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div
+                    onClick={() => setPaymentMethod("SSLCommerz")}
+                    className={`cursor-pointer p-3 rounded-2xl border transition-all flex items-center gap-3 ${
+                      paymentMethod === "SSLCommerz"
+                        ? "border-primary bg-primary/10 shadow-sm"
+                        : "border-base-200 hover:border-base-300 bg-base-100"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={paymentMethod === "SSLCommerz"}
+                      onChange={() => setPaymentMethod("SSLCommerz")}
+                      className="radio radio-primary radio-xs"
+                    />
+                    <div>
+                      <p className="font-bold text-xs">Pay Online</p>
+                      <p className="text-[10px] text-gray-400">bKash, Nagad, Cards</p>
+                    </div>
+                  </div>
+
+                  <div
+                    onClick={() => setPaymentMethod("COD")}
+                    className={`cursor-pointer p-3 rounded-2xl border transition-all flex items-center gap-3 ${
+                      paymentMethod === "COD"
+                        ? "border-emerald-500 bg-emerald-500/10 shadow-sm"
+                        : "border-base-200 hover:border-base-300 bg-base-100"
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      checked={paymentMethod === "COD"}
+                      onChange={() => setPaymentMethod("COD")}
+                      className="radio radio-success radio-xs"
+                    />
+                    <div>
+                      <p className="font-bold text-xs">Cash on Delivery</p>
+                      <p className="text-[10px] text-gray-400">WhatsApp Verified</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Primary Payment CTA */}
               <button
                 disabled={isLoading}
                 onClick={handleCheckout}
-                className="btn btn-primary w-full rounded-full font-bold shadow-lg shadow-primary/25 text-sm gap-2 hover:scale-[1.02] transition-transform"
+                className={`btn w-full rounded-full font-bold shadow-lg text-sm gap-2 hover:scale-[1.02] transition-transform ${
+                  paymentMethod === "COD"
+                    ? "btn-success text-white shadow-success/25"
+                    : "btn-primary shadow-primary/25"
+                }`}
               >
                 {isLoading ? (
                   <span className="loading loading-spinner loading-sm" />
                 ) : (
                   <>
                     <Lock size={15} />
-                    <span>Pay ${finalTotal.toFixed(2)} with SSLCommerz</span>
+                    <span>
+                      {paymentMethod === "COD"
+                        ? `Place COD Order ($${finalTotal.toFixed(2)})`
+                        : `Pay $${finalTotal.toFixed(2)} with SSLCommerz`}
+                    </span>
                   </>
                 )}
               </button>

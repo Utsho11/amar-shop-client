@@ -63,6 +63,13 @@ const orderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["wishlist"],
     }),
+    confirmCodOrder: builder.mutation({
+      query: (orderId: string) => ({
+        url: `customer/confirm-cod/${orderId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: ["order"],
+    }),
     getCustomerDashboardStats: builder.query({
       query: () => ({
         url: "customer/dashboard-stats",
@@ -85,5 +92,6 @@ export const {
   useGetOrderHistoryForCustomerQuery,
   useGetMyWishlistQuery,
   useToggleWishlistMutation,
+  useConfirmCodOrderMutation,
   useGetCustomerDashboardStatsQuery,
 } = orderApi;
