@@ -30,7 +30,11 @@ const EditCategoryModal = ({
         formData.append("file", selectedFile);
       }
 
-      formData.append("data", JSON.stringify(updatedData));
+      const dataToSend = {
+        ...updatedData,
+        id: category.id,
+      };
+      formData.append("data", JSON.stringify(dataToSend));
       await onSave(formData);
       toast.success("Category updated successfully", {
         id: toastId,
@@ -66,7 +70,7 @@ const EditCategoryModal = ({
             onFileChange={handleFileChange}
           />
           <div className="modal-action">
-            <button onClick={onClose} className="btn btn-secondary">
+            <button type="button" onClick={onClose} className="btn btn-secondary">
               Close
             </button>
             <button type="submit" className="btn btn-primary">

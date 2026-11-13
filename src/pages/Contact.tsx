@@ -51,11 +51,13 @@ const Contact = () => {
                 <input
                   type="text"
                   placeholder="Full Name"
+                  required
                   className="input input-bordered w-full"
                 />
                 <input
                   type="email"
                   placeholder="Email Address"
+                  required
                   className="input input-bordered w-full"
                 />
               </div>
@@ -63,11 +65,13 @@ const Contact = () => {
               <input
                 type="text"
                 placeholder="Subject"
+                required
                 className="input input-bordered w-full"
               />
 
               <textarea
                 placeholder="Write your message..."
+                required
                 className="textarea textarea-bordered w-full min-h-32"
               />
 

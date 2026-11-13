@@ -42,7 +42,7 @@ const MarketplaceFeatures = () => {
       title: "4-Stage Order Fulfillment",
       description:
         "Real-time visual tracking pipeline for every purchase (Placed → Processing → Shipped → Delivered) with direct merchant updates.",
-      link: "/customerDashboard/myOrders",
+      link: "/customerDashboard/myOrder",
       linkText: "Track Shipments",
       color: "from-blue-500/20 to-cyan-500/10",
       iconColor: "text-blue-500",

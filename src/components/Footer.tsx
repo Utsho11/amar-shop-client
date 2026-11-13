@@ -5,6 +5,8 @@ import {
   FaLinkedinIn,
 } from "react-icons/fa";
 import { HiOutlinePaperAirplane } from "react-icons/hi";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 const Footer = () => {
   const quickLinks = [
@@ -22,11 +24,23 @@ const Footer = () => {
   ];
 
   const socials = [
-    { icon: <FaFacebookF />, href: "/", label: "Facebook" },
-    { icon: <FaTwitter />, href: "/", label: "Twitter" },
-    { icon: <FaInstagram />, href: "/", label: "Instagram" },
-    { icon: <FaLinkedinIn />, href: "/", label: "LinkedIn" },
+    { icon: <FaFacebookF />, href: "https://facebook.com", label: "Facebook" },
+    { icon: <FaTwitter />, href: "https://twitter.com", label: "Twitter" },
+    { icon: <FaInstagram />, href: "https://instagram.com", label: "Instagram" },
+    { icon: <FaLinkedinIn />, href: "https://linkedin.com", label: "LinkedIn" },
   ];
+
+  const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const input = form.querySelector("input") as HTMLInputElement;
+    if (input && input.value) {
+      toast.success("Thank you for subscribing to our newsletter!");
+      form.reset();
+    } else {
+      toast.error("Please enter a valid email address.");
+    }
+  };
 
   return (
     <footer className="border-t border-white/10 bg-[#111315] text-gray-300">
@@ -46,6 +60,8 @@ const Footer = () => {
                 <a
                   key={item.label}
                   href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={item.label}
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm text-gray-300 transition hover:border-[#A66B55]/50 hover:bg-[#e9c46a]/10 hover:text-[#e9c46a]"
                 >
@@ -71,10 +87,14 @@ const Footer = () => {
               Get updates about new products, offers, and shop announcements.
             </p>
 
-            <form className="mt-5 flex overflow-hidden rounded-full border border-white/10 bg-white/5 p-1">
+            <form
+              onSubmit={handleSubscribe}
+              className="mt-5 flex overflow-hidden rounded-full border border-white/10 bg-white/5 p-1"
+            >
               <input
                 type="email"
                 placeholder="Email address"
+                required
                 className="min-w-0 flex-1 bg-transparent px-4 text-sm text-white outline-none placeholder:text-gray-500"
               />
 
@@ -116,12 +136,12 @@ const FooterLinks = ({
       <ul className="mt-4 space-y-3">
         {links.map((link) => (
           <li key={link.label}>
-            <a
-              href={link.href}
+            <Link
+              to={link.href}
               className="text-sm text-gray-400 transition hover:text-[#e9c46a]"
             >
               {link.label}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

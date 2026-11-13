@@ -12,11 +12,20 @@ const ChangePassword = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleSubmit = (data: FieldValues) => {
-    changePassword(data);
-    toast.success("Password changed Successfully");
-    dispatch(logout());
-    navigate("/");
+  const handleSubmit = async (data: FieldValues) => {
+    const toastId = toast.loading("Updating password...");
+    try {
+      const res = await changePassword(data).unwrap();
+      if (res?.success) {
+        toast.success("Password changed successfully", { id: toastId });
+        dispatch(logout());
+        navigate("/auth/login");
+      } else {
+        toast.error(res?.message || "Failed to change password", { id: toastId });
+      }
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to change password. Please check your credentials.", { id: toastId });
+    }
   };
 
   return (

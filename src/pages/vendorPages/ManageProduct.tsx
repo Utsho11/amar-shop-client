@@ -79,8 +79,14 @@ const ManageProduct = () => {
     setCurrentPage(selected);
   };
 
-  const handleDelete = (id: string) => {
-    deleteProduct(id);
+  const handleDelete = async (id: string) => {
+    const toastId = toast.loading("Deleting product...");
+    try {
+      await deleteProduct(id).unwrap();
+      toast.success("Product deleted successfully", { id: toastId });
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to delete product", { id: toastId });
+    }
   };
 
   const handleEdit = (id: string) => {
@@ -91,10 +97,13 @@ const ManageProduct = () => {
   };
 
   const handleSave = async (updatedProduct: FieldValues) => {
+    const toastId = toast.loading("Updating product...");
     try {
       await editProduct(updatedProduct).unwrap();
-    } catch (error) {
-      toast.error("Failed to edit product");
+      toast.success("Product updated successfully", { id: toastId });
+      setSelectedProduct(null);
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to edit product", { id: toastId });
     }
   };
 
@@ -103,8 +112,14 @@ const ManageProduct = () => {
     navigate(`/products/${id}`);
   };
 
-  const handleDuplicate = (id: string) => {
-    duplicateProduct(id);
+  const handleDuplicate = async (id: string) => {
+    const toastId = toast.loading("Duplicating product...");
+    try {
+      await duplicateProduct(id).unwrap();
+      toast.success("Product duplicated successfully", { id: toastId });
+    } catch (error: any) {
+      toast.error(error?.data?.message || "Failed to duplicate product", { id: toastId });
+    }
   };
 
   // console.log(paginatedProducts);

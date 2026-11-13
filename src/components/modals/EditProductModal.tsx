@@ -88,7 +88,7 @@ const EditProductModal = ({
             onFileChange={handleFileChange}
           />
           <div className="modal-action">
-            <button onClick={onClose} className="btn btn-secondary">
+            <button type="button" onClick={onClose} className="btn btn-secondary">
               Close
             </button>
             <button type="submit" className="btn btn-primary">

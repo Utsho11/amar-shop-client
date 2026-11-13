@@ -159,7 +159,7 @@ const CustomerProfile = () => {
               <p className="text-xs text-gray-500">Live order status progression for items currently in transit</p>
             </div>
             <Link
-              to="/customerDashboard/myOrders"
+              to="/customerDashboard/myOrder"
               className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
             >
               <span>View All Orders</span>
@@ -245,7 +245,7 @@ const CustomerProfile = () => {
 
             <div className="space-y-3">
               <Link
-                to="/customerDashboard/myOrders"
+                to="/customerDashboard/myOrder"
                 className="flex items-center justify-between p-3.5 rounded-2xl bg-base-200 hover:bg-primary hover:text-white transition group text-xs font-semibold"
               >
                 <div className="flex items-center gap-3">
@@ -267,7 +267,7 @@ const CustomerProfile = () => {
               </Link>
 
               <Link
-                to="/customerDashboard/review"
+                to="/customerDashboard/toReview"
                 className="flex items-center justify-between p-3.5 rounded-2xl bg-base-200 hover:bg-primary hover:text-white transition group text-xs font-semibold"
               >
                 <div className="flex items-center gap-3">
@@ -298,7 +298,7 @@ const CustomerProfile = () => {
               <p className="text-xs text-gray-500">History of your completed and delivered orders</p>
             </div>
             <Link
-              to="/customerDashboard/myOrders"
+              to="/customerDashboard/myOrder"
               className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
             >
               <span>All Orders</span>

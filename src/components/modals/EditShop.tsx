@@ -24,7 +24,11 @@ const EditShop = ({ shop, onClose, onSave }: EditShopModalProps) => {
     const formData = new FormData();
 
     try {
-      formData.append("data", JSON.stringify(data));
+      const updateData = {
+        ...data,
+        id: shop.id,
+      };
+      formData.append("data", JSON.stringify(updateData));
       if (selectedFile) {
         formData.append("file", selectedFile);
       }
@@ -58,7 +62,7 @@ const EditShop = ({ shop, onClose, onSave }: EditShopModalProps) => {
             />
           </div>
           <div className="modal-action">
-            <button onClick={onClose} className="btn btn-secondary">
+            <button type="button" onClick={onClose} className="btn btn-secondary">
               Close
             </button>
             <button type="submit" className="btn btn-primary">

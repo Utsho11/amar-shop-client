@@ -4,6 +4,7 @@ import { ArrowRight, Tag } from "lucide-react";
 const promoCards = [
   {
     id: "f3b336e2-a471-4f90-a7ef-ac4dbef2ebc7",
+    link: "/products",
     badge: "Spotlight Deal",
     title: "Immersive Studio Audio",
     description:
@@ -13,6 +14,7 @@ const promoCards = [
   },
   {
     id: "df64b5e5-439e-4853-aebc-9d2c578afca1",
+    link: "/products",
     badge: "Seasonal Trend",
     title: "Artisan Apparel Line",
     description: "Breathable natural cotton oversized silhouettes offering ultimate comfort and street style.",
@@ -55,7 +57,7 @@ const PromoBanner = () => {
 
               <div className="mt-4">
                 <Link
-                  to={`/products/${card.id}`}
+                  to={card.link || "/products"}
                   className="btn btn-sm sm:btn-md rounded-full bg-white text-zinc-900 hover:bg-white/90 border-none font-semibold px-6 shadow-md inline-flex items-center gap-2 transition-transform hover:scale-105"
                 >
                   <span>{card.button}</span>

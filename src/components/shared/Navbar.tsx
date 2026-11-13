@@ -486,13 +486,14 @@ const Navbar = () => {
             </div>
           ) : (
             <div>
-              <button
+              <NavLink
+                to="/auth/login"
                 className={`btn ${
                   theme === "dark" ? "text-white" : ""
                 } bg-[#A66B55] text-white hover:bg-[#8d5947] btn-sm`}
               >
-                <NavLink to="/auth/login">Login</NavLink>
-              </button>
+                Login
+              </NavLink>
             </div>
           )}
         </div>

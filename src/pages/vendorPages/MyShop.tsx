@@ -355,7 +355,7 @@ const MyShop = () => {
                     </td>
                     <td>
                       <Link
-                        to={`/product/${prod.id}`}
+                        to={`/products/${prod.id}`}
                         target="_blank"
                         className="btn btn-ghost btn-xs text-primary gap-1"
                       >

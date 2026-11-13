@@ -97,9 +97,12 @@ const ManageCategory = () => {
           Manage All Category
         </h1>
       </div>
-        <button className="btn bg-[#A66B55] text-white hover:bg-[#915944] btn-sm">
-          <NavLink to="/adminDashboard/addCategory">+ADD CATEGORY</NavLink>
-        </button>
+        <NavLink
+          to="/adminDashboard/addCategory"
+          className="btn bg-[#A66B55] text-white hover:bg-[#915944] btn-sm"
+        >
+          +ADD CATEGORY
+        </NavLink>
       </div>
       <div className="">
         <ASCategoryTable

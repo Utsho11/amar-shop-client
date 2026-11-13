@@ -56,6 +56,7 @@ const LoginPage = () => {
     };
     setEmail(credentials[role].email);
     setPassword(credentials[role].password);
+    toast.info(`Filled credentials for ${role}. Click "Login" to sign in.`);
   };
 
   // console.log(defaultCredentials);

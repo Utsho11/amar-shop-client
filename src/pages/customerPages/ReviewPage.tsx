@@ -137,7 +137,7 @@ const ReviewPage = () => {
                     </div>
                     <h3 className="text-lg font-bold">Review Submitted for {p.name}!</h3>
                     <p className="text-xs text-gray-500">Your feedback has been verified and published to the product page.</p>
-                    <Link to={`/product/${item.productId}`} className="btn btn-sm btn-ghost text-primary text-xs font-semibold">
+                    <Link to={`/products/${item.productId}`} className="btn btn-sm btn-ghost text-primary text-xs font-semibold">
                       View on Product Page →
                     </Link>
                   </div>
@@ -158,7 +158,7 @@ const ReviewPage = () => {
                           Verified Purchase
                         </span>
                         <h2 className="text-base sm:text-lg font-bold leading-snug">
-                          <Link to={`/product/${item.productId}`} className="hover:text-primary transition-colors">
+                          <Link to={`/products/${item.productId}`} className="hover:text-primary transition-colors">
                             {p.name}
                           </Link>
                         </h2>
